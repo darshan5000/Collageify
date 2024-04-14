@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="FilterCell" id="gTV-IL-0wX" customClass="FilterCell" customModule="CollageMaker" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="90" height="90"/>
+            <autoresizingMask key="autoresizingMask"/>
+            <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
+                <rect key="frame" x="0.0" y="0.0" width="90" height="90"/>
+                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                <subviews>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="wpC-cF-c8q">
+                        <rect key="frame" x="0.0" y="0.0" width="90" height="90"/>
+                        <subviews>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="kqr-ZX-Zbc">
+                                <rect key="frame" x="5" y="5" width="80" height="80"/>
+                            </imageView>
+                            <button opaque="NO" tag="20" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aN4-xl-Aoz">
+                                <rect key="frame" x="5" y="5" width="80" height="80"/>
+                            </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IZN-AP-fz1">
+                                <rect key="frame" x="5" y="62" width="80" height="23"/>
+                                <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="23" id="0Rh-ah-ula"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="14"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstAttribute="trailing" secondItem="aN4-xl-Aoz" secondAttribute="trailing" constant="5" id="99X-su-G8e"/>
+                            <constraint firstAttribute="bottom" secondItem="kqr-ZX-Zbc" secondAttribute="bottom" constant="5" id="Csi-3c-sYb"/>
+                            <constraint firstAttribute="trailing" secondItem="kqr-ZX-Zbc" secondAttribute="trailing" constant="5" id="Fgs-e7-LMG"/>
+                            <constraint firstItem="aN4-xl-Aoz" firstAttribute="top" secondItem="wpC-cF-c8q" secondAttribute="top" constant="5" id="KWR-t5-flW"/>
+                            <constraint firstAttribute="bottom" secondItem="IZN-AP-fz1" secondAttribute="bottom" constant="5" id="KjV-RD-SeZ"/>
+                            <constraint firstItem="kqr-ZX-Zbc" firstAttribute="top" secondItem="wpC-cF-c8q" secondAttribute="top" constant="5" id="L5Y-nN-49a"/>
+                            <constraint firstAttribute="trailing" secondItem="IZN-AP-fz1" secondAttribute="trailing" constant="5" id="R0d-eN-MXI"/>
+                            <constraint firstItem="aN4-xl-Aoz" firstAttribute="leading" secondItem="wpC-cF-c8q" secondAttribute="leading" constant="5" id="dTp-Tt-KzZ"/>
+                            <constraint firstAttribute="bottom" secondItem="aN4-xl-Aoz" secondAttribute="bottom" constant="5" id="eBp-29-5tA"/>
+                            <constraint firstItem="kqr-ZX-Zbc" firstAttribute="leading" secondItem="wpC-cF-c8q" secondAttribute="leading" constant="5" id="kQy-SM-uQD"/>
+                            <constraint firstItem="IZN-AP-fz1" firstAttribute="leading" secondItem="wpC-cF-c8q" secondAttribute="leading" constant="5" id="peR-7J-LVg"/>
+                        </constraints>
+                    </view>
+                </subviews>
+            </view>
+            <constraints>
+                <constraint firstAttribute="trailing" secondItem="wpC-cF-c8q" secondAttribute="trailing" id="3Rv-vW-Nvt"/>
+                <constraint firstItem="wpC-cF-c8q" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" id="6T7-ei-5x2"/>
+                <constraint firstItem="wpC-cF-c8q" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" id="YFj-fK-vjy"/>
+                <constraint firstAttribute="bottom" secondItem="wpC-cF-c8q" secondAttribute="bottom" id="ZXS-ob-NXr"/>
+            </constraints>
+            <viewLayoutGuide key="safeArea" id="ZTg-uK-7eu"/>
+            <connections>
+                <outlet property="btnFilters" destination="aN4-xl-Aoz" id="EwQ-KU-coM"/>
+                <outlet property="imgCommon" destination="kqr-ZX-Zbc" id="FWf-3S-jDp"/>
+                <outlet property="lblTitles" destination="IZN-AP-fz1" id="oAZ-z6-h9f"/>
+            </connections>
+        </collectionViewCell>
+    </objects>
+</document>

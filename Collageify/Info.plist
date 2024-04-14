@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>NSAppTransportSecurity</key>
+	<dict>
+		<key>NSAllowsArbitraryLoads</key>
+		<true/>
+	</dict>
+	<key>UIAppFonts</key>
+	<array>
+		<string>Bucanera-font-FFP.ttf</string>
+		<string>champignonaltswash.ttf</string>
+		<string>Dohearts.otf</string>
+		<string>Enjoy Personal Use.otf</string>
+		<string>Ginga.ttf</string>
+		<string>Granada Blues Personal Use.ttf</string>
+		<string>LittleLordFontleroyNF.ttf</string>
+		<string>Mf Gradient Goddess.ttf</string>
+		<string>Miama.ttf</string>
+		<string>Montez-Regular.ttf</string>
+		<string>Playball-Regular.ttf</string>
+		<string>PlumScript.ttf</string>
+		<string>Pretty Girls Script Demo.ttf</string>
+		<string>QUIGLEYW.ttf</string>
+		<string>Script Writing.ttf</string>
+		<string>The Heart of Everything Demo.ttf</string>
+		<string>Variane Script.ttf</string>
+		<string>VTC-BadTattooHandOne.otf</string>
+		<string>VTKS SummerLAnd.ttf</string>
+		<string>waltograph42.otf</string>
+		<string>Allura-Regular.ttf</string>
+		<string>Alleana Script.otf</string>
+		<string>AguafinaScript-Regular.ttf</string>
+		<string>Advertising Script Monoline Trial.ttf</string>
+		<string>Advertising Script Bold Trial.ttf</string>
+		<string>Adine Kirnberg.ttf</string>
+		<string>a Theme for murder.ttf</string>
+		<string>AlexBrush-Regular.ttf</string>
+		<string>akaDora.otf</string>
+		<string>alsscrp.ttf</string>
+		<string>Arizonia-Regular.ttf</string>
+	</array>
+</dict>
+</plist>

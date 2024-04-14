@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="StickerCell" id="gTV-IL-0wX" customClass="StickerCell" customModule="CollageMaker" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="60" height="60"/>
+            <autoresizingMask key="autoresizingMask"/>
+            <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
+                <rect key="frame" x="0.0" y="0.0" width="60" height="60"/>
+                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                <subviews>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="yTE-UP-hd4">
+                        <rect key="frame" x="0.0" y="0.0" width="60" height="60"/>
+                        <subviews>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="1" translatesAutoresizingMaskIntoConstraints="NO" id="644-Ma-NgB">
+                                <rect key="frame" x="10" y="10" width="40" height="40"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </imageView>
+                            <button opaque="NO" tag="5" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ru3-pt-5VA">
+                                <rect key="frame" x="5" y="5" width="50" height="50"/>
+                                <color key="tintColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstAttribute="bottom" secondItem="644-Ma-NgB" secondAttribute="bottom" constant="10" id="2kS-of-Pxm"/>
+                            <constraint firstAttribute="trailing" secondItem="Ru3-pt-5VA" secondAttribute="trailing" constant="5" id="GjF-9A-sd2"/>
+                            <constraint firstAttribute="bottom" secondItem="Ru3-pt-5VA" secondAttribute="bottom" constant="5" id="Isa-b9-a7C"/>
+                            <constraint firstItem="644-Ma-NgB" firstAttribute="leading" secondItem="yTE-UP-hd4" secondAttribute="leading" constant="10" id="Kbt-6J-ebi"/>
+                            <constraint firstItem="Ru3-pt-5VA" firstAttribute="top" secondItem="yTE-UP-hd4" secondAttribute="top" constant="5" id="ROV-B3-bXe"/>
+                            <constraint firstItem="644-Ma-NgB" firstAttribute="top" secondItem="yTE-UP-hd4" secondAttribute="top" constant="10" id="Xm5-Eb-eDx"/>
+                            <constraint firstItem="Ru3-pt-5VA" firstAttribute="leading" secondItem="yTE-UP-hd4" secondAttribute="leading" constant="5" id="m1Z-e6-UzM"/>
+                            <constraint firstAttribute="trailing" secondItem="644-Ma-NgB" secondAttribute="trailing" constant="10" id="znZ-dR-pod"/>
+                        </constraints>
+                    </view>
+                </subviews>
+            </view>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+            <constraints>
+                <constraint firstItem="yTE-UP-hd4" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" id="4lg-0J-FfH"/>
+                <constraint firstItem="yTE-UP-hd4" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" id="g5b-40-0wo"/>
+                <constraint firstAttribute="bottom" secondItem="yTE-UP-hd4" secondAttribute="bottom" id="stX-EI-Upj"/>
+                <constraint firstAttribute="trailing" secondItem="yTE-UP-hd4" secondAttribute="trailing" id="y7A-2B-BD2"/>
+            </constraints>
+            <viewLayoutGuide key="safeArea" id="ZTg-uK-7eu"/>
+            <connections>
+                <outlet property="btnImage" destination="Ru3-pt-5VA" id="4A3-nD-d8o"/>
+                <outlet property="imgSelection" destination="644-Ma-NgB" id="tx7-h5-SCm"/>
+            </connections>
+            <point key="canvasLocation" x="131.8840579710145" y="100.44642857142857"/>
+        </collectionViewCell>
+    </objects>
+    <resources>
+        <image name="1" width="200" height="200"/>
+    </resources>
+</document>
