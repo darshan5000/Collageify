@@ -2,7 +2,6 @@
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="19529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="cnp-ZK-3X7">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
-        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19519"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
@@ -3662,7 +3661,7 @@
                                 </constraints>
                             </view>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" bounces="NO" pagingEnabled="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" bouncesZoom="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="pqJ-mw-ZGP">
-                                <rect key="frame" x="0.0" y="120" width="414" height="672"/>
+                                <rect key="frame" x="0.0" y="120" width="414" height="636"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" minimumLineSpacing="0.0" minimumInteritemSpacing="0.0" id="haU-Us-JwB">
                                     <size key="itemSize" width="128" height="128"/>
@@ -3673,7 +3672,7 @@
                                 <cells/>
                             </collectionView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0Mt-WK-SOC">
-                                <rect key="frame" x="0.0" y="802" width="414" height="60"/>
+                                <rect key="frame" x="0.0" y="768" width="414" height="60"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vy0-XQ-Hj8">
                                         <rect key="frame" x="0.0" y="0.0" width="414" height="60"/>
@@ -3697,30 +3696,41 @@
                                     <constraint firstAttribute="bottom" secondItem="vy0-XQ-Hj8" secondAttribute="bottom" id="oOK-bs-X4Z"/>
                                 </constraints>
                             </view>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="CEe-LQ-Kjj" customClass="GADBannerView">
+                                <rect key="frame" x="0.0" y="836" width="414" height="60"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="60" id="TzE-Ex-fAt"/>
+                                </constraints>
+                            </view>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="d9i-Az-Ag2"/>
                         <color key="backgroundColor" red="0.43137254901960786" green="0.44313725490196076" blue="0.47058823529411764" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                         <constraints>
-                            <constraint firstItem="0Mt-WK-SOC" firstAttribute="top" secondItem="pqJ-mw-ZGP" secondAttribute="bottom" constant="10" id="5aY-vJ-dTK"/>
+                            <constraint firstItem="0Mt-WK-SOC" firstAttribute="top" secondItem="pqJ-mw-ZGP" secondAttribute="bottom" constant="12" id="5aY-vJ-dTK"/>
                             <constraint firstItem="d9i-Az-Ag2" firstAttribute="trailing" secondItem="Egl-gh-erO" secondAttribute="trailing" id="7i2-YC-rAS"/>
                             <constraint firstItem="Egl-gh-erO" firstAttribute="top" secondItem="d9i-Az-Ag2" secondAttribute="top" id="AUZ-6n-6bh"/>
+                            <constraint firstItem="CEe-LQ-Kjj" firstAttribute="top" secondItem="0Mt-WK-SOC" secondAttribute="bottom" constant="8" id="Aka-I8-ff8"/>
                             <constraint firstItem="d9i-Az-Ag2" firstAttribute="trailing" secondItem="pqJ-mw-ZGP" secondAttribute="trailing" id="CT3-NC-kAF"/>
                             <constraint firstItem="Egl-gh-erO" firstAttribute="leading" secondItem="ksN-uY-Q5O" secondAttribute="leading" id="OOP-4g-p4R"/>
+                            <constraint firstItem="CEe-LQ-Kjj" firstAttribute="leading" secondItem="d9i-Az-Ag2" secondAttribute="leading" id="OYh-v4-S6y"/>
                             <constraint firstItem="pqJ-mw-ZGP" firstAttribute="top" secondItem="Egl-gh-erO" secondAttribute="bottom" constant="10" id="OwZ-7O-Z2J"/>
                             <constraint firstItem="0Mt-WK-SOC" firstAttribute="leading" secondItem="d9i-Az-Ag2" secondAttribute="leading" id="RO8-Vf-zTp"/>
-                            <constraint firstItem="0Mt-WK-SOC" firstAttribute="bottom" secondItem="d9i-Az-Ag2" secondAttribute="bottom" id="aSE-9J-AeM"/>
+                            <constraint firstAttribute="trailing" secondItem="CEe-LQ-Kjj" secondAttribute="trailing" id="fdm-D6-6eG"/>
+                            <constraint firstAttribute="bottom" secondItem="CEe-LQ-Kjj" secondAttribute="bottom" id="fxo-YM-E9q"/>
                             <constraint firstItem="0Mt-WK-SOC" firstAttribute="trailing" secondItem="d9i-Az-Ag2" secondAttribute="trailing" id="m9R-lb-rHK"/>
                             <constraint firstItem="pqJ-mw-ZGP" firstAttribute="leading" secondItem="d9i-Az-Ag2" secondAttribute="leading" id="pqm-bA-N4C"/>
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="bannerView" destination="CEe-LQ-Kjj" id="sRD-l0-zRz"/>
                         <outlet property="btnEdit" destination="vy0-XQ-Hj8" id="g3h-CG-8X2"/>
                         <outlet property="collPreview" destination="pqJ-mw-ZGP" id="Fy4-yV-2gj"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Ki2-Ad-c1t" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="5238.9312977099235" y="795.77464788732402"/>
+            <point key="canvasLocation" x="5237.68115942029" y="795.53571428571422"/>
         </scene>
         <!--Video Edit View Controller-->
         <scene sceneID="Ud0-0p-HNU">

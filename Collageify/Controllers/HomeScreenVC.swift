@@ -28,16 +28,20 @@ class HomeScreenVC: UIViewController, GADFullScreenContentDelegate, GADBannerVie
     let group = DispatchGroup()
     var appOpenAd: GADAppOpenAd?
     var loadTime: Date?
-    
+    private var rewardAd: GADRewardedAd?
+    var adWasShown: Bool = false
+    var rewardAdid = ""
     
     override func viewWillAppear(_ animated: Bool) {
         Analytics.logEvent("HomeScreenVC_enter", parameters: [
             "params": "purchase_screen_enter"
         ])
+        loadRewardAd()
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        loadRewardAd()
         NotificationCenter.default.addObserver(self, selector: #selector(adDismissed), name: NSNotification.Name("AdDismissedNotification"), object: nil)
         InAppPurchase().verifySubscriptions([.autoRenewableForMonth, .autoRenewableForYear, .autoRenewableForLifeTime], completion: { isPurchased in
             isSubScription = isPurchased
@@ -74,7 +78,7 @@ class HomeScreenVC: UIViewController, GADFullScreenContentDelegate, GADBannerVie
                 self.present(navController, animated:true, completion: nil)
             }
         })
-        }
+    }
     //MARK:- Button Action Zone
     @IBAction func onTappedShareApp(_ sender: Any) {
         let textToShare = "Check out this awesome app!"
@@ -130,7 +134,7 @@ class HomeScreenVC: UIViewController, GADFullScreenContentDelegate, GADBannerVie
     
     @IBAction func btnActionReel(_ sender: Any) {
         openImagePickerView()
-//        self.openSpotifyController()
+        //        self.openSpotifyController()
     }
     
     func openImagePickerView() {
@@ -254,9 +258,11 @@ class HomeScreenVC: UIViewController, GADFullScreenContentDelegate, GADBannerVie
                             let alert = UIAlertController(title: "Your reel is ready", message: nil, preferredStyle: .alert)
                             let save = UIAlertAction(title: "Save", style: UIAlertAction.Style.default) { _ in
                                 self.saveReel(url, false)
+                                self.showRewardAd()
                             }
                             let preview = UIAlertAction(title: "Preview", style: UIAlertAction.Style.default, handler: { action in
                                 self.saveReel(url, true)
+                                self.showRewardAd()
                             })
                             alert.addAction(save)
                             alert.addAction(preview)
@@ -325,5 +331,31 @@ extension HomeScreenVC {
     
     func adDidDismissFullScreenContent(_ ad: GADFullScreenPresentingAd) {
         print("Ad did dismiss full screen content")
+    }
+}
+extension HomeScreenVC {
+    
+    func loadRewardAd() {
+        if let adUnitID1 = UserDefaults.standard.string(forKey: "REWARD_ID") {
+            print("REWARD_ID \(adUnitID1)")
+            GADRewardedAd.load(withAdUnitID: adUnitID1,
+                               request: GADRequest()) { ad, error in
+                if let error = error {
+                    print("Failed to load rewarded ad with error: \(error.localizedDescription)")
+                    return
+                }
+                self.rewardAd = ad
+                self.rewardAd?.fullScreenContentDelegate = self
+            }
+        }
+        
+    }
+    func showRewardAd() {
+        if let rewardAd = self.rewardAd {
+            rewardAd.present(fromRootViewController: self) {
+            }
+        } else {
+            print("Ad wasn't ready")
+        }
     }
 }

@@ -8,11 +8,14 @@
 
 import UIKit
 import AVFoundation
+import GoogleMobileAds // Import Google Mobile Ads
 
-class EditReelsViewController: UIViewController {
+
+class EditReelsViewController: UIViewController, GADBannerViewDelegate {
 
     @IBOutlet weak var collPreview: UICollectionView!
     @IBOutlet weak var btnEdit: UIButton!
+    @IBOutlet weak var bannerView: GADBannerView!
     
     var arrayAsset : [VideoData] = []
     var actionDone : ((_ data: [VideoData]) -> Void)?
@@ -20,7 +23,15 @@ class EditReelsViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        if IS_ADS_SHOW == true {
+            if let adUnitID1 = UserDefaults.standard.string(forKey: "BANNER_ID") {
+                bannerView.adUnitID = adUnitID1
+            }
+            
+            bannerView.rootViewController = self
+            bannerView.load(GADRequest())
+            bannerView.delegate = self
+        }
         collPreview.register(UINib(nibName: "EditPreviewCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "EditPreviewCollectionViewCell")
         collPreview.delegate = self
         collPreview.dataSource = self
@@ -50,6 +61,9 @@ class EditReelsViewController: UIViewController {
     @IBAction func actionNext(_ sender: Any) {
         self.navigationController?.popViewController(animated: true)
         actionDone?(arrayAsset)
+    }
+    func adViewDidReceiveAd(_ bannerView: GADBannerView) {
+        bannerView.isHidden = false
     }
 }
 

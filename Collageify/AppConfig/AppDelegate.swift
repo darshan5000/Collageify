@@ -19,6 +19,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GADFullScreenContentDeleg
         return true
     }
     
+    func applicationWillEnterForeground(_ application: UIApplication) {
+        loadAppOpenAdIfNeeded()
+    }
+    
     func setupIAP() {
         SwiftyStoreKit.completeTransactions(atomically: true) { purchases in
             for purchase in purchases {
@@ -119,6 +123,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GADFullScreenContentDeleg
     func saveAdShownTimestamp() {
         loadTime = Date()
     }
+    
     func adDidDismissFullScreenContent(_ ad: GADFullScreenPresentingAd) {
         NotificationCenter.default.post(name: NSNotification.Name("AdDismissedNotification"), object: nil)
     }
