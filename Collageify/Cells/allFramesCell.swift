@@ -12,6 +12,7 @@ class allFramesCell: UICollectionViewCell {
 
     //MARK:- Outlets
     
+    @IBOutlet weak var premiumIMG: UIImageView!
     @IBOutlet weak var imgFrame: UIImageView!
     @IBOutlet weak var btnFrames: UIButton!
     @IBOutlet weak var lblIndex: UILabel!

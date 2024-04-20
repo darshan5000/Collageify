@@ -84,14 +84,14 @@ class ALLShapeVC: UIViewController, UICollectionViewDelegate, UICollectionViewDa
                 //        vc.allImages = allImages
                 //        vc.objType = 1
                 //        self.navigationController?.pushViewController(vc, animated: true)
-                        
-                        let obj = self.storyboard!.instantiateViewController(withIdentifier: "CurrentPhotoVC") as! CurrentPhotoVC
-                        obj.objSelectiontype = 1
-                        obj.selectedDict = dict
-                        let navController = UINavigationController(rootViewController: obj)
-                        navController.navigationBar.isHidden = true
-                        navController.modalPresentationStyle = .overCurrentContext
-                        self.present(navController, animated:true, completion: nil)
+                
+                let obj = self.storyboard!.instantiateViewController(withIdentifier: "CurrentPhotoVC") as! CurrentPhotoVC
+                obj.objSelectiontype = 1
+                obj.selectedDict = dict
+                let navController = UINavigationController(rootViewController: obj)
+                navController.navigationBar.isHidden = true
+                navController.modalPresentationStyle = .overCurrentContext
+                self.present(navController, animated:true, completion: nil)
             }
         } else {
             let obj = self.storyboard!.instantiateViewController(withIdentifier: "CurrentPhotoVC") as! CurrentPhotoVC
@@ -155,13 +155,13 @@ extension ALLShapeVC {
     }
     func adDidDismissFullScreenContent(_ ad: GADFullScreenPresentingAd) {
         print("NAVIGATE_KARO")
-            let obj = self.storyboard!.instantiateViewController(withIdentifier: "CurrentPhotoVC") as! CurrentPhotoVC
-            obj.objSelectiontype = 1
+        let obj = self.storyboard!.instantiateViewController(withIdentifier: "CurrentPhotoVC") as! CurrentPhotoVC
+        obj.objSelectiontype = 1
         obj.selectedDict = frameDict ?? [:]
-            let navController = UINavigationController(rootViewController: obj)
-            navController.navigationBar.isHidden = true
-            navController.modalPresentationStyle = .overCurrentContext
-            self.present(navController, animated:true, completion: nil)
-
+        let navController = UINavigationController(rootViewController: obj)
+        navController.navigationBar.isHidden = true
+        navController.modalPresentationStyle = .overCurrentContext
+        self.present(navController, animated:true, completion: nil)
+        
     }
 }

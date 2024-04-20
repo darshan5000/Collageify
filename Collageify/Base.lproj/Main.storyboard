@@ -2,6 +2,7 @@
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="19529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="cnp-ZK-3X7">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
+        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19519"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
@@ -1536,7 +1537,7 @@
                                 <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                             </imageView>
                             <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="9" translatesAutoresizingMaskIntoConstraints="NO" id="Kb0-tL-vxX">
-                                <rect key="frame" x="20" y="727" width="374" height="100"/>
+                                <rect key="frame" x="20" y="726" width="374" height="100"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="rgi-xV-BpQ">
                                         <rect key="frame" x="0.0" y="0.0" width="118.5" height="100"/>
@@ -1669,8 +1670,15 @@
                                     <constraint firstAttribute="height" constant="100" id="xjZ-Y3-acU"/>
                                 </constraints>
                             </stackView>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="7Hx-fv-3Qi" customClass="GADBannerView">
+                                <rect key="frame" x="0.0" y="836" width="414" height="60"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="60" id="NZE-vg-w6s"/>
+                                </constraints>
+                            </view>
                             <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="9" translatesAutoresizingMaskIntoConstraints="NO" id="MQf-Lj-Oec">
-                                <rect key="frame" x="20" y="617" width="374" height="100"/>
+                                <rect key="frame" x="20" y="616" width="374" height="100"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="OsC-oO-IG7">
                                         <rect key="frame" x="0.0" y="0.0" width="118.5" height="100"/>
@@ -1805,7 +1813,7 @@
                                 </constraints>
                             </stackView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Collageify" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Vaf-aK-YaF">
-                                <rect key="frame" x="80" y="84" width="144.5" height="32"/>
+                                <rect key="frame" x="80" y="74" width="144.5" height="32"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="32" id="MZY-Uo-X2l"/>
                                 </constraints>
@@ -1814,10 +1822,10 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Blue Minimalist Aesthetic Mood Board Photo Collage Your Story" translatesAutoresizingMaskIntoConstraints="NO" id="ISK-xJ-Ukt">
-                                <rect key="frame" x="0.0" y="131" width="414" height="471"/>
+                                <rect key="frame" x="0.0" y="121" width="414" height="480"/>
                             </imageView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qQW-2e-hOo">
-                                <rect key="frame" x="344" y="77.5" width="50" height="50"/>
+                                <rect key="frame" x="344" y="67.5" width="50" height="50"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="50" id="iXk-hL-3sd"/>
                                     <constraint firstAttribute="height" constant="50" id="qup-1V-APM"/>
@@ -1829,7 +1837,7 @@
                                 </connections>
                             </button>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="1024" translatesAutoresizingMaskIntoConstraints="NO" id="zrZ-2K-4Np">
-                                <rect key="frame" x="20" y="77.5" width="50" height="50"/>
+                                <rect key="frame" x="20" y="67.5" width="50" height="50"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="50" id="59C-aQ-fBF"/>
                                     <constraint firstAttribute="height" constant="50" id="sIj-cq-tem"/>
@@ -1845,8 +1853,8 @@
                         <color key="backgroundColor" red="0.93031221630000005" green="0.9412619472" blue="0.94111657140000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="ISK-xJ-Ukt" firstAttribute="top" secondItem="Vaf-aK-YaF" secondAttribute="bottom" constant="15" id="2B1-CY-a4N"/>
-                            <constraint firstItem="zDA-y5-CMx" firstAttribute="bottom" secondItem="Kb0-tL-vxX" secondAttribute="bottom" constant="35" id="7oo-ni-JVS"/>
-                            <constraint firstItem="Vaf-aK-YaF" firstAttribute="top" secondItem="zDA-y5-CMx" secondAttribute="top" constant="40" id="Az0-mV-G7j"/>
+                            <constraint firstItem="Vaf-aK-YaF" firstAttribute="top" secondItem="zDA-y5-CMx" secondAttribute="top" constant="30" id="Az0-mV-G7j"/>
+                            <constraint firstAttribute="bottom" secondItem="7Hx-fv-3Qi" secondAttribute="bottom" id="B0t-hV-u3E"/>
                             <constraint firstItem="qQW-2e-hOo" firstAttribute="centerY" secondItem="Vaf-aK-YaF" secondAttribute="centerY" constant="2.5" id="BGW-0R-tgv"/>
                             <constraint firstItem="ALh-94-TmM" firstAttribute="top" secondItem="FSp-9b-W2k" secondAttribute="top" id="Bfp-Oa-pts"/>
                             <constraint firstItem="MQf-Lj-Oec" firstAttribute="top" secondItem="ISK-xJ-Ukt" secondAttribute="bottom" constant="15" id="Iuc-JB-iG7"/>
@@ -1858,12 +1866,15 @@
                             <constraint firstItem="ISK-xJ-Ukt" firstAttribute="trailing" secondItem="zDA-y5-CMx" secondAttribute="trailing" id="XmD-zb-vv4"/>
                             <constraint firstItem="ALh-94-TmM" firstAttribute="trailing" secondItem="zDA-y5-CMx" secondAttribute="trailing" id="aRb-7n-YlT"/>
                             <constraint firstItem="zDA-y5-CMx" firstAttribute="trailing" secondItem="Kb0-tL-vxX" secondAttribute="trailing" constant="20" id="bkJ-Hh-oFK"/>
+                            <constraint firstItem="7Hx-fv-3Qi" firstAttribute="leading" secondItem="zDA-y5-CMx" secondAttribute="leading" id="ejM-hO-yGL"/>
+                            <constraint firstItem="7Hx-fv-3Qi" firstAttribute="top" secondItem="Kb0-tL-vxX" secondAttribute="bottom" constant="10" id="h3N-Xo-dIA"/>
                             <constraint firstItem="Vaf-aK-YaF" firstAttribute="leading" secondItem="zrZ-2K-4Np" secondAttribute="trailing" constant="10" id="jIt-Mu-lsQ"/>
                             <constraint firstItem="ALh-94-TmM" firstAttribute="leading" secondItem="zDA-y5-CMx" secondAttribute="leading" id="l1w-69-S10"/>
                             <constraint firstItem="zrZ-2K-4Np" firstAttribute="centerY" secondItem="qQW-2e-hOo" secondAttribute="centerY" id="nnQ-1s-JLu"/>
                             <constraint firstItem="ISK-xJ-Ukt" firstAttribute="leading" secondItem="zDA-y5-CMx" secondAttribute="leading" id="pLG-9v-V2N"/>
                             <constraint firstItem="zDA-y5-CMx" firstAttribute="trailing" secondItem="qQW-2e-hOo" secondAttribute="trailing" constant="20" id="vmM-Lu-1dv"/>
                             <constraint firstAttribute="bottom" secondItem="ALh-94-TmM" secondAttribute="bottom" id="woz-Ti-Nie"/>
+                            <constraint firstAttribute="trailing" secondItem="7Hx-fv-3Qi" secondAttribute="trailing" id="xzf-8m-e5c"/>
                         </constraints>
                         <variation key="default">
                             <mask key="subviews">
@@ -1873,6 +1884,7 @@
                     </view>
                     <navigationItem key="navigationItem" id="ui5-XO-g04"/>
                     <connections>
+                        <outlet property="bannerView" destination="7Hx-fv-3Qi" id="txE-Ny-c9R"/>
                         <outlet property="btnEdit" destination="Wat-Cb-cq7" id="gXJ-Sm-NTD"/>
                         <outlet property="btnGrid" destination="aWL-kB-h5B" id="sID-VQ-cht"/>
                         <outlet property="btnMyAlbums" destination="OL0-GJ-TCY" id="s4m-JX-RJH"/>

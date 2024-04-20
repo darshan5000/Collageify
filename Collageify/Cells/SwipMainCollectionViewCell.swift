@@ -37,7 +37,9 @@ extension SwipMainCollectionViewCell: UICollectionViewDelegate, UICollectionView
         if (dict["isPremium"] ?? 0) == 1 {
             cell.imgFrame.tintColor = UIColor(red: 77.0/255.0, green: 171.0/255.0, blue: 252.0/255.0, alpha: 1.0)
             cell.viewBG.backgroundColor = UIColor(red: 77.0/255.0, green: 171.0/255.0, blue: 252.0/255.0, alpha: 0.1)
+            cell.premiumIMG.isHidden = false
         } else {
+            cell.premiumIMG.isHidden = true
             cell.imgFrame.tintColor = .white
             cell.viewBG.backgroundColor = .clear
         }

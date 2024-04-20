@@ -13,12 +13,13 @@ import Firebase
 import GoogleMobileAds
 import FirebaseRemoteConfig
 
-class HomeScreenVC: UIViewController, GADFullScreenContentDelegate {
+class HomeScreenVC: UIViewController, GADFullScreenContentDelegate, GADBannerViewDelegate {
     
     //MARK:- outlets
     @IBOutlet weak var btnMyAlbums: UIButton!
     @IBOutlet weak var btnGrid: UIButton!
     @IBOutlet weak var btnEdit: UIButton!
+    @IBOutlet weak var bannerView: GADBannerView!
     
     let engine = AVAudioEngine()
     var arrayAsset : [VideoData] = []
@@ -37,7 +38,7 @@ class HomeScreenVC: UIViewController, GADFullScreenContentDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        loadAppOpenAd()
+        NotificationCenter.default.addObserver(self, selector: #selector(adDismissed), name: NSNotification.Name("AdDismissedNotification"), object: nil)
         InAppPurchase().verifySubscriptions([.autoRenewableForMonth, .autoRenewableForYear, .autoRenewableForLifeTime], completion: { isPurchased in
             isSubScription = isPurchased
             userDefault.set(isSubScription, forKey: "isSubScription")
@@ -50,8 +51,30 @@ class HomeScreenVC: UIViewController, GADFullScreenContentDelegate {
                 self.present(navController, animated:true, completion: nil)
             }
         })
+        if IS_ADS_SHOW == true {
+            if let adUnitID1 = UserDefaults.standard.string(forKey: "BANNER_ID") {
+                bannerView.adUnitID = adUnitID1
+            }
+            
+            bannerView.rootViewController = self
+            bannerView.load(GADRequest())
+            bannerView.delegate = self
+        }
     }
-    
+    @objc func adDismissed() {
+        InAppPurchase().verifySubscriptions([.autoRenewableForMonth, .autoRenewableForYear, .autoRenewableForLifeTime], completion: { isPurchased in
+            isSubScription = isPurchased
+            userDefault.set(isSubScription, forKey: "isSubScription")
+            isSubScription = userDefault.bool(forKey: "isSubScription")
+            if isSubScription == false {
+                let obj : InAppPurchaseVC = self.storyboard?.instantiateViewController(withIdentifier: "InAppPurchaseVC") as! InAppPurchaseVC
+                let navController = UINavigationController(rootViewController: obj)
+                navController.navigationBar.isHidden = true
+                navController.modalPresentationStyle = .overCurrentContext
+                self.present(navController, animated:true, completion: nil)
+            }
+        })
+        }
     //MARK:- Button Action Zone
     @IBAction func onTappedShareApp(_ sender: Any) {
         let textToShare = "Check out this awesome app!"
@@ -129,7 +152,7 @@ class HomeScreenVC: UIViewController, GADFullScreenContentDelegate {
             self.index = 0
             self.allAssets = assets
             self.showProcessing(isShow: true)
-            getArrayAssets(indexx: 0, asset: assets[0])
+            self.getArrayAssets(indexx: 0, asset: assets[0])
         }
         present(picker, animated: true, completion: nil)
     }
@@ -290,29 +313,6 @@ class HomeScreenVC: UIViewController, GADFullScreenContentDelegate {
         })
     }
 }
-
-extension HomeScreenVC {
-    func showAppOpenAdIfAvailable() {
-        if let appOpenAd = self.appOpenAd, let loadTime = self.loadTime, Date().timeIntervalSince(loadTime) < 3600 {
-            appOpenAd.present(fromRootViewController: self)
-        } else {
-            print("Ad wasn't ready or expired")
-            loadAppOpenAd()
-        }
-    }
-    func loadAppOpenAd() {
-        let request = GADRequest()
-        GADAppOpenAd.load(withAdUnitID: "ca-app-pub-3940256099942544/5575463023", request: request, orientation: UIInterfaceOrientation.portrait, completionHandler: { (appOpenAd, error) in
-            if let error = error {
-                print("Failed to load app open ad:", error)
-                return
-            }
-            self.appOpenAd = appOpenAd
-            appOpenAd?.fullScreenContentDelegate = self
-        })
-    }
-}
-
 // MARK: - GADFullScreenContentDelegate
 extension HomeScreenVC {
     func adDidRecordImpression(_ ad: GADFullScreenPresentingAd) {
@@ -326,8 +326,4 @@ extension HomeScreenVC {
     func adDidDismissFullScreenContent(_ ad: GADFullScreenPresentingAd) {
         print("Ad did dismiss full screen content")
     }
-}
-
-extension HomeScreenVC {
-
 }
