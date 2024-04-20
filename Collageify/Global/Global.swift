@@ -21,7 +21,7 @@ var arrOfSingleMain = ["text", "stickers", "fx", "filter"]
 var arrOfFx = ["fxo_0", "fxo_1", "fxo_2", "fxo_3", "fxo_4", "fxo_5", "fxo_6", "fxo_7", "fxo_8", "fxo_9", "fxo_10", "fxo_11", "fxo_12", "fxo_13", "fxo_14", "fxo_15", "fxo_16", "fxo_17", "fxo_18"]
 
 //var arrOfStickersItems = ["couple_0", "feather", "heart","butterfly", "love", "bubble", "cool", "smile"]
-var arrOfStickersItems = ["oh", "couple_0", "feather","love" , "heart","butterfly", "bubble", "cool", "smile"]
+var arrOfStickersItems = ["love"]
 
 var arrOfFilter = ["Normal", "Chrome", "Fade", "Instant", "Mono", "Noir",  "Process", "Tonal", "Transfer" , "Tone", "Sepia", "Blur", "Exposure", "Vignette", "Red", "Sharpen", "Invert"]
 
@@ -31,6 +31,8 @@ var val = CGAffineTransform(scaleX: 1, y: 1)
 var value1 = CGAffineTransform(scaleX: -1, y: 1)
 var value2 = CGAffineTransform(scaleX: 1, y: -1)
 var value3 = CGAffineTransform(scaleX: -1, y: -1)
+
+var IS_ADS_SHOW: Bool = true
 
 func setView(view: UIView) {
     UIView.transition(with: view, duration: 0.5, options: .transitionCrossDissolve, animations: {

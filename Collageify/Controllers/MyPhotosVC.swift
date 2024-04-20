@@ -1,16 +1,26 @@
 import UIKit
+import Firebase
+import GoogleMobileAds // Import Google Mobile Ads
 
-class MyPhotosVC: UIViewController,UICollectionViewDelegate,UICollectionViewDataSource,UICollectionViewDelegateFlowLayout
+class MyPhotosVC: UIViewController,UICollectionViewDelegate,UICollectionViewDataSource,UICollectionViewDelegateFlowLayout, GADBannerViewDelegate
 {
    
     var arrOfAlbumList = NSArray()
     var objDelete = 0
-    
+    var bannerADsID = ""
     //MARK:- Outlet
     
     @IBOutlet weak var btnBack: UIButton!
     @IBOutlet weak var AlbumsCV: UICollectionView!
     @IBOutlet weak var lblAlert: UILabel!
+    @IBOutlet weak var bannerView: GADBannerView!
+
+    
+    override func viewWillAppear(_ animated: Bool) {
+        Analytics.logEvent("MyPhotosVC_enter", parameters: [
+            "params": "purchase_screen_enter"
+        ])
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -27,6 +37,15 @@ class MyPhotosVC: UIViewController,UICollectionViewDelegate,UICollectionViewData
             }else {
                 lblAlert.isHidden = true
             }
+        }
+        if IS_ADS_SHOW == true {
+        if let adUnitID1 = UserDefaults.standard.string(forKey: "BANNER_ID") {
+            bannerView.adUnitID = adUnitID1
+        }
+        
+        bannerView.rootViewController = self
+        bannerView.load(GADRequest())
+        bannerView.delegate = self
         }
     }
     
@@ -46,7 +65,9 @@ class MyPhotosVC: UIViewController,UICollectionViewDelegate,UICollectionViewData
             }
         }
     }
-    
+    func adViewDidReceiveAd(_ bannerView: GADBannerView) {
+        bannerView.isHidden = false
+    }
     //MARK:- Collection View Delegate Methods
     func numberOfSections(in collectionView: UICollectionView) -> Int {
         return 1

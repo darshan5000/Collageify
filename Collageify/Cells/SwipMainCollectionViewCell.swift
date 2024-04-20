@@ -1,12 +1,5 @@
-//
-//  SwipMainCollectionViewCell.swift
-//  CollageMaker
-//
-//  Created by M!L@N on 14/03/24.
-//  Copyright © 2024 iMac. All rights reserved.
-//
-
 import UIKit
+import Firebase
 
 class SwipMainCollectionViewCell: UICollectionViewCell {
 
@@ -14,10 +7,10 @@ class SwipMainCollectionViewCell: UICollectionViewCell {
     
     var framesJson = [[String : Int]]()
     var selectedImage : (([String : Int]) -> Void)?
+
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        
         swipeCV.delegate = self
         swipeCV.dataSource = self
         swipeCV.register(UINib(nibName: "allFramesCell", bundle: nil), forCellWithReuseIdentifier: "allFramesCell")

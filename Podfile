@@ -12,6 +12,11 @@ target 'Collageify' do
   pod 'ZoomImageView'
   pod 'DKImagePickerController’
   pod 'Firebase/Analytics'
+  pod 'SwiftyStoreKit'
+  pod 'Firebase/RemoteConfig'
+
+  pod 'Google-Mobile-Ads-SDK'
+
 
   # Pods for Collageify
 

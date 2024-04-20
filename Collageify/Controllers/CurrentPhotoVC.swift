@@ -1,5 +1,6 @@
 import UIKit
 import Photos
+import Firebase
 
 class CurrentPhotoVC: UIViewController,OpalImagePickerControllerDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate  {
 
@@ -23,6 +24,12 @@ class CurrentPhotoVC: UIViewController,OpalImagePickerControllerDelegate,UIImage
 //        picker.delegate = self
         btnDismiss.backgroundColor = UIColor.clear
         btnDismiss.alpha = 0.5
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        Analytics.logEvent("CurrentPhotoVC_enter", parameters: [
+            "params": "purchase_screen_enter"
+        ])
     }
     
     //MARK:- Button Action Zone

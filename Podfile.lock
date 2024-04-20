@@ -56,6 +56,11 @@ PODS:
     - FirebaseAnalytics (~> 8.14.0)
   - Firebase/CoreOnly (8.14.0):
     - FirebaseCore (= 8.14.0)
+  - Firebase/RemoteConfig (8.14.0):
+    - Firebase/CoreOnly
+    - FirebaseRemoteConfig (~> 8.14.0)
+  - FirebaseABTesting (8.15.0):
+    - FirebaseCore (~> 8.0)
   - FirebaseAnalytics (8.14.0):
     - FirebaseAnalytics/AdIdSupport (= 8.14.0)
     - FirebaseCore (~> 8.0)
@@ -88,6 +93,15 @@ PODS:
     - GoogleUtilities/Environment (~> 7.7)
     - GoogleUtilities/UserDefaults (~> 7.7)
     - PromisesObjC (< 3.0, >= 1.2)
+  - FirebaseRemoteConfig (8.14.0):
+    - FirebaseABTesting (~> 8.0)
+    - FirebaseCore (~> 8.0)
+    - FirebaseInstallations (~> 8.0)
+    - GoogleUtilities/Environment (~> 7.7)
+    - "GoogleUtilities/NSData+zlib (~> 7.7)"
+  - Google-Mobile-Ads-SDK (9.4.0):
+    - GoogleAppMeasurement (< 10.0, >= 7.0)
+    - GoogleUserMessagingPlatform (>= 1.1)
   - GoogleAppMeasurement (8.14.0):
     - GoogleAppMeasurement/AdIdSupport (= 8.14.0)
     - GoogleUtilities/AppDelegateSwizzler (~> 7.7)
@@ -112,6 +126,7 @@ PODS:
     - GoogleUtilities/Environment (~> 7.2)
     - nanopb (~> 2.30908.0)
     - PromisesObjC (< 3.0, >= 1.2)
+  - GoogleUserMessagingPlatform (2.0.0)
   - GoogleUtilities/AppDelegateSwizzler (7.7.0):
     - GoogleUtilities/Environment
     - GoogleUtilities/Logger
@@ -149,15 +164,19 @@ PODS:
     - SVProgressHUD/Core (= 2.3.1)
   - SVProgressHUD/Core (2.3.1)
   - SwiftyGif (5.4.5)
+  - SwiftyStoreKit (0.16.1)
   - ZoomImageView (0.6.0)
 
 DEPENDENCIES:
   - DKImagePickerController
   - Firebase/Analytics
+  - Firebase/RemoteConfig
+  - Google-Mobile-Ads-SDK
   - IGColorPicker
   - ImageScrollView
   - IQKeyboardManagerSwift
   - SVProgressHUD
+  - SwiftyStoreKit
   - ZoomImageView
 
 SPEC REPOS:
@@ -167,12 +186,16 @@ SPEC REPOS:
     - DKImagePickerController
     - DKPhotoGallery
     - Firebase
+    - FirebaseABTesting
     - FirebaseAnalytics
     - FirebaseCore
     - FirebaseCoreDiagnostics
     - FirebaseInstallations
+    - FirebaseRemoteConfig
+    - Google-Mobile-Ads-SDK
     - GoogleAppMeasurement
     - GoogleDataTransport
+    - GoogleUserMessagingPlatform
     - GoogleUtilities
     - IGColorPicker
     - ImageScrollView
@@ -183,6 +206,7 @@ SPEC REPOS:
     - SDWebImage
     - SVProgressHUD
     - SwiftyGif
+    - SwiftyStoreKit
     - ZoomImageView
 
 SPEC CHECKSUMS:
@@ -191,12 +215,16 @@ SPEC CHECKSUMS:
   DKImagePickerController: b512c28220a2b8ac7419f21c491fc8534b7601ac
   DKPhotoGallery: fdfad5125a9fdda9cc57df834d49df790dbb4179
   Firebase: 7e8fe528c161b9271d365217a74c16aaf834578e
+  FirebaseABTesting: 10cbce8db9985ae2e3847ea44e9947dd18f94e10
   FirebaseAnalytics: 2fc3876e2eb347673ad2f35e249ae7b15d6c88f5
   FirebaseCore: b84a44ee7ba999e0f9f76d198a9c7f60a797b848
   FirebaseCoreDiagnostics: fd0c8490f34287229c1d6c103d3a55f81ec85712
   FirebaseInstallations: 7d1d967a307c12f1aadd76844fc321cef699b1ce
+  FirebaseRemoteConfig: a5d9188d8f57f602636f111eca6460ebe32b9b71
+  Google-Mobile-Ads-SDK: 5a1d44987c82e441811ecaa5ae824e100ea819d7
   GoogleAppMeasurement: 71156240babd3cc6ced03e0d54816f01a880c730
   GoogleDataTransport: 629c20a4d363167143f30ea78320d5a7eb8bd940
+  GoogleUserMessagingPlatform: ab890ce5f6620f293a21b6bdd82e416a2c73aeca
   GoogleUtilities: e0913149f6b0625b553d70dae12b49fc62914fd1
   IGColorPicker: f6034f8629aa90cce308a76ecc0fdf2afed0bf34
   ImageScrollView: d3ce8371e0d44299b2b638410db45387e18aa83f
@@ -207,8 +235,9 @@ SPEC CHECKSUMS:
   SDWebImage: 72f86271a6f3139cc7e4a89220946489d4b9a866
   SVProgressHUD: 4837c74bdfe2e51e8821c397825996a8d7de6e22
   SwiftyGif: 706c60cf65fa2bc5ee0313beece843c8eb8194d4
+  SwiftyStoreKit: 6b9c08810269f030586dac1fae8e75871a82e84a
   ZoomImageView: 2a88d0c10ad30b9a06c8f5660d51623fb32beed5
 
-PODFILE CHECKSUM: b8a03cd0c6a269189c8eb27b24f28eb671b51c53
+PODFILE CHECKSUM: 8e94f633c2844b86972e95f183af761a300d4144
 
 COCOAPODS: 1.11.2

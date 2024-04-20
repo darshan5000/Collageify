@@ -23,6 +23,8 @@ struct TextData {
     var textFrame = CGRect(x: 0, y: 0, width: 500, height: 500)
 }
 
+var audioUrl : URL?
+
 class VideoManager {
     static let shared = VideoManager()
 
@@ -32,7 +34,7 @@ class VideoManager {
     
     typealias Completion = (URL?, Error?) -> Void
     
-    func makeVideoFrom(data:[VideoData], audioURL: URL, completion:@escaping Completion) -> Void {
+    func makeVideoFrom(data:[VideoData], completion:@escaping Completion) -> Void {
         
         var insertTime = CMTime.zero
         var arrayLayerInstructions:[AVMutableVideoCompositionLayerInstruction] = []
@@ -52,14 +54,17 @@ class VideoManager {
             return
         }
         
-        // Silence sound (in case video has no sound track)
-//        guard let silenceURL = Bundle.main.url(forResource: "sample", withExtension: "mp3") else {
-//            print("Missing resource")
-//            completion(nil, nil)
-//            return
-//        }
+        if audioUrl == nil {
+            // Silence sound (in case video has no sound track)
+            guard let silenceURL = Bundle.main.url(forResource: "silence", withExtension: "mp3") else {
+                print("Missing resource")
+                completion(nil, nil)
+                return
+            }
+            audioUrl = silenceURL
+        }
         
-        let silenceAsset = AVAsset(url: audioURL)
+        let silenceAsset = AVAsset(url: audioUrl!)
         let silenceSoundTrack = silenceAsset.tracks(withMediaType: AVMediaType.audio).first
         
         // Init composition
@@ -229,6 +234,7 @@ class VideoManager {
         // Do export
         exporter?.exportAsynchronously(completionHandler: {
             DispatchQueue.main.async {
+                audioUrl = nil
                 self.exportDidFinish(exporter: exporter, videoURL: exportURL, completion: completion)
             }
         })

@@ -2,7 +2,6 @@
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="19529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
-        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19519"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -29,12 +28,21 @@
                             <button opaque="NO" tag="15" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Tx9-Z1-3Ic">
                                 <rect key="frame" x="5" y="5" width="70" height="70"/>
                             </button>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="9g5-aQ-XvA">
+                                <rect key="frame" x="65" y="0.0" width="15" height="15"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="15" id="liD-Og-MCN"/>
+                                    <constraint firstAttribute="width" constant="15" id="uHU-gC-Z8C"/>
+                                </constraints>
+                            </imageView>
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
+                            <constraint firstAttribute="trailing" secondItem="9g5-aQ-XvA" secondAttribute="trailing" id="3AV-lu-56D"/>
                             <constraint firstAttribute="trailing" secondItem="lfz-1i-bgC" secondAttribute="trailing" constant="5" id="54g-Tu-1uF"/>
                             <constraint firstAttribute="bottom" secondItem="pQ6-1m-Rvk" secondAttribute="bottom" constant="5" id="DME-de-sTd"/>
                             <constraint firstItem="Tx9-Z1-3Ic" firstAttribute="leading" secondItem="ZLb-vH-c76" secondAttribute="leading" constant="5" id="PjG-mj-2MU"/>
+                            <constraint firstItem="9g5-aQ-XvA" firstAttribute="top" secondItem="ZLb-vH-c76" secondAttribute="top" id="QDP-9h-Zzg"/>
                             <constraint firstItem="lfz-1i-bgC" firstAttribute="top" secondItem="ZLb-vH-c76" secondAttribute="top" constant="5" id="TgI-rk-Eun"/>
                             <constraint firstItem="pQ6-1m-Rvk" firstAttribute="top" secondItem="ZLb-vH-c76" secondAttribute="top" constant="5" id="VLT-5s-Shk"/>
                             <constraint firstItem="pQ6-1m-Rvk" firstAttribute="leading" secondItem="ZLb-vH-c76" secondAttribute="leading" constant="5" id="fVB-dE-LRv"/>
@@ -60,7 +68,7 @@
                 <outlet property="imgCommon" destination="lfz-1i-bgC" id="sfu-Gj-3Sv"/>
                 <outlet property="imgFrame" destination="pQ6-1m-Rvk" id="d8N-VW-IYx"/>
             </connections>
-            <point key="canvasLocation" x="132" y="69"/>
+            <point key="canvasLocation" x="131.8840579710145" y="68.303571428571431"/>
         </collectionViewCell>
     </objects>
 </document>

@@ -1,4 +1,5 @@
 import UIKit
+import Firebase
 
 class CurrentTextVC: UIViewController,UITextFieldDelegate
 {
@@ -13,6 +14,12 @@ class CurrentTextVC: UIViewController,UITextFieldDelegate
     @IBOutlet weak var txtEdit: UITextField!
     @IBOutlet weak var btnOk: UIButton!
     @IBOutlet weak var btnCancel: UIButton!
+    
+    override func viewWillAppear(_ animated: Bool) {
+        Analytics.logEvent("CurrentTextVC_enter", parameters: [
+            "params": "purchase_screen_enter"
+        ])
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()

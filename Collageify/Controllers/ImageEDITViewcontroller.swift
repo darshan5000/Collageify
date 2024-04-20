@@ -4,6 +4,7 @@ import CoreGraphics
 import IGColorPicker
 import ImageScrollView
 import SVProgressHUD
+import Firebase
 import ZoomImageView
 
 class ImageEDITViewcontroller: UIViewController,UICollectionViewDelegate,UICollectionViewDataSource,UICollectionViewDelegateFlowLayout,StickerViewDelegate,ColorPickerViewDelegate,ColorPickerViewDelegateFlowLayout,UIImagePickerControllerDelegate,UINavigationControllerDelegate,UITableViewDelegate,UITableViewDataSource {
@@ -311,6 +312,9 @@ class ImageEDITViewcontroller: UIViewController,UICollectionViewDelegate,UIColle
         scroll.zoomMode = .fill
     }
     override func viewWillAppear(_ animated: Bool) {
+        Analytics.logEvent("ImageEDITViewcontroller_enter", parameters: [
+            "params": "purchase_screen_enter"
+        ])
         if objPickImage == 0{
             for index in 0..<arrOfTotalImg.count{
                 let img = arrOfTotalImg[index]

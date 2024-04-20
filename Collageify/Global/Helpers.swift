@@ -34,7 +34,7 @@ extension UIView {
     }
     
     @IBInspectable
-    var borderWidth: CGFloat {
+    var borderWidthh: CGFloat {
         get {
             return layer.borderWidth
         }

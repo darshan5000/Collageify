@@ -1,4 +1,5 @@
 import UIKit
+import Firebase
 
 class ShareVC: UIViewController {
 
@@ -29,6 +30,12 @@ class ShareVC: UIViewController {
             btnSave.isHidden = false
             btnDelete.isHidden = false
         }
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        Analytics.logEvent("ShareVC_enter", parameters: [
+            "params": "purchase_screen_enter"
+        ])
     }
     
     @IBAction func btnBackAction(_ sender: UIButton) {

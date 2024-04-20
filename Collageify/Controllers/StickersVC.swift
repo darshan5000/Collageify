@@ -1,4 +1,5 @@
 import UIKit
+import Firebase
 
 class StickersVC: UIViewController,UICollectionViewDelegate,UICollectionViewDataSource,UICollectionViewDelegateFlowLayout{
     
@@ -30,6 +31,11 @@ class StickersVC: UIViewController,UICollectionViewDelegate,UICollectionViewData
         objStickers = 1
     }
 
+    override func viewWillAppear(_ animated: Bool) {
+        Analytics.logEvent("StickersVC_enter", parameters: [
+            "params": "purchase_screen_enter"
+        ])
+    }
     
     //MARK:- Action Button Zone
     @IBAction func btnBackAction(_ sender: Any) {

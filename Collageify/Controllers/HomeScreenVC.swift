@@ -6,26 +6,52 @@ import SVProgressHUD
 import AVFoundation
 import MediaPlayer
 import Photos
+import MediaPlayer
+import Foundation
+import CryptoKit
+import Firebase
+import GoogleMobileAds
+import FirebaseRemoteConfig
 
-class HomeScreenVC: UIViewController {
-
+class HomeScreenVC: UIViewController, GADFullScreenContentDelegate {
+    
     //MARK:- outlets
     @IBOutlet weak var btnMyAlbums: UIButton!
     @IBOutlet weak var btnGrid: UIButton!
     @IBOutlet weak var btnEdit: UIButton!
     
     let engine = AVAudioEngine()
-    var audioUrl : URL?
     var arrayAsset : [VideoData] = []
     var allAssets : [DKAsset] = []
     var index = 0
     let group = DispatchGroup()
+    var appOpenAd: GADAppOpenAd?
+    var loadTime: Date?
+    
+    
+    override func viewWillAppear(_ animated: Bool) {
+        Analytics.logEvent("HomeScreenVC_enter", parameters: [
+            "params": "purchase_screen_enter"
+        ])
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        loadAppOpenAd()
+        InAppPurchase().verifySubscriptions([.autoRenewableForMonth, .autoRenewableForYear, .autoRenewableForLifeTime], completion: { isPurchased in
+            isSubScription = isPurchased
+            userDefault.set(isSubScription, forKey: "isSubScription")
+            isSubScription = userDefault.bool(forKey: "isSubScription")
+            if isSubScription == false {
+                let obj : InAppPurchaseVC = self.storyboard?.instantiateViewController(withIdentifier: "InAppPurchaseVC") as! InAppPurchaseVC
+                let navController = UINavigationController(rootViewController: obj)
+                navController.navigationBar.isHidden = true
+                navController.modalPresentationStyle = .overCurrentContext
+                self.present(navController, animated:true, completion: nil)
+            }
+        })
     }
-
+    
     //MARK:- Button Action Zone
     @IBAction func onTappedShareApp(_ sender: Any) {
         let textToShare = "Check out this awesome app!"
@@ -63,7 +89,7 @@ class HomeScreenVC: UIViewController {
         let obj : ALLShapeVC = self.storyboard?.instantiateViewController(withIdentifier: "LoadShapesVC") as! ALLShapeVC
         self.navigationController?.pushViewController(obj, animated: true)
     }
-  
+    
     @IBAction func btnEditAction(_ sender: Any) {
         let obj = self.storyboard!.instantiateViewController(withIdentifier: "PresentPhotoVC") as! CurrentPhotoVC
         obj.objSelectiontype = 2
@@ -80,7 +106,8 @@ class HomeScreenVC: UIViewController {
     }
     
     @IBAction func btnActionReel(_ sender: Any) {
-        openAppleMusicLibrary()
+        openImagePickerView()
+//        self.openSpotifyController()
     }
     
     func openImagePickerView() {
@@ -102,19 +129,20 @@ class HomeScreenVC: UIViewController {
             self.index = 0
             self.allAssets = assets
             self.showProcessing(isShow: true)
-            self.getArrayAssets(indexx: 0, asset: assets[0])
+            getArrayAssets(indexx: 0, asset: assets[0])
         }
         present(picker, animated: true, completion: nil)
     }
     
-    func openAppleMusicLibrary() {
-        let mediaPicker = MPMediaPickerController(mediaTypes: .music)
-        mediaPicker.allowsPickingMultipleItems = false
-        mediaPicker.showsItemsWithProtectedAssets = false // These items usually cannot be played back
-        mediaPicker.showsCloudItems = false // MPMediaItems stored in the cloud don't have an assetURL
-        mediaPicker.delegate = self
-        mediaPicker.prompt = "Pick a music"
-        present(mediaPicker, animated: true, completion: nil)
+    func openSpotifyController() {
+        let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
+        let vc = storyBoard.instantiateViewController(withIdentifier: "SongListViewController") as! SongListViewController
+        vc.selectedURL = {
+            self.showProcessing(isShow: true)
+            self.mergeVideosAndImages(arrayData: self.arrayAsset)
+        }
+        vc.modalPresentationStyle = .fullScreen
+        self.present(vc, animated: true)
     }
     
     func getArrayAssets(indexx: Int, asset: DKAsset) {
@@ -154,7 +182,37 @@ class HomeScreenVC: UIViewController {
     
     func mergeProccess() {
         if self.index == self.allAssets.count {
-            self.mergeVideosAndImages(arrayData: self.arrayAsset)
+            self.showProcessing(isShow: false)
+            DispatchQueue.main.async {
+                let obj : EditReelsViewController = self.storyboard?.instantiateViewController(withIdentifier: "EditReelsViewController") as! EditReelsViewController
+                obj.arrayAsset = self.arrayAsset
+                obj.actionDone = { array in
+                    let alert = UIAlertController(title: "Do you want to add music on reel", message: nil, preferredStyle: .alert)
+                    let save = UIAlertAction(title: "Add", style: UIAlertAction.Style.default) { _ in
+                        if AuthManager.shared.isSignedIn {
+                            self.openSpotifyController()
+                        } else {
+                            let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
+                            let vc = storyBoard.instantiateViewController(withIdentifier: "SpotifySignInViewController") as! SpotifySignInViewController
+                            vc.isSignInSuccess = {
+                                self.dismiss(animated: true) {
+                                    self.openSpotifyController()
+                                }
+                            }
+                            vc.modalPresentationStyle = .fullScreen
+                            self.present(vc, animated: true)
+                        }
+                    }
+                    let preview = UIAlertAction(title: "Create Reel", style: UIAlertAction.Style.default, handler: { action in
+                        self.showProcessing(isShow: true)
+                        self.mergeVideosAndImages(arrayData: array)
+                    })
+                    alert.addAction(save)
+                    alert.addAction(preview)
+                    self.present(alert, animated: true, completion: nil)
+                }
+                self.navigationController?.pushViewController(obj, animated: true)
+            }
         } else {
             self.getArrayAssets(indexx: self.index, asset: self.allAssets[self.index])
         }
@@ -162,33 +220,54 @@ class HomeScreenVC: UIViewController {
     
     private func mergeVideosAndImages(arrayData: [VideoData]) {
         DispatchQueue.global().async {
-            VideoManager.shared.makeVideoFrom(data: arrayData, audioURL: self.audioUrl!, completion: {[weak self] (outputURL, error) in
+            VideoManager.shared.makeVideoFrom(data: arrayData, completion: {[weak self] (outputURL, error) in
                 guard let `self` = self else { return }
+                self.showProcessing(isShow: false)
+                if let error = error {
+                    print("Error:\(error.localizedDescription)")
+                } else if let url = outputURL {
                     DispatchQueue.main.async {
-                    self.showProcessing(isShow: false)
-                    if let error = error {
-                        print("Error:\(error.localizedDescription)")
-                    } else if let url = outputURL {
-                        DispatchQueue.main.async {
-                            PHPhotoLibrary.shared().performChanges({ PHAssetChangeRequest.creationRequestForAssetFromVideo(atFileURL: url)
-                            }) { saved, error in
-                                if saved {
-                                    let fetchOptions = PHFetchOptions()
-                                    fetchOptions.sortDescriptors = [NSSortDescriptor(key: "creationDate", ascending: true)]
-                                    let fetchResult = PHAsset.fetchAssets(with: .video, options: fetchOptions).lastObject
-                                    PHImageManager().requestAVAsset(forVideo: fetchResult!, options: nil, resultHandler: { (avurlAsset, audioMix, dict) in
-                                        let newObj = avurlAsset as! AVURLAsset
-                                        print(newObj.url)
-                                        DispatchQueue.main.async {
-                                            self.openPreviewScreen(url)
-                                        }
-                                    })
-                                }
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                            let alert = UIAlertController(title: "Your reel is ready", message: nil, preferredStyle: .alert)
+                            let save = UIAlertAction(title: "Save", style: UIAlertAction.Style.default) { _ in
+                                self.saveReel(url, false)
                             }
+                            let preview = UIAlertAction(title: "Preview", style: UIAlertAction.Style.default, handler: { action in
+                                self.saveReel(url, true)
+                            })
+                            alert.addAction(save)
+                            alert.addAction(preview)
+                            self.present(alert, animated: true, completion: nil)
                         }
                     }
                 }
             })
+        }
+    }
+    
+    func saveReel(_ url: URL!, _ isPreview : Bool) {
+        DispatchQueue.main.async {
+            PHPhotoLibrary.shared().performChanges({ PHAssetChangeRequest.creationRequestForAssetFromVideo(atFileURL: url)
+            }) { saved, error in
+                if saved {
+                    let fetchOptions = PHFetchOptions()
+                    fetchOptions.sortDescriptors = [NSSortDescriptor(key: "creationDate", ascending: true)]
+                    let fetchResult = PHAsset.fetchAssets(with: .video, options: fetchOptions).lastObject
+                    PHImageManager().requestAVAsset(forVideo: fetchResult!, options: nil, resultHandler: { (avurlAsset, audioMix, dict) in
+                        let newObj = avurlAsset as! AVURLAsset
+                        print(newObj.url)
+                        DispatchQueue.main.async {
+                            if isPreview {
+                                self.openPreviewScreen(url)
+                            } else {
+                                let alert = UIAlertController(title: "Reel downloaded", message: nil, preferredStyle: UIAlertController.Style.alert)
+                                alert.addAction(UIAlertAction(title: "Okay", style: UIAlertAction.Style.default, handler: nil))
+                                self.present(alert, animated: true, completion: nil)
+                            }
+                        }
+                    })
+                }
+            }
         }
     }
     
@@ -212,43 +291,43 @@ class HomeScreenVC: UIViewController {
     }
 }
 
-extension HomeScreenVC: MPMediaPickerControllerDelegate {
-    
-    func mediaPicker(_ mediaPicker: MPMediaPickerController, didPickMediaItems mediaItemCollection: MPMediaItemCollection) {
-        guard let item = mediaItemCollection.items.first else {
-            print("no item")
-            return
-        }
-        print("picking \(item.title!)")
-        guard let url = item.assetURL else {
-            return print("no url")
-        }
-        
-        dismiss(animated: true) { [weak self] in
-            self?.audioUrl = url
-            self?.openImagePickerView()
+extension HomeScreenVC {
+    func showAppOpenAdIfAvailable() {
+        if let appOpenAd = self.appOpenAd, let loadTime = self.loadTime, Date().timeIntervalSince(loadTime) < 3600 {
+            appOpenAd.present(fromRootViewController: self)
+        } else {
+            print("Ad wasn't ready or expired")
+            loadAppOpenAd()
         }
     }
-    
-    func mediaPickerDidCancel(_ mediaPicker: MPMediaPickerController) {
-        dismiss(animated: true, completion: nil)
+    func loadAppOpenAd() {
+        let request = GADRequest()
+        GADAppOpenAd.load(withAdUnitID: "ca-app-pub-3940256099942544/5575463023", request: request, orientation: UIInterfaceOrientation.portrait, completionHandler: { (appOpenAd, error) in
+            if let error = error {
+                print("Failed to load app open ad:", error)
+                return
+            }
+            self.appOpenAd = appOpenAd
+            appOpenAd?.fullScreenContentDelegate = self
+        })
+    }
+}
+
+// MARK: - GADFullScreenContentDelegate
+extension HomeScreenVC {
+    func adDidRecordImpression(_ ad: GADFullScreenPresentingAd) {
+        print("Ad did record impression")
     }
     
-    func startEngine(playFileAt: URL) {
-        do {
-            try AVAudioSession.sharedInstance().setCategory(.playback)
-            
-            let avAudioFile = try AVAudioFile(forReading: playFileAt)
-            let player = AVAudioPlayerNode()
-            
-            engine.attach(player)
-            engine.connect(player, to: engine.mainMixerNode, format: avAudioFile.processingFormat)
-            
-            try engine.start()
-            player.scheduleFile(avAudioFile, at: nil, completionHandler: nil)
-            player.play()
-        } catch {
-            assertionFailure(String(describing: error))
-        }
+    func ad(_ ad: GADFullScreenPresentingAd, didFailToPresentFullScreenContentWithError error: Error) {
+        print("Ad failed to present full screen content:", error)
     }
+    
+    func adDidDismissFullScreenContent(_ ad: GADFullScreenPresentingAd) {
+        print("Ad did dismiss full screen content")
+    }
+}
+
+extension HomeScreenVC {
+
 }

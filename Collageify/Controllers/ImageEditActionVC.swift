@@ -5,6 +5,7 @@ import CoreGraphics
 import IGColorPicker
 import ImageScrollView
 import SVProgressHUD
+import Firebase
 
 enum ShapeType {
     case point(CGPoint, [CGFloat])
@@ -40,7 +41,7 @@ struct ViewStyle {
 class ImageEditActionVC: UIViewController  {
     
     private var padding: CGFloat = 3
-    private let cornerRadius: CGFloat = 3
+    private let cornerRadius: CGFloat = 10
     var selectedDict = [String : Int]()
     var objPickIndex = 0
     var objType = 0
@@ -136,6 +137,12 @@ class ImageEditActionVC: UIViewController  {
     let s5: CGFloat = 1/4.7
     let s6: CGFloat = 1/1.27
     var rect = CGRect()
+    
+    override func viewWillAppear(_ animated: Bool) {
+        Analytics.logEvent("ImageEditActionVC_enter", parameters: [
+            "params": "purchase_screen_enter"
+        ])
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -5593,7 +5600,7 @@ class ImageEditActionVC: UIViewController  {
             img.zoomMode = .fill
         }
         img.tag = index
-        let tap = UITapGestureRecognizer(target: self, action: #selector(handleTapImage(_:)))
+        let tap = UITapGestureRecognizer(target: self, action: #selector(self.handleTapImage(_:)))
         img.addGestureRecognizer(tap)
         img.isUserInteractionEnabled = true
         img.clipsToBounds  = true
@@ -5766,7 +5773,7 @@ class ImageEditActionVC: UIViewController  {
                         v.cornerRadius = 8
                         
                         img.borderColor = UIColor.white
-                        img.borderWidth = 2
+                        img.borderWidthh = 2
                         img.cornerRadius = 13
                     }
                 }
