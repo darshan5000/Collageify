@@ -10,6 +10,9 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         InAppPurchase().verifySubscriptions([.autoRenewableForMonth, .autoRenewableForYear], completion: { isPurchased in
             isSubScription = isPurchased
             userDefault.set(true, forKey: "isSubScription")
+            if isSubScription ==  true {
+                IS_ADS_SHOW = false
+            }
             isSubScription = userDefault.bool(forKey: "isSubScription")
         })
     }

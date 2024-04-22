@@ -363,6 +363,7 @@
 		7D41BEFD2BC1200400382D1A /* SelectionButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SelectionButton.m; sourceTree = "<group>"; };
 		7DB9CD382BCBA3B30072BE43 /* InAppPurchaseVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InAppPurchaseVC.swift; sourceTree = "<group>"; };
 		7DDDDA602BC44FE500EB49BA /* ImageEditActionVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageEditActionVC.swift; sourceTree = "<group>"; };
+		7DE5EC4B2BD6C770009ABF0B /* Collageify.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Collageify.entitlements; sourceTree = "<group>"; };
 		AFD3EA167ACA5AC7213586EC /* Pods-Collageify.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Collageify.debug.xcconfig"; path = "Target Support Files/Pods-Collageify/Pods-Collageify.debug.xcconfig"; sourceTree = "<group>"; };
 		B5B0D6BDDBC0055D9429E8B8 /* Pods_Collageify.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Collageify.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -618,6 +619,7 @@
 		7D41BC5B2BC114E700382D1A /* Collageify */ = {
 			isa = PBXGroup;
 			children = (
+				7DE5EC4B2BD6C770009ABF0B /* Collageify.entitlements */,
 				042723AC2BD2FF3700BF9594 /* Global */,
 				7D41BF022BC1208A00382D1A /* AppConfig */,
 				7D41BE5C2BC11CBF00382D1A /* Cells */,
@@ -1264,6 +1266,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = Collageify/Collageify.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 4;
 				DEVELOPMENT_TEAM = 586SFB98D7;
@@ -1305,6 +1308,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = Collageify/Collageify.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 4;
 				DEVELOPMENT_TEAM = 586SFB98D7;

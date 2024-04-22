@@ -10,10 +10,13 @@ import UIKit
 import SVProgressHUD
 import AVFoundation
 import SDWebImage
+import GoogleMobileAds // Import Google Mobile Ads
 
-class SongListViewController: UIViewController {
+
+class SongListViewController: UIViewController, GADBannerViewDelegate {
 
     @IBOutlet weak var tblSongs: UITableView!
+    @IBOutlet weak var bannerView: GADBannerView!
     
     var recommendations: RecommendationsModel?
     let group = DispatchGroup()
@@ -27,7 +30,15 @@ class SongListViewController: UIViewController {
         group.enter()
         tblSongs.delegate = self
         tblSongs.dataSource = self
+        if IS_ADS_SHOW == true {
+        if let adUnitID1 = UserDefaults.standard.string(forKey: "BANNER_ID") {
+            bannerView.adUnitID = adUnitID1
+        }
         
+        bannerView.rootViewController = self
+        bannerView.load(GADRequest())
+        bannerView.delegate = self
+        }
         DispatchQueue.main.async {
             SVProgressHUD.show()
             SpotifyRepository.shared.getRecommedationGenre { result in

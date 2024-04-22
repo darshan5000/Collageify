@@ -12,6 +12,8 @@ import CryptoKit
 import Firebase
 import GoogleMobileAds
 import FirebaseRemoteConfig
+import Security
+
 
 class HomeScreenVC: UIViewController, GADFullScreenContentDelegate, GADBannerViewDelegate {
     
@@ -42,6 +44,9 @@ class HomeScreenVC: UIViewController, GADFullScreenContentDelegate, GADBannerVie
     override func viewDidLoad() {
         super.viewDidLoad()
         loadRewardAd()
+        if let savedCount = retrieveCountFromKeychain() {
+                    REEL_COUNT = savedCount
+                }
         NotificationCenter.default.addObserver(self, selector: #selector(adDismissed), name: NSNotification.Name("AdDismissedNotification"), object: nil)
         InAppPurchase().verifySubscriptions([.autoRenewableForMonth, .autoRenewableForYear, .autoRenewableForLifeTime], completion: { isPurchased in
             isSubScription = isPurchased
@@ -257,8 +262,21 @@ class HomeScreenVC: UIViewController, GADFullScreenContentDelegate, GADBannerVie
                         DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
                             let alert = UIAlertController(title: "Your reel is ready", message: nil, preferredStyle: .alert)
                             let save = UIAlertAction(title: "Save", style: UIAlertAction.Style.default) { _ in
-                                self.saveReel(url, false)
                                 self.showRewardAd()
+                                REEL_COUNT += 1
+                                self.saveCountToKeychain(count: REEL_COUNT)
+                                
+                                if REEL_COUNT > 5 {
+                                    // Show alert
+                                    let alertController = UIAlertController(title: "Limit Exceeded", message: "You've used the reels more than 5 times.", preferredStyle: .alert)
+                                    let okAction = UIAlertAction(title: "OK", style: .default, handler: nil)
+                                    alertController.addAction(okAction)
+                                    self.present(alertController, animated: true, completion: nil)
+                                } else {
+                                    // Save the updated count to Keychain
+                                    self.saveCountToKeychain(count: REEL_COUNT)
+                                    self.saveReel(url, false)
+                                }
                             }
                             let preview = UIAlertAction(title: "Preview", style: UIAlertAction.Style.default, handler: { action in
                                 self.saveReel(url, true)
@@ -358,4 +376,42 @@ extension HomeScreenVC {
             print("Ad wasn't ready")
         }
     }
+}
+
+extension HomeScreenVC {
+    func saveCountToKeychain(count: Int) {
+           let countData = Data("\(count)".utf8)
+           
+           let query: [String: Any] = [
+               kSecClass as String: kSecClassGenericPassword,
+               kSecAttrService as String: "com.photo.collageify", // Use your own unique service name
+               kSecAttrAccount as String: "REEL_COUNT",
+               kSecValueData as String: countData
+           ]
+           
+           let status = SecItemAdd(query as CFDictionary, nil)
+           if status != errSecSuccess {
+               print("Failed to save count to Keychain")
+           }
+       }
+       
+       // Function to retrieve count from Keychain
+       func retrieveCountFromKeychain() -> Int? {
+           let query: [String: Any] = [
+               kSecClass as String: kSecClassGenericPassword,
+               kSecAttrService as String: "com.photo.collageify",
+               kSecAttrAccount as String: "REEL_COUNT",
+               kSecReturnData as String: true
+           ]
+           
+           var result: AnyObject?
+           let status = SecItemCopyMatching(query as CFDictionary, &result)
+           if status == errSecSuccess, let data = result as? Data, let countString = String(data: data, encoding: .utf8), let count = Int(countString) {
+               return count
+           } else {
+               print("Failed to retrieve count from Keychain")
+               return nil
+           }
+       }
+    
 }

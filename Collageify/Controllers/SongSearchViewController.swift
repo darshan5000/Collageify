@@ -10,6 +10,8 @@ import UIKit
 import SVProgressHUD
 import AVFoundation
 import SDWebImage
+import GoogleMobileAds // Import Google Mobile Ads
+
 
 class SongsTableCell: UITableViewCell {
     @IBOutlet weak var imgSongs: UIImageView!
@@ -17,12 +19,14 @@ class SongsTableCell: UITableViewCell {
     @IBOutlet weak var lblSongName: UILabel!
     @IBOutlet weak var lblArtist: UILabel!
     @IBOutlet weak var btnAddSong: UIButton!
+   
 }
 
-class SongSearchViewController: UIViewController {
+class SongSearchViewController: UIViewController, GADBannerViewDelegate {
 
     @IBOutlet weak var txtSearch: UITextField!
     @IBOutlet weak var tblSongs: UITableView!
+    @IBOutlet weak var bannerView: GADBannerView!
     
     var selectedURL : (() -> Void)?
     private var searchSonges: [SearchResults] = []
@@ -32,7 +36,15 @@ class SongSearchViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        if IS_ADS_SHOW == true {
+        if let adUnitID1 = UserDefaults.standard.string(forKey: "BANNER_ID") {
+            bannerView.adUnitID = adUnitID1
+        }
         
+        bannerView.rootViewController = self
+        bannerView.load(GADRequest())
+        bannerView.delegate = self
+        }
         tblSongs.delegate = self
         tblSongs.dataSource = self
     }
@@ -41,7 +53,9 @@ class SongSearchViewController: UIViewController {
         super.viewWillDisappear(animated)
         player?.pause()
     }
-    
+    func adViewDidReceiveAd(_ bannerView: GADBannerView) {
+        bannerView.isHidden = false
+    }
     @IBAction func actionClose(_ sender: UIButton) {
         self.dismiss(animated: true)
     }
