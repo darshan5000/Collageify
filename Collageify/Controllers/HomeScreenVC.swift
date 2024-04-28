@@ -94,6 +94,11 @@ class HomeScreenVC: UIViewController, GADFullScreenContentDelegate, GADBannerVie
         present(activityViewController, animated: true, completion: nil)
     }
     
+    @IBAction func onTappedPointsBtn(_ sender: Any) {
+        let vc = storyboard?.instantiateViewController(withIdentifier: "CoinsCollecVC") as! CoinsCollecVC
+        self.navigationController?.pushViewController(vc, animated: true)
+    }
+    
     @IBAction func onTappedRateus(_ sender: Any) {
         if #available(iOS 10.3, *) {
             SKStoreReviewController.requestReview()

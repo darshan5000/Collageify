@@ -1,6 +1,7 @@
 import UIKit
 import Firebase
 import GoogleMobileAds
+import SVProgressHUD
 
 class InAppPurchaseVC: UIViewController, GADFullScreenContentDelegate {
     
@@ -234,7 +235,9 @@ extension InAppPurchaseVC {
         
     }
     func showRewardAd() {
+        SVProgressHUD.show()
         if let rewardAd = self.rewardAd {
+            SVProgressHUD.dismiss()
             rewardAd.present(fromRootViewController: self) {
             }
         } else {

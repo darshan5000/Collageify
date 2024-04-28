@@ -1,5 +1,6 @@
 import UIKit
 import GoogleMobileAds // Import Google Mobile Ads
+import SVProgressHUD
 
 class ALLShapeVC: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, GADBannerViewDelegate, GADFullScreenContentDelegate {
     
@@ -146,7 +147,9 @@ extension ALLShapeVC {
         }
     }
     func showRewardAd() {
+        SVProgressHUD.show()
         if let rewardAd = self.rewardAd {
+            SVProgressHUD.dismiss()
             rewardAd.present(fromRootViewController: self) {
             }
         } else {

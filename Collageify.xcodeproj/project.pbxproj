@@ -180,6 +180,7 @@
 		7D41BF012BC1200400382D1A /* SelectionButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D41BEFD2BC1200400382D1A /* SelectionButton.m */; };
 		7DB9CD392BCBA3B30072BE43 /* InAppPurchaseVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DB9CD382BCBA3B30072BE43 /* InAppPurchaseVC.swift */; };
 		7DDDDA612BC44FE500EB49BA /* ImageEditActionVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DDDDA602BC44FE500EB49BA /* ImageEditActionVC.swift */; };
+		7DF46B162BDAAA2200F3361F /* CoinsCollecVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DF46B152BDAAA2200F3361F /* CoinsCollecVC.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -364,6 +365,7 @@
 		7DB9CD382BCBA3B30072BE43 /* InAppPurchaseVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InAppPurchaseVC.swift; sourceTree = "<group>"; };
 		7DDDDA602BC44FE500EB49BA /* ImageEditActionVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageEditActionVC.swift; sourceTree = "<group>"; };
 		7DE5EC4B2BD6C770009ABF0B /* Collageify.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Collageify.entitlements; sourceTree = "<group>"; };
+		7DF46B152BDAAA2200F3361F /* CoinsCollecVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoinsCollecVC.swift; sourceTree = "<group>"; };
 		AFD3EA167ACA5AC7213586EC /* Pods-Collageify.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Collageify.debug.xcconfig"; path = "Target Support Files/Pods-Collageify/Pods-Collageify.debug.xcconfig"; sourceTree = "<group>"; };
 		B5B0D6BDDBC0055D9429E8B8 /* Pods_Collageify.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Collageify.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -798,6 +800,7 @@
 				7DDDDA602BC44FE500EB49BA /* ImageEditActionVC.swift */,
 				7D41BEE52BC11D1F00382D1A /* ImageEDITViewcontroller.swift */,
 				7D41BEE72BC11D1F00382D1A /* HomeScreenVC.swift */,
+				7DF46B152BDAAA2200F3361F /* CoinsCollecVC.swift */,
 				7D41BEE12BC11D1F00382D1A /* ALLShapeVC.swift */,
 				7D41BEE62BC11D1F00382D1A /* MyPhotosVC.swift */,
 				7D41BEE32BC11D1F00382D1A /* CurrentPhotoVC.swift */,
@@ -1014,6 +1017,7 @@
 				0427241B2BD2FF3700BF9594 /* UIImage+fixOrientation.swift in Sources */,
 				7D41BED32BC11CBF00382D1A /* OpalImagePickerController.swift in Sources */,
 				042724292BD2FF3800BF9594 /* RecommendationsModel.swift in Sources */,
+				7DF46B162BDAAA2200F3361F /* CoinsCollecVC.swift in Sources */,
 				7D41BED92BC11CBF00382D1A /* OpalImagePickerCollectionViewLayout.swift in Sources */,
 				04E562382BCC332800B4AF0E /* CAPropertyAnimation+Key.swift in Sources */,
 				7D41BED52BC11CBF00382D1A /* UIView+Helper.swift in Sources */,
