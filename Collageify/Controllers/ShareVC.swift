@@ -1,13 +1,16 @@
 import UIKit
 import Firebase
+import SVProgressHUD
+import GoogleMobileAds // Import Google Mobile Ads
 
-class ShareVC: UIViewController {
+class ShareVC: UIViewController, GADFullScreenContentDelegate {
 
     var getImage = UIImage()
     var arrAddImage = NSMutableArray()
     var objDisplay = 0
     var index = 0
     var objSetDelete = MyPhotosVC()
+    private var rewardAd: GADRewardedAd?
     
     //MARK:- Outlets
     @IBOutlet weak var btnHome: UIButton!
@@ -39,10 +42,22 @@ class ShareVC: UIViewController {
     }
     
     @IBAction func btnBackAction(_ sender: UIButton) {
+        CLICK_COUNT += 1
+        if CLICK_COUNT == UserDefaults.standard.integer(forKey: "AD_COUNT") {
+            print("Current Ads Count >>>>>>>>>>>>>>>>>>>> \(CLICK_COUNT)")
+            showRewardAd()
+            CLICK_COUNT = 0
+        }
         self.navigationController?.popViewController(animated: true)
     }
     
     @IBAction func btnShareAction(_ sender: UIButton) {
+        CLICK_COUNT += 1
+        if CLICK_COUNT == UserDefaults.standard.integer(forKey: "AD_COUNT") {
+            print("Current Ads Count >>>>>>>>>>>>>>>>>>>> \(CLICK_COUNT)")
+            showRewardAd()
+            CLICK_COUNT = 0
+        }
         let imageToShare = [ getImage ]
         let activityViewController = UIActivityViewController(activityItems: imageToShare as [Any] , applicationActivities: nil)
         activityViewController.popoverPresentationController?.sourceView = self.view
@@ -51,14 +66,33 @@ class ShareVC: UIViewController {
     }
     
     @IBAction func btnSaveAction(_ sender: UIButton) {
+        CLICK_COUNT += 1
+        if CLICK_COUNT == UserDefaults.standard.integer(forKey: "AD_COUNT") {
+            print("Current Ads Count >>>>>>>>>>>>>>>>>>>> \(CLICK_COUNT)")
+            showRewardAd()
+            CLICK_COUNT = 0
+        }
         UIImageWriteToSavedPhotosAlbum(getImage, self, #selector(image(_:didFinishSavingWithError:contextInfo:)), nil)
     }
     
     @IBAction func btnDeleteAction(_ sender: UIButton) {
+        CLICK_COUNT += 1
+        if CLICK_COUNT == UserDefaults.standard.integer(forKey: "AD_COUNT") {
+            print("Current Ads Count >>>>>>>>>>>>>>>>>>>> \(CLICK_COUNT)")
+            showRewardAd()
+            CLICK_COUNT = 0
+        }
         showDeleteWarning(index)
     }
     
     @IBAction func btnHomeAction(_ sender: UIButton) {
+        CLICK_COUNT += 1
+        print("Current Ads Count >>>>>>>>>>>>>>>>>>>> \(CLICK_COUNT)")
+        if CLICK_COUNT == UserDefaults.standard.integer(forKey: "AD_COUNT") {
+            print("Current Ads Count >>>>>>>>>>>>>>>>>>>> \(CLICK_COUNT)")
+            showRewardAd()
+            CLICK_COUNT = 0
+        }
         if objDisplay == 1{
             self.navigationController?.popViewController(animated: true)
         }else if objDisplay == 2{
@@ -101,6 +135,33 @@ class ShareVC: UIViewController {
             print(error.localizedDescription)
         } else {
             print("Success")
+        }
+    }
+}
+
+extension ShareVC {
+    func loadRewardAd() {
+        if let adUnitID1 = UserDefaults.standard.string(forKey: "REWARD_ID") {
+            print("REWARD_ID \(adUnitID1)")
+            GADRewardedAd.load(withAdUnitID: adUnitID1,
+                               request: GADRequest()) { ad, error in
+                if let error = error {
+                    print("Failed to load rewarded ad with error: \(error.localizedDescription)")
+                    return
+                }
+                self.rewardAd = ad
+                self.rewardAd?.fullScreenContentDelegate = self
+            }
+        }
+    }
+    func showRewardAd() {
+        SVProgressHUD.show()
+        if let rewardAd = self.rewardAd {
+            SVProgressHUD.dismiss()
+            rewardAd.present(fromRootViewController: self) {
+            }
+        } else {
+            print("Ad wasn't ready")
         }
     }
 }

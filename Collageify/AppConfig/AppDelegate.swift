@@ -61,12 +61,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GADFullScreenContentDeleg
                 remoteConfig.activate()
                 if let adUnitID1 = remoteConfig["bannerAdID"].stringValue,
                    let adUnitID2 = remoteConfig["rewardAdID"].stringValue,
-                   let adUnitID3 = remoteConfig["openAppAdID"].stringValue {
+                   let adUnitID3 = remoteConfig["openAppAdID"].stringValue,
+                   let adsCount = remoteConfig["adsCount"].stringValue {
                     UserDefaults.standard.set(adUnitID1, forKey: "BANNER_ID")
                     UserDefaults.standard.set(adUnitID2, forKey: "REWARD_ID")
                     UserDefaults.standard.set(adUnitID3, forKey: "OPENAD_ID")
+                    UserDefaults.standard.set(adsCount, forKey: "AD_COUNT")
+                    print("Ads Count From Firebase:-----\(adsCount)")
                 }
-                
                 let adsEnabled = remoteConfig["isAdsShow"].boolValue
                 print("adsEnabled: \(adsEnabled)")
                 if adsEnabled == true {

@@ -43,6 +43,13 @@ class ALLShapeVC: UIViewController, UICollectionViewDelegate, UICollectionViewDa
         bannerView.isHidden = false
     }
     @IBAction func btnBackAction(_ sender: Any) {
+        CLICK_COUNT += 1
+        print("Current Ads Count >>>>>>>>>>>>>>>>>>>> \(CLICK_COUNT)")
+        if CLICK_COUNT == UserDefaults.standard.integer(forKey: "AD_COUNT") {
+            showRewardAd()
+            CLICK_COUNT = 0
+            print("Current Ads Count >>>>>>>>>>>>>>>>>>>> \(CLICK_COUNT)")
+        }
         self.navigationController?.popViewController(animated: true)
     }
     

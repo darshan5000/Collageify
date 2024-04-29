@@ -1,14 +1,17 @@
 import UIKit
 import Photos
 import Firebase
+import SVProgressHUD
+import GoogleMobileAds // Import Google Mobile Ads
 
-class CurrentPhotoVC: UIViewController,OpalImagePickerControllerDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate  {
+class CurrentPhotoVC: UIViewController,OpalImagePickerControllerDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate, GADFullScreenContentDelegate  {
 
     var selectedDict = [String : Int]()
     var objTotalImgSelection = 0
     var picker = OpalImagePickerController()
     var objSelectiontype = 0
     var imagePicker = UIImagePickerController()
+    private var rewardAd: GADRewardedAd?
 
     //MARK:- Outlets
     @IBOutlet weak var btnCamera: UIButton!
@@ -34,14 +37,35 @@ class CurrentPhotoVC: UIViewController,OpalImagePickerControllerDelegate,UIImage
     
     //MARK:- Button Action Zone
     @IBAction func btnDismissAction(_ sender: Any) {
+        CLICK_COUNT += 1
+        print("Current Ads Count >>>>>>>>>>>>>>>>>>>> \(CLICK_COUNT)")
+        if CLICK_COUNT == UserDefaults.standard.integer(forKey: "AD_COUNT") {
+            print("Current Ads Count >>>>>>>>>>>>>>>>>>>> \(CLICK_COUNT)")
+            showRewardAd()
+            CLICK_COUNT = 0
+        }
         self.dismiss(animated: true, completion: nil)
     }
     
     @IBAction func btnCameraAction(_ sender: UIButton) {
+        CLICK_COUNT += 1
+        print("Current Ads Count >>>>>>>>>>>>>>>>>>>> \(CLICK_COUNT)")
+        if CLICK_COUNT == UserDefaults.standard.integer(forKey: "AD_COUNT") {
+            print("Current Ads Count >>>>>>>>>>>>>>>>>>>> \(CLICK_COUNT)")
+            showRewardAd()
+            CLICK_COUNT = 0
+        }
         openCamera()
     }
     
     @IBAction func btnGalleryAction(_ sender: UIButton) {
+        CLICK_COUNT += 1
+        print("Current Ads Count >>>>>>>>>>>>>>>>>>>> \(CLICK_COUNT)")
+        if CLICK_COUNT == UserDefaults.standard.integer(forKey: "AD_COUNT") {
+            print("Current Ads Count >>>>>>>>>>>>>>>>>>>> \(CLICK_COUNT)")
+            showRewardAd()
+            CLICK_COUNT = 0
+        }
         openGallery()
     }
     
@@ -123,5 +147,32 @@ class CurrentPhotoVC: UIViewController,OpalImagePickerControllerDelegate,UIImage
             self.navigationController?.pushViewController(obj, animated: true)
         }
         picker.dismiss(animated: true, completion: nil)
+    }
+}
+
+extension CurrentPhotoVC {
+    func loadRewardAd() {
+        if let adUnitID1 = UserDefaults.standard.string(forKey: "REWARD_ID") {
+            print("REWARD_ID \(adUnitID1)")
+            GADRewardedAd.load(withAdUnitID: adUnitID1,
+                               request: GADRequest()) { ad, error in
+                if let error = error {
+                    print("Failed to load rewarded ad with error: \(error.localizedDescription)")
+                    return
+                }
+                self.rewardAd = ad
+                self.rewardAd?.fullScreenContentDelegate = self
+            }
+        }
+    }
+    func showRewardAd() {
+        SVProgressHUD.show()
+        if let rewardAd = self.rewardAd {
+            SVProgressHUD.dismiss()
+            rewardAd.present(fromRootViewController: self) {
+            }
+        } else {
+            print("Ad wasn't ready")
+        }
     }
 }

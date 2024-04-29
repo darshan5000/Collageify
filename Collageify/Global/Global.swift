@@ -34,6 +34,7 @@ var value3 = CGAffineTransform(scaleX: -1, y: -1)
 
 var IS_ADS_SHOW: Bool = true
 var REEL_COUNT: Int = 0
+var CLICK_COUNT: Int = 0
 
 func setView(view: UIView) {
     UIView.transition(with: view, duration: 0.5, options: .transitionCrossDissolve, animations: {

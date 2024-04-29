@@ -9,14 +9,15 @@
 import UIKit
 import AVFoundation
 import GoogleMobileAds // Import Google Mobile Ads
+import SVProgressHUD
 
-
-class EditReelsViewController: UIViewController, GADBannerViewDelegate {
+class EditReelsViewController: UIViewController, GADBannerViewDelegate,GADFullScreenContentDelegate {
 
     @IBOutlet weak var collPreview: UICollectionView!
     @IBOutlet weak var btnEdit: UIButton!
     @IBOutlet weak var bannerView: GADBannerView!
     
+    private var rewardAd: GADRewardedAd?
     var arrayAsset : [VideoData] = []
     var actionDone : ((_ data: [VideoData]) -> Void)?
     var selectedIndex = 0
@@ -38,6 +39,12 @@ class EditReelsViewController: UIViewController, GADBannerViewDelegate {
     }
     
     @IBAction func actionEdit(_ sender: UIButton) {
+        CLICK_COUNT += 1
+        if CLICK_COUNT == UserDefaults.standard.integer(forKey: "AD_COUNT") {
+            print("Current Ads Count >>>>>>>>>>>>>>>>>>>> \(CLICK_COUNT)")
+            showRewardAd()
+            CLICK_COUNT = 0
+        }
         if arrayAsset[selectedIndex].isVideo {
             let obj : VideoEditViewController = self.storyboard?.instantiateViewController(withIdentifier: "VideoEditViewController") as! VideoEditViewController
             obj.videoAsset = arrayAsset[selectedIndex]
@@ -55,10 +62,23 @@ class EditReelsViewController: UIViewController, GADBannerViewDelegate {
     }
     
     @IBAction func actionBack(_ sender: UIButton) {
+        CLICK_COUNT += 1
+        if CLICK_COUNT == UserDefaults.standard.integer(forKey: "AD_COUNT") {
+            print("Current Ads Count >>>>>>>>>>>>>>>>>>>> \(CLICK_COUNT)")
+            showRewardAd()
+            CLICK_COUNT = 0
+        }
         self.navigationController?.popViewController(animated: true)
     }
     
     @IBAction func actionNext(_ sender: Any) {
+        CLICK_COUNT += 1
+        print("Current Ads Count >>>>>>>>>>>>>>>>>>>> \(CLICK_COUNT)")
+        if CLICK_COUNT == UserDefaults.standard.integer(forKey: "AD_COUNT") {
+            print("Current Ads Count >>>>>>>>>>>>>>>>>>>> \(CLICK_COUNT)")
+            showRewardAd()
+            CLICK_COUNT = 0
+        }
         self.navigationController?.popViewController(animated: true)
         actionDone?(arrayAsset)
     }
@@ -130,6 +150,33 @@ extension EditReelsViewController: CropperViewControllerDelegate {
         if let state = state, let image = cropper.originalImage.cropped(withCropperState: state) {
             arrayAsset[selectedIndex].image = image
             collPreview.reloadData()
+        }
+    }
+}
+
+extension EditReelsViewController {
+    func loadRewardAd() {
+        if let adUnitID1 = UserDefaults.standard.string(forKey: "REWARD_ID") {
+            print("REWARD_ID \(adUnitID1)")
+            GADRewardedAd.load(withAdUnitID: adUnitID1,
+                               request: GADRequest()) { ad, error in
+                if let error = error {
+                    print("Failed to load rewarded ad with error: \(error.localizedDescription)")
+                    return
+                }
+                self.rewardAd = ad
+                self.rewardAd?.fullScreenContentDelegate = self
+            }
+        }
+    }
+    func showRewardAd() {
+        SVProgressHUD.show()
+        if let rewardAd = self.rewardAd {
+            SVProgressHUD.dismiss()
+            rewardAd.present(fromRootViewController: self) {
+            }
+        } else {
+            print("Ad wasn't ready")
         }
     }
 }

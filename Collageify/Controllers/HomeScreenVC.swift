@@ -86,6 +86,11 @@ class HomeScreenVC: UIViewController, GADFullScreenContentDelegate, GADBannerVie
     }
     //MARK:- Button Action Zone
     @IBAction func onTappedShareApp(_ sender: Any) {
+        CLICK_COUNT += 1
+        if CLICK_COUNT == UserDefaults.standard.integer(forKey: "AD_COUNT") {
+            showRewardAd()
+            CLICK_COUNT = 0
+        }
         let textToShare = "Check out this awesome app!"
         
         let activityViewController = UIActivityViewController(activityItems: [textToShare], applicationActivities: nil)
@@ -95,11 +100,21 @@ class HomeScreenVC: UIViewController, GADFullScreenContentDelegate, GADBannerVie
     }
     
     @IBAction func onTappedPointsBtn(_ sender: Any) {
+        CLICK_COUNT += 1
+        if CLICK_COUNT == UserDefaults.standard.integer(forKey: "AD_COUNT") {
+            showRewardAd()
+            CLICK_COUNT = 0
+        }
         let vc = storyboard?.instantiateViewController(withIdentifier: "CoinsCollecVC") as! CoinsCollecVC
         self.navigationController?.pushViewController(vc, animated: true)
     }
     
     @IBAction func onTappedRateus(_ sender: Any) {
+        CLICK_COUNT += 1
+        if CLICK_COUNT == UserDefaults.standard.integer(forKey: "AD_COUNT") {
+            showRewardAd()
+            CLICK_COUNT = 0
+        }
         if #available(iOS 10.3, *) {
             SKStoreReviewController.requestReview()
             
@@ -114,6 +129,11 @@ class HomeScreenVC: UIViewController, GADFullScreenContentDelegate, GADBannerVie
     }
     
     @IBAction func onTappedVIPBtn(_ sender: Any) {
+        CLICK_COUNT += 1
+        if CLICK_COUNT == UserDefaults.standard.integer(forKey: "AD_COUNT") {
+            showRewardAd()
+            CLICK_COUNT = 0
+        }
         let obj : InAppPurchaseVC = self.storyboard?.instantiateViewController(withIdentifier: "InAppPurchaseVC") as! InAppPurchaseVC
         let navController = UINavigationController(rootViewController: obj)
         navController.navigationBar.isHidden = true
@@ -123,11 +143,24 @@ class HomeScreenVC: UIViewController, GADFullScreenContentDelegate, GADBannerVie
     }
     
     @IBAction func btnGridAction(_ sender: Any) {
+        CLICK_COUNT += 1
+        if CLICK_COUNT == UserDefaults.standard.integer(forKey: "AD_COUNT") {
+            showRewardAd()
+            CLICK_COUNT = 0
+            print("Current Ads Count >>>>>>>>>>>>>>>>>>>> \(CLICK_COUNT)")
+        }
         let obj : ALLShapeVC = self.storyboard?.instantiateViewController(withIdentifier: "LoadShapesVC") as! ALLShapeVC
         self.navigationController?.pushViewController(obj, animated: true)
     }
     
     @IBAction func btnEditAction(_ sender: Any) {
+        CLICK_COUNT += 1
+        print("Current Ads Count >>>>>>>>>>>>>>>>>>>> \(CLICK_COUNT)")
+        if CLICK_COUNT == UserDefaults.standard.integer(forKey: "AD_COUNT") {
+            showRewardAd()
+            CLICK_COUNT = 0
+            print("Current Ads Count >>>>>>>>>>>>>>>>>>>> \(CLICK_COUNT)")
+        }
         let obj = self.storyboard!.instantiateViewController(withIdentifier: "PresentPhotoVC") as! CurrentPhotoVC
         obj.objSelectiontype = 2
         let navController = UINavigationController(rootViewController: obj)
@@ -138,11 +171,25 @@ class HomeScreenVC: UIViewController, GADFullScreenContentDelegate, GADBannerVie
     }
     
     @IBAction func btnMyAlbumsAction(_ sender: Any) {
+        CLICK_COUNT += 1
+        print("Current Ads Count >>>>>>>>>>>>>>>>>>>> \(CLICK_COUNT)")
+        if CLICK_COUNT == UserDefaults.standard.integer(forKey: "AD_COUNT") {
+            showRewardAd()
+            CLICK_COUNT = 0
+            print("Current Ads Count >>>>>>>>>>>>>>>>>>>> \(CLICK_COUNT)")
+        }
         let obj : MyPhotosVC = self.storyboard?.instantiateViewController(withIdentifier: "MyAlbumVC") as! MyPhotosVC
         self.navigationController?.pushViewController(obj, animated: true)
     }
     
     @IBAction func btnActionReel(_ sender: Any) {
+        CLICK_COUNT += 1
+        print("Current Ads Count >>>>>>>>>>>>>>>>>>>> \(CLICK_COUNT)")
+        if CLICK_COUNT == UserDefaults.standard.integer(forKey: "AD_COUNT") {
+            showRewardAd()
+            CLICK_COUNT = 0
+            print("Current Ads Count >>>>>>>>>>>>>>>>>>>> \(CLICK_COUNT)")
+        }
         openImagePickerView()
         //        self.openSpotifyController()
     }
@@ -353,6 +400,7 @@ extension HomeScreenVC {
     }
     
     func adDidDismissFullScreenContent(_ ad: GADFullScreenPresentingAd) {
+        loadRewardAd()
         print("Ad did dismiss full screen content")
     }
 }
@@ -385,38 +433,38 @@ extension HomeScreenVC {
 
 extension HomeScreenVC {
     func saveCountToKeychain(count: Int) {
-           let countData = Data("\(count)".utf8)
-           
-           let query: [String: Any] = [
-               kSecClass as String: kSecClassGenericPassword,
-               kSecAttrService as String: "com.photo.collageify", // Use your own unique service name
-               kSecAttrAccount as String: "REEL_COUNT",
-               kSecValueData as String: countData
-           ]
-           
-           let status = SecItemAdd(query as CFDictionary, nil)
-           if status != errSecSuccess {
-               print("Failed to save count to Keychain")
-           }
-       }
-       
-       // Function to retrieve count from Keychain
-       func retrieveCountFromKeychain() -> Int? {
-           let query: [String: Any] = [
-               kSecClass as String: kSecClassGenericPassword,
-               kSecAttrService as String: "com.photo.collageify",
-               kSecAttrAccount as String: "REEL_COUNT",
-               kSecReturnData as String: true
-           ]
-           
-           var result: AnyObject?
-           let status = SecItemCopyMatching(query as CFDictionary, &result)
-           if status == errSecSuccess, let data = result as? Data, let countString = String(data: data, encoding: .utf8), let count = Int(countString) {
-               return count
-           } else {
-               print("Failed to retrieve count from Keychain")
-               return nil
-           }
-       }
+        let countData = Data("\(count)".utf8)
+        
+        let query: [String: Any] = [
+            kSecClass as String: kSecClassGenericPassword,
+            kSecAttrService as String: "com.photo.collageify", // Use your own unique service name
+            kSecAttrAccount as String: "REEL_COUNT",
+            kSecValueData as String: countData
+        ]
+        
+        let status = SecItemAdd(query as CFDictionary, nil)
+        if status != errSecSuccess {
+            print("Failed to save count to Keychain")
+        }
+    }
+    
+    // Function to retrieve count from Keychain
+    func retrieveCountFromKeychain() -> Int? {
+        let query: [String: Any] = [
+            kSecClass as String: kSecClassGenericPassword,
+            kSecAttrService as String: "com.photo.collageify",
+            kSecAttrAccount as String: "REEL_COUNT",
+            kSecReturnData as String: true
+        ]
+        
+        var result: AnyObject?
+        let status = SecItemCopyMatching(query as CFDictionary, &result)
+        if status == errSecSuccess, let data = result as? Data, let countString = String(data: data, encoding: .utf8), let count = Int(countString) {
+            return count
+        } else {
+            print("Failed to retrieve count from Keychain")
+            return nil
+        }
+    }
     
 }

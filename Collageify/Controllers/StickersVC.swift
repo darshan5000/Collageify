@@ -1,7 +1,9 @@
 import UIKit
 import Firebase
+import SVProgressHUD
+import GoogleMobileAds // Import Google Mobile Ads
 
-class StickersVC: UIViewController,UICollectionViewDelegate,UICollectionViewDataSource,UICollectionViewDelegateFlowLayout{
+class StickersVC: UIViewController,UICollectionViewDelegate,UICollectionViewDataSource,UICollectionViewDelegateFlowLayout, GADFullScreenContentDelegate{
     
     //MARK:- outlet
     @IBOutlet weak var SelectStickersCV: UICollectionView!
@@ -11,9 +13,8 @@ class StickersVC: UIViewController,UICollectionViewDelegate,UICollectionViewData
     var isFromEditImageStk = false
     var objImage = ImageEDITViewcontroller()
     var objImageStk = ImageEditActionVC()
-
+    private var rewardAd: GADRewardedAd?
     var objStickerSelecion = 0
-
     var img = UIImage()
     
     override func viewDidLoad() {
@@ -30,7 +31,7 @@ class StickersVC: UIViewController,UICollectionViewDelegate,UICollectionViewData
         StickersCV.reloadData()
         objStickers = 1
     }
-
+    
     override func viewWillAppear(_ animated: Bool) {
         Analytics.logEvent("StickersVC_enter", parameters: [
             "params": "purchase_screen_enter"
@@ -39,6 +40,13 @@ class StickersVC: UIViewController,UICollectionViewDelegate,UICollectionViewData
     
     //MARK:- Action Button Zone
     @IBAction func btnBackAction(_ sender: Any) {
+        CLICK_COUNT += 1
+        print("Current Ads Count >>>>>>>>>>>>>>>>>>>> \(CLICK_COUNT)")
+        if CLICK_COUNT == UserDefaults.standard.integer(forKey: "AD_COUNT") {
+            print("Current Ads Count >>>>>>>>>>>>>>>>>>>> \(CLICK_COUNT)")
+            showRewardAd()
+            CLICK_COUNT = 0
+        }
         self.navigationController?.popViewController(animated: true)
     }
     
@@ -265,5 +273,32 @@ class StickersVC: UIViewController,UICollectionViewDelegate,UICollectionViewData
             return CGSize(width: width, height: width)
             
         };return CGSize()
+    }
+}
+
+extension StickersVC {
+    func loadRewardAd() {
+        if let adUnitID1 = UserDefaults.standard.string(forKey: "REWARD_ID") {
+            print("REWARD_ID \(adUnitID1)")
+            GADRewardedAd.load(withAdUnitID: adUnitID1,
+                               request: GADRequest()) { ad, error in
+                if let error = error {
+                    print("Failed to load rewarded ad with error: \(error.localizedDescription)")
+                    return
+                }
+                self.rewardAd = ad
+                self.rewardAd?.fullScreenContentDelegate = self
+            }
+        }
+    }
+    func showRewardAd() {
+        SVProgressHUD.show()
+        if let rewardAd = self.rewardAd {
+            SVProgressHUD.dismiss()
+            rewardAd.present(fromRootViewController: self) {
+            }
+        } else {
+            print("Ad wasn't ready")
+        }
     }
 }

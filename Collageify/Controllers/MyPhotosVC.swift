@@ -1,13 +1,15 @@
 import UIKit
 import Firebase
+import SVProgressHUD
 import GoogleMobileAds // Import Google Mobile Ads
 
-class MyPhotosVC: UIViewController,UICollectionViewDelegate,UICollectionViewDataSource,UICollectionViewDelegateFlowLayout, GADBannerViewDelegate
+class MyPhotosVC: UIViewController,UICollectionViewDelegate,UICollectionViewDataSource,UICollectionViewDelegateFlowLayout, GADBannerViewDelegate, GADFullScreenContentDelegate
 {
    
     var arrOfAlbumList = NSArray()
     var objDelete = 0
     var bannerADsID = ""
+    private var rewardAd: GADRewardedAd?
     //MARK:- Outlet
     
     @IBOutlet weak var btnBack: UIButton!
@@ -58,6 +60,13 @@ class MyPhotosVC: UIViewController,UICollectionViewDelegate,UICollectionViewData
     }
     //MARK:- Button Action Zone
     @IBAction func btnBackAction(_ sender: Any) {
+        CLICK_COUNT += 1
+        print("Current Ads Count >>>>>>>>>>>>>>>>>>>> \(CLICK_COUNT)")
+        if CLICK_COUNT == UserDefaults.standard.integer(forKey: "AD_COUNT") {
+            showRewardAd()
+            CLICK_COUNT = 0
+            print("Current Ads Count >>>>>>>>>>>>>>>>>>>> \(CLICK_COUNT)")
+        }
         for controller in self.navigationController!.viewControllers as Array {
             if controller.isKind(of: HomeScreenVC.self) {
                 self.navigationController!.popToViewController(controller, animated: true)
@@ -100,5 +109,32 @@ class MyPhotosVC: UIViewController,UICollectionViewDelegate,UICollectionViewData
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let width  = (AlbumsCV.frame.width-20)/3
         return CGSize(width: width, height: width)
+    }
+}
+
+extension MyPhotosVC {
+    func loadRewardAd() {
+        if let adUnitID1 = UserDefaults.standard.string(forKey: "REWARD_ID") {
+            print("REWARD_ID \(adUnitID1)")
+            GADRewardedAd.load(withAdUnitID: adUnitID1,
+                               request: GADRequest()) { ad, error in
+                if let error = error {
+                    print("Failed to load rewarded ad with error: \(error.localizedDescription)")
+                    return
+                }
+                self.rewardAd = ad
+                self.rewardAd?.fullScreenContentDelegate = self
+            }
+        }
+    }
+    func showRewardAd() {
+        SVProgressHUD.show()
+        if let rewardAd = self.rewardAd {
+            SVProgressHUD.dismiss()
+            rewardAd.present(fromRootViewController: self) {
+            }
+        } else {
+            print("Ad wasn't ready")
+        }
     }
 }
