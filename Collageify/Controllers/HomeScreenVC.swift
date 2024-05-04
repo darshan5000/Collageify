@@ -163,10 +163,12 @@ class HomeScreenVC: UIViewController, GADFullScreenContentDelegate, GADBannerVie
     }
     
     @IBAction func onTappedVIPBtn(_ sender: Any) {
-        showRewardAd()
-        loadInterstitial()
-        loadRewardAd()
-       isVipBtnTap = true
+        let obj : InAppPurchaseVC = self.storyboard?.instantiateViewController(withIdentifier: "InAppPurchaseVC") as! InAppPurchaseVC
+        let navController = UINavigationController(rootViewController: obj)
+        navController.navigationBar.isHidden = true
+        navController.modalPresentationStyle = .overCurrentContext
+        navController.modalTransitionStyle = .flipHorizontal
+        self.present(navController, animated:true, completion: nil)
     }
     
     @IBAction func btnGridAction(_ sender: Any) {
@@ -528,15 +530,6 @@ extension HomeScreenVC {
         loadInterstitial()
         if isOfferGot == true {
             self.showCongratulationAlert()
-        }
-        if isVipBtnTap == true {
-            self.isVipBtnTap = false
-            let obj : InAppPurchaseVC = self.storyboard?.instantiateViewController(withIdentifier: "InAppPurchaseVC") as! InAppPurchaseVC
-            let navController = UINavigationController(rootViewController: obj)
-            navController.navigationBar.isHidden = true
-            navController.modalPresentationStyle = .overCurrentContext
-            navController.modalTransitionStyle = .flipHorizontal
-            self.present(navController, animated:true, completion: nil)
         }
         print("Ad did dismiss full screen content.")
         

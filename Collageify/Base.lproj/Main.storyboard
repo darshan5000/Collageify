@@ -4823,9 +4823,6 @@ This approach offers a material reward for interacting with the app's adverts in
             <point key="canvasLocation" x="8451" y="796"/>
         </scene>
     </scenes>
-    <designables>
-        <designable name="S20-cI-Nwa"/>
-    </designables>
     <resources>
         <image name="000" width="114" height="114"/>
         <image name="1024" width="1024" height="1024"/>
