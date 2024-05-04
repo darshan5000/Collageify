@@ -12,6 +12,7 @@ class CurrentPhotoVC: UIViewController,OpalImagePickerControllerDelegate,UIImage
     var objSelectiontype = 0
     var imagePicker = UIImagePickerController()
     private var rewardAd: GADRewardedAd?
+    private var interstitial: GADInterstitialAd?
 
     //MARK:- Outlets
     @IBOutlet weak var btnCamera: UIButton!
@@ -22,7 +23,8 @@ class CurrentPhotoVC: UIViewController,OpalImagePickerControllerDelegate,UIImage
     override func viewDidLoad() {
         super.viewDidLoad()
         imagePicker.delegate = self
-
+        loadRewardAd()
+        loadInterstitial()
 //        picker.imagePickerDelegate = self
 //        picker.delegate = self
         btnDismiss.backgroundColor = UIColor.clear
@@ -33,41 +35,51 @@ class CurrentPhotoVC: UIViewController,OpalImagePickerControllerDelegate,UIImage
         Analytics.logEvent("CurrentPhotoVC_enter", parameters: [
             "params": "purchase_screen_enter"
         ])
+        loadRewardAd()
+        loadInterstitial()
     }
     
     //MARK:- Button Action Zone
     @IBAction func btnDismissAction(_ sender: Any) {
+        loadRewardAd()
+        loadInterstitial()
         CLICK_COUNT += 1
         print("Current Ads Count >>>>>>>>>>>>>>>>>>>> \(CLICK_COUNT)")
         if CLICK_COUNT == UserDefaults.standard.integer(forKey: "AD_COUNT") {
             print("Current Ads Count >>>>>>>>>>>>>>>>>>>> \(CLICK_COUNT)")
-            showRewardAd()
+            TrigerInterstitial()
             CLICK_COUNT = 0
         }
         self.dismiss(animated: true, completion: nil)
     }
     
     @IBAction func btnCameraAction(_ sender: UIButton) {
+        loadRewardAd()
+        loadInterstitial()
         CLICK_COUNT += 1
         print("Current Ads Count >>>>>>>>>>>>>>>>>>>> \(CLICK_COUNT)")
         if CLICK_COUNT == UserDefaults.standard.integer(forKey: "AD_COUNT") {
             print("Current Ads Count >>>>>>>>>>>>>>>>>>>> \(CLICK_COUNT)")
-            showRewardAd()
+            TrigerInterstitial()
             CLICK_COUNT = 0
         }
         openCamera()
     }
     
     @IBAction func btnGalleryAction(_ sender: UIButton) {
+        loadRewardAd()
+        loadInterstitial()
         CLICK_COUNT += 1
         print("Current Ads Count >>>>>>>>>>>>>>>>>>>> \(CLICK_COUNT)")
         if CLICK_COUNT == UserDefaults.standard.integer(forKey: "AD_COUNT") {
             print("Current Ads Count >>>>>>>>>>>>>>>>>>>> \(CLICK_COUNT)")
-            showRewardAd()
+            TrigerInterstitial()
             CLICK_COUNT = 0
         }
         openGallery()
     }
+    
+
     
     //MARK:- UIImagePicker Delegate Methods
     func openCamera() {
@@ -173,6 +185,28 @@ extension CurrentPhotoVC {
             }
         } else {
             print("Ad wasn't ready")
+        }
+    }
+    func loadInterstitial() {
+        let adRequest = GADRequest()
+        if let adUnitID1 = UserDefaults.standard.string(forKey: "INTERSTITIAL_ID") {
+        GADInterstitialAd.load(withAdUnitID: adUnitID1, request: adRequest) { [weak self] ad, error in
+            guard let self = self else { return }
+            if let error = error {
+                print("Failed to load interstitial ad with error: \(error.localizedDescription)")
+                return
+            }
+            self.interstitial = ad
+            self.interstitial?.fullScreenContentDelegate = self
+        }
+        }
+    }
+    
+    func TrigerInterstitial() {
+        if let interstitial = interstitial {
+            interstitial.present(fromRootViewController: self)
+        } else {
+            print("Interstitial ad is not ready yet.")
         }
     }
 }

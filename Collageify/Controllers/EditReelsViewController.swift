@@ -16,6 +16,7 @@ class EditReelsViewController: UIViewController, GADBannerViewDelegate,GADFullSc
     @IBOutlet weak var collPreview: UICollectionView!
     @IBOutlet weak var btnEdit: UIButton!
     @IBOutlet weak var bannerView: GADBannerView!
+    private var interstitial: GADInterstitialAd?
     
     private var rewardAd: GADRewardedAd?
     var arrayAsset : [VideoData] = []
@@ -24,6 +25,7 @@ class EditReelsViewController: UIViewController, GADBannerViewDelegate,GADFullSc
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        loadInterstitial()
         if IS_ADS_SHOW == true {
             if let adUnitID1 = UserDefaults.standard.string(forKey: "BANNER_ID") {
                 bannerView.adUnitID = adUnitID1
@@ -36,15 +38,16 @@ class EditReelsViewController: UIViewController, GADBannerViewDelegate,GADFullSc
         collPreview.register(UINib(nibName: "EditPreviewCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "EditPreviewCollectionViewCell")
         collPreview.delegate = self
         collPreview.dataSource = self
+        loadRewardAd()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        loadRewardAd()
+        loadInterstitial()
     }
     
     @IBAction func actionEdit(_ sender: UIButton) {
-        CLICK_COUNT += 1
-        if CLICK_COUNT == UserDefaults.standard.integer(forKey: "AD_COUNT") {
-            print("Current Ads Count >>>>>>>>>>>>>>>>>>>> \(CLICK_COUNT)")
-            showRewardAd()
-            CLICK_COUNT = 0
-        }
+        showRewardAd()
         if arrayAsset[selectedIndex].isVideo {
             let obj : VideoEditViewController = self.storyboard?.instantiateViewController(withIdentifier: "VideoEditViewController") as! VideoEditViewController
             obj.videoAsset = arrayAsset[selectedIndex]
@@ -65,7 +68,7 @@ class EditReelsViewController: UIViewController, GADBannerViewDelegate,GADFullSc
         CLICK_COUNT += 1
         if CLICK_COUNT == UserDefaults.standard.integer(forKey: "AD_COUNT") {
             print("Current Ads Count >>>>>>>>>>>>>>>>>>>> \(CLICK_COUNT)")
-            showRewardAd()
+            TrigerInterstitial()
             CLICK_COUNT = 0
         }
         self.navigationController?.popViewController(animated: true)
@@ -76,7 +79,7 @@ class EditReelsViewController: UIViewController, GADBannerViewDelegate,GADFullSc
         print("Current Ads Count >>>>>>>>>>>>>>>>>>>> \(CLICK_COUNT)")
         if CLICK_COUNT == UserDefaults.standard.integer(forKey: "AD_COUNT") {
             print("Current Ads Count >>>>>>>>>>>>>>>>>>>> \(CLICK_COUNT)")
-            showRewardAd()
+            TrigerInterstitial()
             CLICK_COUNT = 0
         }
         self.navigationController?.popViewController(animated: true)
@@ -178,5 +181,37 @@ extension EditReelsViewController {
         } else {
             print("Ad wasn't ready")
         }
+    }
+    func loadInterstitial() {
+        let adRequest = GADRequest()
+        if let adUnitID1 = UserDefaults.standard.string(forKey: "INTERSTITIAL_ID") {
+        GADInterstitialAd.load(withAdUnitID: adUnitID1, request: adRequest) { [weak self] ad, error in
+            guard let self = self else { return }
+            if let error = error {
+                print("Failed to load interstitial ad with error: \(error.localizedDescription)")
+                return
+            }
+            self.interstitial = ad
+            self.interstitial?.fullScreenContentDelegate = self
+        }
+        }
+    }
+    
+    func TrigerInterstitial() {
+        if let interstitial = interstitial {
+            interstitial.present(fromRootViewController: self)
+        } else {
+            print("Interstitial ad is not ready yet.")
+        }
+    }
+    func adDidPresentFullScreenContent(_ ad: GADFullScreenPresentingAd) {
+        loadRewardAd()
+        loadInterstitial()
+    }
+    
+    func adDidDismissFullScreenContent(_ ad: GADFullScreenPresentingAd) {
+        loadRewardAd()
+        loadInterstitial()
+        print("Ad did dismiss full screen content.")
     }
 }

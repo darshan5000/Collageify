@@ -22,7 +22,7 @@ class ALLShapeVC: UIViewController, UICollectionViewDelegate, UICollectionViewDa
     override func viewDidLoad() {
         super.viewDidLoad()
         pageControll.numberOfPages = 13
-        
+        loadRewardAd()
         ShapeCV.delegate = self
         ShapeCV.dataSource = self
         ShapeCV.register(UINib(nibName: "SwipMainCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "SwipMainCollectionViewCell")
@@ -173,5 +173,12 @@ extension ALLShapeVC {
         navController.modalPresentationStyle = .overCurrentContext
         self.present(navController, animated:true, completion: nil)
         
+    }
+    func ad(_ ad: GADFullScreenPresentingAd, didFailToPresentFullScreenContentWithError error: Error) {
+        loadRewardAd()
+    }
+    
+    func adDidPresentFullScreenContent(_ ad: GADFullScreenPresentingAd) {
+        loadRewardAd()
     }
 }

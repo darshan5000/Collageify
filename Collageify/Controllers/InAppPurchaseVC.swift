@@ -31,7 +31,7 @@ class InAppPurchaseVC: UIViewController, GADFullScreenContentDelegate {
         NotificationCenter.default.addObserver(self, selector: #selector(adWasClosed), name: Notification.Name("AdClosedNotification"), object: nil)
         monthPrice.text! = "$3.99/"
         yearPrice.text! = "$39.99/"
-        lifeTimePrice.text! = "$159.00/"
+        lifeTimePrice.text! = "$159.00"
         
         strikeThroughMonthPrice.attributedText = NSAttributedString(string: "$7.99", attributes: [NSAttributedString.Key.strikethroughStyle: NSUnderlineStyle.single.rawValue])
         strikeThroughYearPrice.attributedText = NSAttributedString(string: "$90.99", attributes: [NSAttributedString.Key.strikethroughStyle: NSUnderlineStyle.single.rawValue])

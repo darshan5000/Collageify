@@ -11,6 +11,7 @@ class ShareVC: UIViewController, GADFullScreenContentDelegate {
     var index = 0
     var objSetDelete = MyPhotosVC()
     private var rewardAd: GADRewardedAd?
+    private var interstitial: GADInterstitialAd?
     
     //MARK:- Outlets
     @IBOutlet weak var btnHome: UIButton!
@@ -33,29 +34,37 @@ class ShareVC: UIViewController, GADFullScreenContentDelegate {
             btnSave.isHidden = false
             btnDelete.isHidden = false
         }
+        loadRewardAd()
+        loadInterstitial()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         Analytics.logEvent("ShareVC_enter", parameters: [
             "params": "purchase_screen_enter"
         ])
+        loadRewardAd()
+        loadInterstitial()
     }
     
     @IBAction func btnBackAction(_ sender: UIButton) {
+        loadRewardAd()
+        loadInterstitial()
         CLICK_COUNT += 1
         if CLICK_COUNT == UserDefaults.standard.integer(forKey: "AD_COUNT") {
             print("Current Ads Count >>>>>>>>>>>>>>>>>>>> \(CLICK_COUNT)")
-            showRewardAd()
+            TrigerInterstitial()
             CLICK_COUNT = 0
         }
         self.navigationController?.popViewController(animated: true)
     }
     
     @IBAction func btnShareAction(_ sender: UIButton) {
+        loadRewardAd()
+        loadInterstitial()
         CLICK_COUNT += 1
         if CLICK_COUNT == UserDefaults.standard.integer(forKey: "AD_COUNT") {
             print("Current Ads Count >>>>>>>>>>>>>>>>>>>> \(CLICK_COUNT)")
-            showRewardAd()
+            TrigerInterstitial()
             CLICK_COUNT = 0
         }
         let imageToShare = [ getImage ]
@@ -66,31 +75,37 @@ class ShareVC: UIViewController, GADFullScreenContentDelegate {
     }
     
     @IBAction func btnSaveAction(_ sender: UIButton) {
+        loadRewardAd()
+        loadInterstitial()
         CLICK_COUNT += 1
         if CLICK_COUNT == UserDefaults.standard.integer(forKey: "AD_COUNT") {
             print("Current Ads Count >>>>>>>>>>>>>>>>>>>> \(CLICK_COUNT)")
-            showRewardAd()
+            TrigerInterstitial()
             CLICK_COUNT = 0
         }
         UIImageWriteToSavedPhotosAlbum(getImage, self, #selector(image(_:didFinishSavingWithError:contextInfo:)), nil)
     }
     
     @IBAction func btnDeleteAction(_ sender: UIButton) {
+        loadRewardAd()
+        loadInterstitial()
         CLICK_COUNT += 1
         if CLICK_COUNT == UserDefaults.standard.integer(forKey: "AD_COUNT") {
             print("Current Ads Count >>>>>>>>>>>>>>>>>>>> \(CLICK_COUNT)")
-            showRewardAd()
+            TrigerInterstitial()
             CLICK_COUNT = 0
         }
         showDeleteWarning(index)
     }
     
     @IBAction func btnHomeAction(_ sender: UIButton) {
+        loadRewardAd()
+        loadInterstitial()
         CLICK_COUNT += 1
         print("Current Ads Count >>>>>>>>>>>>>>>>>>>> \(CLICK_COUNT)")
         if CLICK_COUNT == UserDefaults.standard.integer(forKey: "AD_COUNT") {
             print("Current Ads Count >>>>>>>>>>>>>>>>>>>> \(CLICK_COUNT)")
-            showRewardAd()
+            TrigerInterstitial()
             CLICK_COUNT = 0
         }
         if objDisplay == 1{
@@ -163,5 +178,44 @@ extension ShareVC {
         } else {
             print("Ad wasn't ready")
         }
+    }
+    func loadInterstitial() {
+        let adRequest = GADRequest()
+        if let adUnitID1 = UserDefaults.standard.string(forKey: "INTERSTITIAL_ID") {
+        GADInterstitialAd.load(withAdUnitID: adUnitID1, request: adRequest) { [weak self] ad, error in
+            guard let self = self else { return }
+            if let error = error {
+                print("Failed to load interstitial ad with error: \(error.localizedDescription)")
+                return
+            }
+            self.interstitial = ad
+            self.interstitial?.fullScreenContentDelegate = self
+        }
+        }
+    }
+    
+    func TrigerInterstitial() {
+        if let interstitial = interstitial {
+            interstitial.present(fromRootViewController: self)
+        } else {
+            print("Interstitial ad is not ready yet.")
+        }
+    }
+    func ad(_ ad: GADFullScreenPresentingAd, didFailToPresentFullScreenContentWithError error: Error) {
+        print("Ad did fail to present full screen content.")
+        loadInterstitial()
+        loadRewardAd()
+    }
+    
+    func adDidPresentFullScreenContent(_ ad: GADFullScreenPresentingAd) {
+        loadRewardAd()
+        loadInterstitial()
+        print("Ad did present full screen content.")
+    }
+    
+    func adDidDismissFullScreenContent(_ ad: GADFullScreenPresentingAd) {
+        loadRewardAd()
+        loadInterstitial()
+        print("Ad did dismiss full screen content.")
     }
 }

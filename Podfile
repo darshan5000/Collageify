@@ -16,10 +16,8 @@ target 'Collageify' do
   pod 'Firebase/RemoteConfig'
   pod 'lottie-ios'
   pod 'Google-Mobile-Ads-SDK'
-  pod 'KeychainSwift
 
-
-  # Pods for Collageify
+  # Pods for CollageMaker
 
   post_install do |installer|
     installer.generated_projects.each do |project|

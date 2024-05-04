@@ -12,6 +12,7 @@ class CurrentTextVC: UIViewController,UITextFieldDelegate, GADFullScreenContentD
     var objImgStk = ImageEditActionVC()
     var objSelection = 0
     private var rewardAd: GADRewardedAd?
+    private var interstitial: GADInterstitialAd?
     
     //MARK:- Outlet
     @IBOutlet weak var txtEdit: UITextField!
@@ -47,12 +48,25 @@ class CurrentTextVC: UIViewController,UITextFieldDelegate, GADFullScreenContentD
         print("Current Ads Count >>>>>>>>>>>>>>>>>>>> \(CLICK_COUNT)")
         if CLICK_COUNT == UserDefaults.standard.integer(forKey: "AD_COUNT") {
             print("Current Ads Count >>>>>>>>>>>>>>>>>>>> \(CLICK_COUNT)")
-            showRewardAd()
+            TrigerInterstitial()
             CLICK_COUNT = 0
         }
         self.dismiss(animated: true, completion: nil)
     }
-    
+    func TrigerInterstitial() {
+        let request = GADRequest()
+        if let adUnitID1 = UserDefaults.standard.string(forKey: "INTERSTITIAL_ID") {
+            GADInterstitialAd.load(withAdUnitID:adUnitID1,request: request,
+                                   completionHandler: { [self] ad, error in
+                if let error = error {
+                    return
+                }
+                interstitial = ad
+                interstitial?.fullScreenContentDelegate = self
+            }
+            )
+        }
+    }
     @IBAction func btnOkAction(_ sender: Any) {
         CLICK_COUNT += 1
         print("Current Ads Count >>>>>>>>>>>>>>>>>>>> \(CLICK_COUNT)")

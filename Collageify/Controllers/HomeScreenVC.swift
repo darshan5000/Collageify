@@ -35,17 +35,30 @@ class HomeScreenVC: UIViewController, GADFullScreenContentDelegate, GADBannerVie
     var adWasShown: Bool = false
     var rewardAdid = ""
     private var interstitial: GADInterstitialAd?
+    var isOfferGot: Bool = false
+    var isVipBtnTap: Bool = false
     
     override func viewWillAppear(_ animated: Bool) {
         Analytics.logEvent("HomeScreenVC_enter", parameters: [
             "params": "purchase_screen_enter"
         ])
+        loadInterstitial()
         loadRewardAd()
+        if IS_ADS_SHOW == true {
+            if let adUnitID1 = UserDefaults.standard.string(forKey: "BANNER_ID") {
+                bannerView.adUnitID = adUnitID1
+            }
+            
+            bannerView.rootViewController = self
+            bannerView.load(GADRequest())
+            bannerView.delegate = self
+        }
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         loadRewardAd()
+        loadInterstitial()
         if let savedCount = retrieveCountFromKeychain() {
             REEL_COUNT = savedCount
         }
@@ -94,12 +107,16 @@ class HomeScreenVC: UIViewController, GADFullScreenContentDelegate, GADBannerVie
             }
         })
     }
+    
+    
     //MARK:- Button Action Zone
     @IBAction func onTappedShareApp(_ sender: Any) {
+        loadInterstitial()
+        loadRewardAd()
         CLICK_COUNT += 1
         if CLICK_COUNT == UserDefaults.standard.integer(forKey: "AD_COUNT") {
-            TrigerInterstitial()
             CLICK_COUNT = 0
+            TrigerInterstitial()
         }
         let textToShare = "Check out this awesome app!"
         
@@ -109,13 +126,9 @@ class HomeScreenVC: UIViewController, GADFullScreenContentDelegate, GADBannerVie
         present(activityViewController, animated: true, completion: nil)
     }
     @objc func animationViewTapped() {
-        CLICK_COUNT += 1
-        if CLICK_COUNT == UserDefaults.standard.integer(forKey: "AD_COUNT") {
-            TrigerInterstitial()
-            CLICK_COUNT = 0
-        }
-        
         showAlertForGift()
+        loadInterstitial()
+        loadRewardAd()
     }
     @IBAction func onTappedPointsBtn(_ sender: Any) {
         
@@ -129,10 +142,12 @@ class HomeScreenVC: UIViewController, GADFullScreenContentDelegate, GADBannerVie
     }
     
     @IBAction func onTappedRateus(_ sender: Any) {
+        loadInterstitial()
+        loadRewardAd()
         CLICK_COUNT += 1
         if CLICK_COUNT == UserDefaults.standard.integer(forKey: "AD_COUNT") {
-            TrigerInterstitial()
             CLICK_COUNT = 0
+            TrigerInterstitial()
         }
         if #available(iOS 10.3, *) {
             SKStoreReviewController.requestReview()
@@ -148,31 +163,34 @@ class HomeScreenVC: UIViewController, GADFullScreenContentDelegate, GADBannerVie
     }
     
     @IBAction func onTappedVIPBtn(_ sender: Any) {
-        CLICK_COUNT += 1
-        if CLICK_COUNT == UserDefaults.standard.integer(forKey: "AD_COUNT") {
-            showRewardAd()
-            CLICK_COUNT = 0
-        }
-        let obj : InAppPurchaseVC = self.storyboard?.instantiateViewController(withIdentifier: "InAppPurchaseVC") as! InAppPurchaseVC
-        let navController = UINavigationController(rootViewController: obj)
-        navController.navigationBar.isHidden = true
-        navController.modalPresentationStyle = .overCurrentContext
-        navController.modalTransitionStyle = .flipHorizontal
-        self.present(navController, animated:true, completion: nil)
+        showRewardAd()
+        loadInterstitial()
+        loadRewardAd()
+       isVipBtnTap = true
     }
     
     @IBAction func btnGridAction(_ sender: Any) {
+        loadInterstitial()
+        loadRewardAd()
         CLICK_COUNT += 1
         if CLICK_COUNT == UserDefaults.standard.integer(forKey: "AD_COUNT") {
-            TrigerInterstitial()
             CLICK_COUNT = 0
+            TrigerInterstitial()
             print("Current Ads Count >>>>>>>>>>>>>>>>>>>> \(CLICK_COUNT)")
         }
         let obj : ALLShapeVC = self.storyboard?.instantiateViewController(withIdentifier: "LoadShapesVC") as! ALLShapeVC
         self.navigationController?.pushViewController(obj, animated: true)
     }
     
+    func sizeInMB(data: Data) -> Int {
+        let bytes = Double(data.count)
+        let megabytes = bytes / (1024 * 1024)
+        return Int(megabytes)
+    }
+    
     @IBAction func btnEditAction(_ sender: Any) {
+        loadInterstitial()
+        loadRewardAd()
         CLICK_COUNT += 1
         print("Current Ads Count >>>>>>>>>>>>>>>>>>>> \(CLICK_COUNT)")
         if CLICK_COUNT == UserDefaults.standard.integer(forKey: "AD_COUNT") {
@@ -180,7 +198,7 @@ class HomeScreenVC: UIViewController, GADFullScreenContentDelegate, GADBannerVie
             CLICK_COUNT = 0
             print("Current Ads Count >>>>>>>>>>>>>>>>>>>> \(CLICK_COUNT)")
         }
-        let obj = self.storyboard!.instantiateViewController(withIdentifier: "PresentPhotoVC") as! CurrentPhotoVC
+        let obj = self.storyboard!.instantiateViewController(withIdentifier: "CurrentPhotoVC") as! CurrentPhotoVC
         obj.objSelectiontype = 2
         let navController = UINavigationController(rootViewController: obj)
         navController.navigationBar.isHidden = true
@@ -190,6 +208,8 @@ class HomeScreenVC: UIViewController, GADFullScreenContentDelegate, GADBannerVie
     }
     
     @IBAction func btnMyAlbumsAction(_ sender: Any) {
+        loadInterstitial()
+        loadRewardAd()
         CLICK_COUNT += 1
         print("Current Ads Count >>>>>>>>>>>>>>>>>>>> \(CLICK_COUNT)")
         if CLICK_COUNT == UserDefaults.standard.integer(forKey: "AD_COUNT") {
@@ -202,15 +222,24 @@ class HomeScreenVC: UIViewController, GADFullScreenContentDelegate, GADBannerVie
     }
     
     @IBAction func btnActionReel(_ sender: Any) {
+        loadInterstitial()
+        loadRewardAd()
         CLICK_COUNT += 1
         print("Current Ads Count >>>>>>>>>>>>>>>>>>>> \(CLICK_COUNT)")
         if CLICK_COUNT == UserDefaults.standard.integer(forKey: "AD_COUNT") {
-            TrigerInterstitial()
             CLICK_COUNT = 0
+            TrigerInterstitial()
             print("Current Ads Count >>>>>>>>>>>>>>>>>>>> \(CLICK_COUNT)")
         }
-        openImagePickerView()
+        
         //        self.openSpotifyController()
+        
+        openImagePickerView()
+        
+        //        let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
+        //        let vc = storyBoard.instantiateViewController(withIdentifier: "VideoTrimViewController") as! VideoTrimViewController
+        //        vc.modalPresentationStyle = .fullScreen
+        //        self.present(vc, animated: true)
     }
     
     func openImagePickerView() {
@@ -239,7 +268,7 @@ class HomeScreenVC: UIViewController, GADFullScreenContentDelegate, GADBannerVie
     
     func openSpotifyController() {
         let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
-        let vc = storyBoard.instantiateViewController(withIdentifier: "SongListViewController") as! SongListViewController
+        let vc = storyBoard.instantiateViewController(withIdentifier: "SongSearchViewController") as! SongSearchViewController
         vc.selectedURL = {
             self.showProcessing(isShow: true)
             self.mergeVideosAndImages(arrayData: self.arrayAsset)
@@ -275,7 +304,14 @@ class HomeScreenVC: UIViewController, GADFullScreenContentDelegate, GADBannerVie
                     return
                 }
                 
-                videoData.image = image
+                if self.sizeInMB(data: image.pngData() ?? Data()) > 15 {
+                    let thumb1 = image.resized(withPercentage: 0.5)
+                    print(self.sizeInMB(data: thumb1!.pngData()!))
+                    videoData.image = thumb1
+                } else {
+                    videoData.image = image
+                }
+                
                 self.arrayAsset.append(videoData)
                 self.group.leave()
                 self.mergeProccess()
@@ -292,19 +328,19 @@ class HomeScreenVC: UIViewController, GADFullScreenContentDelegate, GADBannerVie
                 obj.actionDone = { array in
                     let alert = UIAlertController(title: "Do you want to add music on reel", message: nil, preferredStyle: .alert)
                     let save = UIAlertAction(title: "Add", style: UIAlertAction.Style.default) { _ in
-                        if AuthManager.shared.isSignedIn {
-                            self.openSpotifyController()
-                        } else {
-                            let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
-                            let vc = storyBoard.instantiateViewController(withIdentifier: "SpotifySignInViewController") as! SpotifySignInViewController
-                            vc.isSignInSuccess = {
-                                self.dismiss(animated: true) {
-                                    self.openSpotifyController()
-                                }
-                            }
-                            vc.modalPresentationStyle = .fullScreen
-                            self.present(vc, animated: true)
-                        }
+                        //                        if AuthManager.shared.isSignedIn {
+                        self.openSpotifyController()
+                        //                        } else {
+                        //                            let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
+                        //                            let vc = storyBoard.instantiateViewController(withIdentifier: "SpotifySignInViewController") as! SpotifySignInViewController
+                        //                            vc.isSignInSuccess = {
+                        //                                self.dismiss(animated: true) {
+                        //                                    self.openSpotifyController()
+                        //                                }
+                        //                            }
+                        //                            vc.modalPresentationStyle = .fullScreen
+                        //                            self.present(vc, animated: true)
+                        //                        }
                     }
                     let preview = UIAlertAction(title: "Create Reel", style: UIAlertAction.Style.default, handler: { action in
                         self.showProcessing(isShow: true)
@@ -477,37 +513,83 @@ extension HomeScreenVC {
 extension HomeScreenVC {
     func ad(_ ad: GADFullScreenPresentingAd, didFailToPresentFullScreenContentWithError error: Error) {
         print("Ad did fail to present full screen content.")
+        loadInterstitial()
+        loadRewardAd()
     }
     
     func adDidPresentFullScreenContent(_ ad: GADFullScreenPresentingAd) {
+        loadRewardAd()
+        loadInterstitial()
         print("Ad did present full screen content.")
     }
     
     func adDidDismissFullScreenContent(_ ad: GADFullScreenPresentingAd) {
         loadRewardAd()
-        print("Ad did dismiss full screen content.")
-    }
-    func TrigerInterstitial() {
-        let request = GADRequest()
-        if let adUnitID1 = UserDefaults.standard.string(forKey: "INTERSTITIAL_ID") {
-            GADInterstitialAd.load(withAdUnitID:adUnitID1,request: request,
-                                   completionHandler: { [self] ad, error in
-                if let error = error {
-                    return
-                }
-                interstitial = ad
-                interstitial?.fullScreenContentDelegate = self
-            }
-            )
+        loadInterstitial()
+        if isOfferGot == true {
+            self.showCongratulationAlert()
         }
+        if isVipBtnTap == true {
+            self.isVipBtnTap = false
+            let obj : InAppPurchaseVC = self.storyboard?.instantiateViewController(withIdentifier: "InAppPurchaseVC") as! InAppPurchaseVC
+            let navController = UINavigationController(rootViewController: obj)
+            navController.navigationBar.isHidden = true
+            navController.modalPresentationStyle = .overCurrentContext
+            navController.modalTransitionStyle = .flipHorizontal
+            self.present(navController, animated:true, completion: nil)
+        }
+        print("Ad did dismiss full screen content.")
+        
     }
     
     func showAlertForGift() {
         self.animationContainerView.isHidden = true
-        let alert = UIAlertController(title: "Special Offer!", message: "Congratulations! You've got a 50% discount offer.", preferredStyle: .alert)
+        let alert = UIAlertController(title: "Special Offer!", message: "Unlock a 50% discount by watching a quick ad!", preferredStyle: .alert)
+        
+        let watchAction = UIAlertAction(title: "Watch Now", style: .default) { (_) in
+            self.showRewardAd()
+            self.isOfferGot = true
+        }
+        alert.addAction(watchAction)
+        
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel) { (_) in
+            self.animationContainerView.isHidden = false
+        }
+        alert.addAction(cancelAction)
+        
+        self.present(alert, animated: true, completion: nil)
+    }
+    func showCongratulationAlert() {
+        self.animationContainerView.isHidden = true
+        self.isOfferGot = false
+        let alert = UIAlertController(title: "Congratulations!", message: "You've successfully unlocked a special offer! 🎉 Enjoy your 50% discount!", preferredStyle: .alert)
+        
         alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { _ in
             
         }))
+        
         self.present(alert, animated: true, completion: nil)
+    }
+    func loadInterstitial() {
+        let adRequest = GADRequest()
+        if let adUnitID1 = UserDefaults.standard.string(forKey: "INTERSTITIAL_ID") {
+        GADInterstitialAd.load(withAdUnitID: adUnitID1, request: adRequest) { [weak self] ad, error in
+            guard let self = self else { return }
+            if let error = error {
+                print("Failed to load interstitial ad with error: \(error.localizedDescription)")
+                return
+            }
+            self.interstitial = ad
+            self.interstitial?.fullScreenContentDelegate = self
+        }
+        }
+    }
+    
+    func TrigerInterstitial() {
+        if let interstitial = interstitial {
+            interstitial.present(fromRootViewController: self)
+        } else {
+            print("Interstitial ad is not ready yet.")
+        }
     }
 }

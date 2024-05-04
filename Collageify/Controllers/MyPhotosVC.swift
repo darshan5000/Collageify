@@ -10,6 +10,7 @@ class MyPhotosVC: UIViewController,UICollectionViewDelegate,UICollectionViewData
     var objDelete = 0
     var bannerADsID = ""
     private var rewardAd: GADRewardedAd?
+    private var interstitial: GADInterstitialAd?
     //MARK:- Outlet
     
     @IBOutlet weak var btnBack: UIButton!
@@ -22,10 +23,14 @@ class MyPhotosVC: UIViewController,UICollectionViewDelegate,UICollectionViewData
         Analytics.logEvent("MyPhotosVC_enter", parameters: [
             "params": "purchase_screen_enter"
         ])
+        loadRewardAd()
+        loadInterstitial()
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        loadRewardAd()
+        loadInterstitial()
         lblAlert.isHidden = true
         AlbumsCV.delegate = self
         AlbumsCV.dataSource = self
@@ -52,6 +57,8 @@ class MyPhotosVC: UIViewController,UICollectionViewDelegate,UICollectionViewData
     }
     
     override func viewDidAppear(_ animated: Bool) {
+        loadRewardAd()
+        loadInterstitial()
         if arrOfAlbumList.count == 0{
             lblAlert.isHidden = false
         }else {
@@ -60,10 +67,12 @@ class MyPhotosVC: UIViewController,UICollectionViewDelegate,UICollectionViewData
     }
     //MARK:- Button Action Zone
     @IBAction func btnBackAction(_ sender: Any) {
+        loadRewardAd()
+        loadInterstitial()
         CLICK_COUNT += 1
         print("Current Ads Count >>>>>>>>>>>>>>>>>>>> \(CLICK_COUNT)")
         if CLICK_COUNT == UserDefaults.standard.integer(forKey: "AD_COUNT") {
-            showRewardAd()
+            TrigerInterstitial()
             CLICK_COUNT = 0
             print("Current Ads Count >>>>>>>>>>>>>>>>>>>> \(CLICK_COUNT)")
         }
@@ -85,6 +94,7 @@ class MyPhotosVC: UIViewController,UICollectionViewDelegate,UICollectionViewData
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return arrOfAlbumList.count
     }
+    
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell : MainStickerCell = collectionView.dequeueReusableCell(withReuseIdentifier: "MainStickerCell", for: indexPath) as! MainStickerCell
@@ -135,6 +145,28 @@ extension MyPhotosVC {
             }
         } else {
             print("Ad wasn't ready")
+        }
+    }
+    func loadInterstitial() {
+        let adRequest = GADRequest()
+        if let adUnitID1 = UserDefaults.standard.string(forKey: "INTERSTITIAL_ID") {
+        GADInterstitialAd.load(withAdUnitID: adUnitID1, request: adRequest) { [weak self] ad, error in
+            guard let self = self else { return }
+            if let error = error {
+                print("Failed to load interstitial ad with error: \(error.localizedDescription)")
+                return
+            }
+            self.interstitial = ad
+            self.interstitial?.fullScreenContentDelegate = self
+        }
+        }
+    }
+    
+    func TrigerInterstitial() {
+        if let interstitial = interstitial {
+            interstitial.present(fromRootViewController: self)
+        } else {
+            print("Interstitial ad is not ready yet.")
         }
     }
 }

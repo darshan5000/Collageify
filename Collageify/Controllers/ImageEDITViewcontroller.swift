@@ -6,8 +6,9 @@ import ImageScrollView
 import SVProgressHUD
 import Firebase
 import ZoomImageView
+import GoogleMobileAds
 
-class ImageEDITViewcontroller: UIViewController,UICollectionViewDelegate,UICollectionViewDataSource,UICollectionViewDelegateFlowLayout,StickerViewDelegate,ColorPickerViewDelegate,ColorPickerViewDelegateFlowLayout,UIImagePickerControllerDelegate,UINavigationControllerDelegate,UITableViewDelegate,UITableViewDataSource {
+class ImageEDITViewcontroller: UIViewController,UICollectionViewDelegate,UICollectionViewDataSource,UICollectionViewDelegateFlowLayout,StickerViewDelegate,ColorPickerViewDelegate,ColorPickerViewDelegateFlowLayout,UIImagePickerControllerDelegate,UINavigationControllerDelegate,UITableViewDelegate,UITableViewDataSource,GADFullScreenContentDelegate, GADBannerViewDelegate {
     
     var objType = 0
     var arrOfTotalImg = [UIImage]()
@@ -18,7 +19,7 @@ class ImageEDITViewcontroller: UIViewController,UICollectionViewDelegate,UIColle
     var isSelectGallery = false
     var objPickImage = 0
     var objSelectTxtValue = 0
-    
+    private var interstitial: GADInterstitialAd?
     var isImageEmpty = false
     var imgIndex = 0
     var imagePicker = UIImagePickerController()
@@ -29,7 +30,7 @@ class ImageEDITViewcontroller: UIViewController,UICollectionViewDelegate,UIColle
     @IBOutlet weak var viewSinglePhoto: UIView!
     @IBOutlet weak var imgSingleBackground: UIImageView!
     @IBOutlet weak var imgSingle: ZoomImageView!
-
+    @IBOutlet weak var bannerView: GADBannerView!
     @IBOutlet weak var imgBackground: UIImageView!
     @IBOutlet weak var imgFX: UIImageView!
     @IBOutlet weak var view1Photo: UIView!
@@ -157,8 +158,20 @@ class ImageEDITViewcontroller: UIViewController,UICollectionViewDelegate,UIColle
         }
     }
     
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        loadInterstitial()
+        if IS_ADS_SHOW == true {
+            if let adUnitID1 = UserDefaults.standard.string(forKey: "BANNER_ID") {
+                bannerView.adUnitID = adUnitID1
+            }
+            
+            bannerView.rootViewController = self
+            bannerView.load(GADRequest())
+            bannerView.delegate = self
+        }
+        
         imagePicker.delegate = self
         imgFX.isHidden = true
         
@@ -312,6 +325,7 @@ class ImageEDITViewcontroller: UIViewController,UICollectionViewDelegate,UIColle
         scroll.zoomMode = .fill
     }
     override func viewWillAppear(_ animated: Bool) {
+        TrigerInterstitial()
         Analytics.logEvent("ImageEDITViewcontroller_enter", parameters: [
             "params": "purchase_screen_enter"
         ])
@@ -2770,5 +2784,41 @@ extension ImageEDITViewcontroller: ImageScrollViewDelegate {
     func scrollViewDidEndZooming(_ scrollView: UIScrollView, with view: UIView?, atScale scale: CGFloat) {
     }
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
+    }
+}
+
+extension ImageEDITViewcontroller {
+    func ad(_ ad: GADFullScreenPresentingAd, didFailToPresentFullScreenContentWithError error: Error) {
+        loadInterstitial()
+    }
+    
+    func adDidPresentFullScreenContent(_ ad: GADFullScreenPresentingAd) {
+        loadInterstitial()
+    }
+    
+    func adDidDismissFullScreenContent(_ ad: GADFullScreenPresentingAd) {
+        loadInterstitial()
+    }
+    func loadInterstitial() {
+        let adRequest = GADRequest()
+        if let adUnitID1 = UserDefaults.standard.string(forKey: "INTERSTITIAL_ID") {
+        GADInterstitialAd.load(withAdUnitID: adUnitID1, request: adRequest) { [weak self] ad, error in
+            guard let self = self else { return }
+            if let error = error {
+                print("Failed to load interstitial ad with error: \(error.localizedDescription)")
+                return
+            }
+            self.interstitial = ad
+            self.interstitial?.fullScreenContentDelegate = self
+        }
+        }
+    }
+    
+    func TrigerInterstitial() {
+        if let interstitial = interstitial {
+            interstitial.present(fromRootViewController: self)
+        } else {
+            print("Interstitial ad is not ready yet.")
+        }
     }
 }

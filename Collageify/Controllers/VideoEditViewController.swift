@@ -10,8 +10,9 @@ import UIKit
 import CoreMedia
 import AVFoundation
 import SVProgressHUD
+import GoogleMobileAds
 
-class VideoEditViewController: UIViewController {
+class VideoEditViewController: UIViewController, GADFullScreenContentDelegate {
 
     @IBOutlet var viewVideoMain: UIView!
     @IBOutlet weak var viewTrimMain: UIView!
@@ -34,12 +35,13 @@ class VideoEditViewController: UIViewController {
     private var videoConverter: VideoConverter?
     private var isPlaying = false
     private var rotate: Double = 0
+    private var interstitial: GADInterstitialAd?
     private var preset: String?
     var actionAssetDone : ((_ data: AVAsset) -> Void)?
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        loadInterstitial()
         self.viewVideoMain.addSubview(self.viewVideo)
         self.viewTrimMain.addSubview(self.viewTrim)
         self.viewVideoMain.addConstraints([
@@ -76,7 +78,7 @@ class VideoEditViewController: UIViewController {
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-
+        loadInterstitial()
         self.viewVideo.invalidate()
     }
     
@@ -113,12 +115,13 @@ class VideoEditViewController: UIViewController {
     }
     
     @IBAction func actionBack(_ sender: UIButton) {
+        loadInterstitial()
         self.dismiss(animated: true)
     }
     
     @IBAction func actionDone(_ sender: Any) {
         guard let videoConverter = self.videoConverter else { return }
-
+        loadInterstitial()
         var videoConverterCrop: ConverterCrop?
         if let dimFrame = self.viewVideo.dimFrame {
             videoConverterCrop = ConverterCrop(frame: dimFrame, contrastSize: self.viewVideo.videoRect.size)
@@ -152,6 +155,14 @@ class VideoEditViewController: UIViewController {
 extension VideoEditViewController {
     
     @IBAction func actionRotate(_ sender: UIButton) {
+        loadInterstitial()
+        CLICK_COUNT += 1
+        print("Current Ads Count >>>>>>>>>>>>>>>>>>>> \(CLICK_COUNT)")
+        if CLICK_COUNT == UserDefaults.standard.integer(forKey: "AD_COUNT") {
+            TrigerInterstitial()
+            CLICK_COUNT = 0
+            print("Current Ads Count >>>>>>>>>>>>>>>>>>>> \(CLICK_COUNT)")
+        }
         var transform = CGAffineTransform.identity
         self.rotate += 1
         if self.rotate == 4 {
@@ -167,6 +178,14 @@ extension VideoEditViewController {
     }
     
     @IBAction func actionCrop(_ sender: UIButton) {
+        loadInterstitial()
+        CLICK_COUNT += 1
+        print("Current Ads Count >>>>>>>>>>>>>>>>>>>> \(CLICK_COUNT)")
+        if CLICK_COUNT == UserDefaults.standard.integer(forKey: "AD_COUNT") {
+            TrigerInterstitial()
+            CLICK_COUNT = 0
+            print("Current Ads Count >>>>>>>>>>>>>>>>>>>> \(CLICK_COUNT)")
+        }
         guard let asset = self.viewVideo.player?.currentItem?.asset,
             let currentTime = self.viewVideo.player?.currentTime() else { return }
         let imageGenerator = AVAssetImageGenerator(asset: asset)
@@ -227,5 +246,34 @@ extension VideoEditViewController: VideoTrimDelegate {
     func videoTrimPlayTimeChange(_ view: VideoTrim) {
         self.viewVideo.player?.seek(to: CMTime(value: CMTimeValue(view.playTime.value + view.startTime.value), timescale: view.playTime.timescale))
         self.updateTrimTime()
+    }
+    func loadInterstitial() {
+        let adRequest = GADRequest()
+        if let adUnitID1 = UserDefaults.standard.string(forKey: "INTERSTITIAL_ID") {
+        GADInterstitialAd.load(withAdUnitID: adUnitID1, request: adRequest) { [weak self] ad, error in
+            guard let self = self else { return }
+            if let error = error {
+                print("Failed to load interstitial ad with error: \(error.localizedDescription)")
+                return
+            }
+            self.interstitial = ad
+            self.interstitial?.fullScreenContentDelegate = self
+        }
+        }
+    }
+    
+    func TrigerInterstitial() {
+        if let interstitial = interstitial {
+            interstitial.present(fromRootViewController: self)
+        } else {
+            print("Interstitial ad is not ready yet.")
+        }
+    }
+    func adDidPresentFullScreenContent(_ ad: GADFullScreenPresentingAd) {
+        loadInterstitial()
+    }
+    
+    func adDidDismissFullScreenContent(_ ad: GADFullScreenPresentingAd) {
+        loadInterstitial()
     }
 }
