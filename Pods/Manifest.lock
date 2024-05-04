@@ -150,6 +150,7 @@ PODS:
     - M13Checkbox
   - ImageScrollView (1.9.3)
   - IQKeyboardManagerSwift (6.5.9)
+  - lottie-ios (4.3.0)
   - M13Checkbox (3.4.0)
   - nanopb (2.30908.0):
     - nanopb/decode (= 2.30908.0)
@@ -175,6 +176,7 @@ DEPENDENCIES:
   - IGColorPicker
   - ImageScrollView
   - IQKeyboardManagerSwift
+  - lottie-ios
   - SVProgressHUD
   - SwiftyStoreKit
   - ZoomImageView
@@ -200,6 +202,7 @@ SPEC REPOS:
     - IGColorPicker
     - ImageScrollView
     - IQKeyboardManagerSwift
+    - lottie-ios
     - M13Checkbox
     - nanopb
     - PromisesObjC
@@ -229,6 +232,7 @@ SPEC CHECKSUMS:
   IGColorPicker: f6034f8629aa90cce308a76ecc0fdf2afed0bf34
   ImageScrollView: d3ce8371e0d44299b2b638410db45387e18aa83f
   IQKeyboardManagerSwift: 6e839c575c4aa1078d58a596e41244e77abe918f
+  lottie-ios: c69214a487e1a1465a231c1918c6ce174e2d45bc
   M13Checkbox: 6f59404540ac98ba83a3d1afac335895a40c6a5d
   nanopb: a0ba3315591a9ae0a16a309ee504766e90db0c96
   PromisesObjC: 68159ce6952d93e17b2dfe273b8c40907db5ba58
@@ -238,6 +242,6 @@ SPEC CHECKSUMS:
   SwiftyStoreKit: 6b9c08810269f030586dac1fae8e75871a82e84a
   ZoomImageView: 2a88d0c10ad30b9a06c8f5660d51623fb32beed5
 
-PODFILE CHECKSUM: 8e94f633c2844b86972e95f183af761a300d4144
+PODFILE CHECKSUM: 7c6e5cd6450b2b11d2feb657e0c92d4a7efa682e
 
 COCOAPODS: 1.11.2

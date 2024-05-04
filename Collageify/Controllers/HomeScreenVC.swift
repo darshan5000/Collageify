@@ -13,7 +13,7 @@ import Firebase
 import GoogleMobileAds
 import FirebaseRemoteConfig
 import Security
-
+import Lottie
 
 class HomeScreenVC: UIViewController, GADFullScreenContentDelegate, GADBannerViewDelegate {
     
@@ -22,6 +22,7 @@ class HomeScreenVC: UIViewController, GADFullScreenContentDelegate, GADBannerVie
     @IBOutlet weak var btnGrid: UIButton!
     @IBOutlet weak var btnEdit: UIButton!
     @IBOutlet weak var bannerView: GADBannerView!
+    @IBOutlet weak var animationContainerView: LottieAnimationView!
     
     let engine = AVAudioEngine()
     var arrayAsset : [VideoData] = []
@@ -33,6 +34,7 @@ class HomeScreenVC: UIViewController, GADFullScreenContentDelegate, GADBannerVie
     private var rewardAd: GADRewardedAd?
     var adWasShown: Bool = false
     var rewardAdid = ""
+    private var interstitial: GADInterstitialAd?
     
     override func viewWillAppear(_ animated: Bool) {
         Analytics.logEvent("HomeScreenVC_enter", parameters: [
@@ -45,8 +47,8 @@ class HomeScreenVC: UIViewController, GADFullScreenContentDelegate, GADBannerVie
         super.viewDidLoad()
         loadRewardAd()
         if let savedCount = retrieveCountFromKeychain() {
-                    REEL_COUNT = savedCount
-                }
+            REEL_COUNT = savedCount
+        }
         NotificationCenter.default.addObserver(self, selector: #selector(adDismissed), name: NSNotification.Name("AdDismissedNotification"), object: nil)
         InAppPurchase().verifySubscriptions([.autoRenewableForMonth, .autoRenewableForYear, .autoRenewableForLifeTime], completion: { isPurchased in
             isSubScription = isPurchased
@@ -69,6 +71,14 @@ class HomeScreenVC: UIViewController, GADFullScreenContentDelegate, GADBannerVie
             bannerView.load(GADRequest())
             bannerView.delegate = self
         }
+        animationContainerView.contentMode = .scaleToFill
+        animationContainerView.loopMode = .loop
+        animationContainerView.animationSpeed = 1
+        animationContainerView.play()
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(animationViewTapped))
+        animationContainerView.addGestureRecognizer(tapGesture)
+        animationContainerView.isUserInteractionEnabled = true
+        
     }
     @objc func adDismissed() {
         InAppPurchase().verifySubscriptions([.autoRenewableForMonth, .autoRenewableForYear, .autoRenewableForLifeTime], completion: { isPurchased in
@@ -88,7 +98,7 @@ class HomeScreenVC: UIViewController, GADFullScreenContentDelegate, GADBannerVie
     @IBAction func onTappedShareApp(_ sender: Any) {
         CLICK_COUNT += 1
         if CLICK_COUNT == UserDefaults.standard.integer(forKey: "AD_COUNT") {
-            showRewardAd()
+            TrigerInterstitial()
             CLICK_COUNT = 0
         }
         let textToShare = "Check out this awesome app!"
@@ -98,21 +108,30 @@ class HomeScreenVC: UIViewController, GADFullScreenContentDelegate, GADBannerVie
         
         present(activityViewController, animated: true, completion: nil)
     }
-    
-    @IBAction func onTappedPointsBtn(_ sender: Any) {
+    @objc func animationViewTapped() {
         CLICK_COUNT += 1
         if CLICK_COUNT == UserDefaults.standard.integer(forKey: "AD_COUNT") {
-            showRewardAd()
+            TrigerInterstitial()
             CLICK_COUNT = 0
         }
-        let vc = storyboard?.instantiateViewController(withIdentifier: "CoinsCollecVC") as! CoinsCollecVC
-        self.navigationController?.pushViewController(vc, animated: true)
+        
+        showAlertForGift()
+    }
+    @IBAction func onTappedPointsBtn(_ sender: Any) {
+        
+        //        CLICK_COUNT += 1
+        //        if CLICK_COUNT == UserDefaults.standard.integer(forKey: "AD_COUNT") {
+        //            TrigerInterstitial()
+        //            CLICK_COUNT = 0
+        //        }
+        //        let vc = storyboard?.instantiateViewController(withIdentifier: "CoinsCollecVC") as! CoinsCollecVC
+        //        self.navigationController?.pushViewController(vc, animated: true)
     }
     
     @IBAction func onTappedRateus(_ sender: Any) {
         CLICK_COUNT += 1
         if CLICK_COUNT == UserDefaults.standard.integer(forKey: "AD_COUNT") {
-            showRewardAd()
+            TrigerInterstitial()
             CLICK_COUNT = 0
         }
         if #available(iOS 10.3, *) {
@@ -145,7 +164,7 @@ class HomeScreenVC: UIViewController, GADFullScreenContentDelegate, GADBannerVie
     @IBAction func btnGridAction(_ sender: Any) {
         CLICK_COUNT += 1
         if CLICK_COUNT == UserDefaults.standard.integer(forKey: "AD_COUNT") {
-            showRewardAd()
+            TrigerInterstitial()
             CLICK_COUNT = 0
             print("Current Ads Count >>>>>>>>>>>>>>>>>>>> \(CLICK_COUNT)")
         }
@@ -157,7 +176,7 @@ class HomeScreenVC: UIViewController, GADFullScreenContentDelegate, GADBannerVie
         CLICK_COUNT += 1
         print("Current Ads Count >>>>>>>>>>>>>>>>>>>> \(CLICK_COUNT)")
         if CLICK_COUNT == UserDefaults.standard.integer(forKey: "AD_COUNT") {
-            showRewardAd()
+            TrigerInterstitial()
             CLICK_COUNT = 0
             print("Current Ads Count >>>>>>>>>>>>>>>>>>>> \(CLICK_COUNT)")
         }
@@ -174,7 +193,7 @@ class HomeScreenVC: UIViewController, GADFullScreenContentDelegate, GADBannerVie
         CLICK_COUNT += 1
         print("Current Ads Count >>>>>>>>>>>>>>>>>>>> \(CLICK_COUNT)")
         if CLICK_COUNT == UserDefaults.standard.integer(forKey: "AD_COUNT") {
-            showRewardAd()
+            TrigerInterstitial()
             CLICK_COUNT = 0
             print("Current Ads Count >>>>>>>>>>>>>>>>>>>> \(CLICK_COUNT)")
         }
@@ -186,7 +205,7 @@ class HomeScreenVC: UIViewController, GADFullScreenContentDelegate, GADBannerVie
         CLICK_COUNT += 1
         print("Current Ads Count >>>>>>>>>>>>>>>>>>>> \(CLICK_COUNT)")
         if CLICK_COUNT == UserDefaults.standard.integer(forKey: "AD_COUNT") {
-            showRewardAd()
+            TrigerInterstitial()
             CLICK_COUNT = 0
             print("Current Ads Count >>>>>>>>>>>>>>>>>>>> \(CLICK_COUNT)")
         }
@@ -389,21 +408,7 @@ class HomeScreenVC: UIViewController, GADFullScreenContentDelegate, GADBannerVie
         })
     }
 }
-// MARK: - GADFullScreenContentDelegate
-extension HomeScreenVC {
-    func adDidRecordImpression(_ ad: GADFullScreenPresentingAd) {
-        print("Ad did record impression")
-    }
-    
-    func ad(_ ad: GADFullScreenPresentingAd, didFailToPresentFullScreenContentWithError error: Error) {
-        print("Ad failed to present full screen content:", error)
-    }
-    
-    func adDidDismissFullScreenContent(_ ad: GADFullScreenPresentingAd) {
-        loadRewardAd()
-        print("Ad did dismiss full screen content")
-    }
-}
+
 extension HomeScreenVC {
     
     func loadRewardAd() {
@@ -467,4 +472,42 @@ extension HomeScreenVC {
         }
     }
     
+}
+
+extension HomeScreenVC {
+    func ad(_ ad: GADFullScreenPresentingAd, didFailToPresentFullScreenContentWithError error: Error) {
+        print("Ad did fail to present full screen content.")
+    }
+    
+    func adDidPresentFullScreenContent(_ ad: GADFullScreenPresentingAd) {
+        print("Ad did present full screen content.")
+    }
+    
+    func adDidDismissFullScreenContent(_ ad: GADFullScreenPresentingAd) {
+        loadRewardAd()
+        print("Ad did dismiss full screen content.")
+    }
+    func TrigerInterstitial() {
+        let request = GADRequest()
+        if let adUnitID1 = UserDefaults.standard.string(forKey: "INTERSTITIAL_ID") {
+            GADInterstitialAd.load(withAdUnitID:adUnitID1,request: request,
+                                   completionHandler: { [self] ad, error in
+                if let error = error {
+                    return
+                }
+                interstitial = ad
+                interstitial?.fullScreenContentDelegate = self
+            }
+            )
+        }
+    }
+    
+    func showAlertForGift() {
+        self.animationContainerView.isHidden = true
+        let alert = UIAlertController(title: "Special Offer!", message: "Congratulations! You've got a 50% discount offer.", preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { _ in
+            
+        }))
+        self.present(alert, animated: true, completion: nil)
+    }
 }

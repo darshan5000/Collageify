@@ -97,6 +97,7 @@
 		04E5623B2BCC332800B4AF0E /* MaterialActivityIndicatorAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04E562332BCC332800B4AF0E /* MaterialActivityIndicatorAnimator.swift */; };
 		04E5623C2BCC332800B4AF0E /* MaterialActivityIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04E562342BCC332800B4AF0E /* MaterialActivityIndicator.swift */; };
 		68F78C8D9C8D3A9041CA1021 /* Pods_Collageify.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B5B0D6BDDBC0055D9429E8B8 /* Pods_Collageify.framework */; };
+		7D06E9612BE53C2F00D5B6F7 /* giftBox.json in Resources */ = {isa = PBXBuildFile; fileRef = 7D06E9602BE53C2F00D5B6F7 /* giftBox.json */; };
 		7D41BC642BC114E700382D1A /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7D41BC622BC114E700382D1A /* Main.storyboard */; };
 		7D41BC662BC114E800382D1A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7D41BC652BC114E800382D1A /* Assets.xcassets */; };
 		7D41BC692BC114E800382D1A /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7D41BC672BC114E800382D1A /* LaunchScreen.storyboard */; };
@@ -273,6 +274,7 @@
 		04E562332BCC332800B4AF0E /* MaterialActivityIndicatorAnimator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MaterialActivityIndicatorAnimator.swift; sourceTree = "<group>"; };
 		04E562342BCC332800B4AF0E /* MaterialActivityIndicator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MaterialActivityIndicator.swift; sourceTree = "<group>"; };
 		4896EB7C94440D5AD410A78F /* Pods-Collageify.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Collageify.release.xcconfig"; path = "Target Support Files/Pods-Collageify/Pods-Collageify.release.xcconfig"; sourceTree = "<group>"; };
+		7D06E9602BE53C2F00D5B6F7 /* giftBox.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = giftBox.json; sourceTree = "<group>"; };
 		7D26FC132BCBD97E00711970 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		7D41BC592BC114E700382D1A /* Collageify.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Collageify.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7D41BC632BC114E700382D1A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -385,6 +387,7 @@
 		042723AC2BD2FF3700BF9594 /* Global */ = {
 			isa = PBXGroup;
 			children = (
+				7D06E9602BE53C2F00D5B6F7 /* giftBox.json */,
 				042723AD2BD2FF3700BF9594 /* Global.swift */,
 				042723AE2BD2FF3700BF9594 /* PentagonView.swift */,
 				042723AF2BD2FF3700BF9594 /* FramesJson.swift */,
@@ -908,6 +911,7 @@
 				7D41BEA42BC11CBF00382D1A /* Playball-Regular.ttf in Resources */,
 				7D41BC692BC114E800382D1A /* LaunchScreen.storyboard in Resources */,
 				047F551D2BCD867900325BFF /* EditPreviewCollectionViewCell.xib in Resources */,
+				7D06E9612BE53C2F00D5B6F7 /* giftBox.json in Resources */,
 				7D41BEB02BC11CBF00382D1A /* Pretty Girls Script Demo.ttf in Resources */,
 				7D41BE982BC11CBF00382D1A /* Script Writing.ttf in Resources */,
 				7D41BEA12BC11CBF00382D1A /* Ginga.ttf in Resources */,

@@ -1848,30 +1848,29 @@
                                     </userDefinedRuntimeAttribute>
                                 </userDefinedRuntimeAttributes>
                             </imageView>
-                            <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xbY-e8-WZQ">
-                                <rect key="frame" x="354" y="125" width="30" height="31"/>
+                            <view contentMode="scaleAspectFill" translatesAutoresizingMaskIntoConstraints="NO" id="Gu7-vq-50k" customClass="LottieAnimationView" customModule="Lottie">
+                                <rect key="frame" x="339" y="121" width="60" height="60"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="30" id="89z-Ik-KPr"/>
-                                    <constraint firstAttribute="height" constant="31" id="XU8-zC-K1s"/>
+                                    <constraint firstAttribute="width" constant="60" id="eB2-B5-zt8"/>
+                                    <constraint firstAttribute="height" constant="60" id="z9H-FB-E9b"/>
                                 </constraints>
-                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
-                                <state key="normal" image="coin"/>
-                                <connections>
-                                    <action selector="onTappedPointsBtn:" destination="Dbm-iP-LMc" eventType="touchUpInside" id="Ypf-7N-9h5"/>
-                                </connections>
-                            </button>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="string" keyPath="animationName" value="giftBox"/>
+                                </userDefinedRuntimeAttributes>
+                            </view>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="zDA-y5-CMx"/>
                         <color key="backgroundColor" red="0.93031221630000005" green="0.9412619472" blue="0.94111657140000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
+                            <constraint firstItem="Gu7-vq-50k" firstAttribute="top" secondItem="qQW-2e-hOo" secondAttribute="bottom" constant="3.5" id="0JH-kg-RbZ"/>
                             <constraint firstItem="ISK-xJ-Ukt" firstAttribute="top" secondItem="Vaf-aK-YaF" secondAttribute="bottom" constant="15" id="2B1-CY-a4N"/>
-                            <constraint firstItem="xbY-e8-WZQ" firstAttribute="top" secondItem="qQW-2e-hOo" secondAttribute="bottom" constant="7.5" id="5pl-Q4-DjC"/>
+                            <constraint firstItem="zDA-y5-CMx" firstAttribute="trailing" secondItem="Gu7-vq-50k" secondAttribute="trailing" constant="15" id="4Ag-V8-hW9"/>
                             <constraint firstItem="Vaf-aK-YaF" firstAttribute="top" secondItem="zDA-y5-CMx" secondAttribute="top" constant="30" id="Az0-mV-G7j"/>
                             <constraint firstAttribute="bottom" secondItem="7Hx-fv-3Qi" secondAttribute="bottom" id="B0t-hV-u3E"/>
                             <constraint firstItem="qQW-2e-hOo" firstAttribute="centerY" secondItem="Vaf-aK-YaF" secondAttribute="centerY" constant="2.5" id="BGW-0R-tgv"/>
                             <constraint firstItem="ALh-94-TmM" firstAttribute="top" secondItem="FSp-9b-W2k" secondAttribute="top" id="Bfp-Oa-pts"/>
                             <constraint firstItem="MQf-Lj-Oec" firstAttribute="top" secondItem="ISK-xJ-Ukt" secondAttribute="bottom" constant="15" id="Iuc-JB-iG7"/>
-                            <constraint firstItem="xbY-e8-WZQ" firstAttribute="centerX" secondItem="qQW-2e-hOo" secondAttribute="centerX" id="Jhf-oH-jFg"/>
                             <constraint firstItem="Kb0-tL-vxX" firstAttribute="top" secondItem="MQf-Lj-Oec" secondAttribute="bottom" constant="10" id="LR0-UA-C1H"/>
                             <constraint firstItem="MQf-Lj-Oec" firstAttribute="leading" secondItem="Kb0-tL-vxX" secondAttribute="leading" id="RRy-5l-AJv"/>
                             <constraint firstItem="MQf-Lj-Oec" firstAttribute="trailing" secondItem="Kb0-tL-vxX" secondAttribute="trailing" id="Tor-pp-xcM"/>
@@ -1898,6 +1897,7 @@
                     </view>
                     <navigationItem key="navigationItem" id="ui5-XO-g04"/>
                     <connections>
+                        <outlet property="animationContainerView" destination="Gu7-vq-50k" id="Qbx-n5-r2R"/>
                         <outlet property="bannerView" destination="7Hx-fv-3Qi" id="txE-Ny-c9R"/>
                         <outlet property="btnEdit" destination="Wat-Cb-cq7" id="gXJ-Sm-NTD"/>
                         <outlet property="btnGrid" destination="aWL-kB-h5B" id="sID-VQ-cht"/>
@@ -4562,7 +4562,6 @@ This approach offers a material reward for interacting with the app's adverts in
         <image name="camera" width="76" height="55"/>
         <image name="check-mark-purchase-listing" width="512" height="512"/>
         <image name="close" width="64" height="64"/>
-        <image name="coin" width="512" height="512"/>
         <image name="crp_filp_v" width="512" height="512"/>
         <image name="crp_flip_h" width="512" height="512"/>
         <image name="delete1" width="512" height="512"/>

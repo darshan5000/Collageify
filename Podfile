@@ -14,8 +14,9 @@ target 'Collageify' do
   pod 'Firebase/Analytics'
   pod 'SwiftyStoreKit'
   pod 'Firebase/RemoteConfig'
-
+  pod 'lottie-ios'
   pod 'Google-Mobile-Ads-SDK'
+  pod 'KeychainSwift
 
 
   # Pods for Collageify

@@ -16,11 +16,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GADFullScreenContentDeleg
         setupIAP()
         fetchAndStoreRemoteConfig()
         loadAppOpenAdIfNeeded()
+        onlyLoadAppOpenAd()
         return true
     }
     
     func applicationWillEnterForeground(_ application: UIApplication) {
-        loadAppOpenAdIfNeeded()
+        loadAppOpenAd()
+    }
+    
+    func applicationDidEnterBackground(_ application: UIApplication) {
+        onlyLoadAppOpenAd()
     }
     
     func setupIAP() {
@@ -62,12 +67,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GADFullScreenContentDeleg
                 if let adUnitID1 = remoteConfig["bannerAdID"].stringValue,
                    let adUnitID2 = remoteConfig["rewardAdID"].stringValue,
                    let adUnitID3 = remoteConfig["openAppAdID"].stringValue,
+                   let adUnitID4 = remoteConfig["interstitialAdID"].stringValue,
                    let adsCount = remoteConfig["adsCount"].stringValue {
                     UserDefaults.standard.set(adUnitID1, forKey: "BANNER_ID")
                     UserDefaults.standard.set(adUnitID2, forKey: "REWARD_ID")
                     UserDefaults.standard.set(adUnitID3, forKey: "OPENAD_ID")
                     UserDefaults.standard.set(adsCount, forKey: "AD_COUNT")
+                    UserDefaults.standard.set(adUnitID4, forKey: "INTERSTITIAL_ID")
                     print("Ads Count From Firebase:-----\(adsCount)")
+                    print("BANNER_ID >>>>>>>>>>>>>> \(adUnitID1)")
+                    print("REWARD_ID >>>>>>>>>>>>>> \(adUnitID2)")
+                    print("OPENAD_ID >>>>>>>>>>>>>> \(adUnitID3)")
+                    print("INTERSTITIAL_ID >>>>>>>>>>>>>> \(adUnitID4)")
                 }
                 let adsEnabled = remoteConfig["isAdsShow"].boolValue
                 print("adsEnabled: \(adsEnabled)")
@@ -89,7 +100,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GADFullScreenContentDeleg
     }
     
     func loadAppOpenAd() {
-        let adUnitID = "ca-app-pub-3940256099942544/5575463023" // Replace with your Ad Unit ID
+        let adUnitID = "ca-app-pub-3940256099942544/5575463023"
         GADAppOpenAd.load(withAdUnitID: adUnitID, request: GADRequest(), orientation: UIInterfaceOrientation.portrait, completionHandler: { (ad, error) in
             if let error = error {
                 print("Failed to load App Open Ad: \(error.localizedDescription)")
@@ -103,7 +114,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GADFullScreenContentDeleg
             self.showAppOpenAdIfReady()
         })
     }
-    
+    func onlyLoadAppOpenAd() {
+        let adUnitID = "ca-app-pub-3940256099942544/5575463023"
+        GADAppOpenAd.load(withAdUnitID: adUnitID, request: GADRequest(), orientation: UIInterfaceOrientation.portrait, completionHandler: { (ad, error) in
+            if let error = error {
+                print("Failed to load App Open Ad: \(error.localizedDescription)")
+                return
+            }
+            
+            self.appOpenAd = ad
+            self.appOpenAd?.fullScreenContentDelegate = self
+        })
+    }
     func showAppOpenAdIfReady() {
         if let appOpenAd = appOpenAd, let rootViewController = window?.rootViewController {
             appOpenAd.present(fromRootViewController: rootViewController)
@@ -127,6 +149,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GADFullScreenContentDeleg
     }
     
     func adDidDismissFullScreenContent(_ ad: GADFullScreenPresentingAd) {
+        onlyLoadAppOpenAd()
         NotificationCenter.default.post(name: NSNotification.Name("AdDismissedNotification"), object: nil)
     }
 }
