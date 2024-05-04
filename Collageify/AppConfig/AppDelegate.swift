@@ -2,6 +2,7 @@ import UIKit
 import SwiftyStoreKit
 import Firebase
 import GoogleMobileAds
+import AppTrackingTransparency
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate, GADFullScreenContentDelegate {
@@ -10,22 +11,42 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GADFullScreenContentDeleg
     var appOpenAd: GADAppOpenAd?
     var loadTime: Date?
     
+    func applicationDidBecomeActive(_ application: UIApplication) {
+        if #available(iOS 14, *) {
+            ATTrackingManager.requestTrackingAuthorization { status in
+                switch status {
+                case .authorized:
+                    print("enable tracking")
+                case .denied:
+                    print("disable tracking")
+                default:
+                    print("disable tracking")
+                }
+            }
+        }
+    }
+    
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         FirebaseApp.configure()
         FirebaseConfiguration.shared.setLoggerLevel(.max) // Enable debug mode
-        setupIAP()
         fetchAndStoreRemoteConfig()
-        loadAppOpenAdIfNeeded()
+        setupIAP()
+        if IS_ADS_SHOW == true {
         onlyLoadAppOpenAd()
+        }
         return true
     }
     
     func applicationWillEnterForeground(_ application: UIApplication) {
+        if IS_ADS_SHOW == true {
         loadAppOpenAd()
+        }
     }
     
     func applicationDidEnterBackground(_ application: UIApplication) {
+        if IS_ADS_SHOW == true {
         onlyLoadAppOpenAd()
+        }
     }
     
     func setupIAP() {

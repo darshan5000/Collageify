@@ -34,19 +34,24 @@ class ShareVC: UIViewController, GADFullScreenContentDelegate {
             btnSave.isHidden = false
             btnDelete.isHidden = false
         }
+        if IS_ADS_SHOW == true {
         loadRewardAd()
         loadInterstitial()
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
         Analytics.logEvent("ShareVC_enter", parameters: [
             "params": "purchase_screen_enter"
         ])
+        if IS_ADS_SHOW == true {
         loadRewardAd()
         loadInterstitial()
+        }
     }
     
     @IBAction func btnBackAction(_ sender: UIButton) {
+        if IS_ADS_SHOW == true {
         loadRewardAd()
         loadInterstitial()
         CLICK_COUNT += 1
@@ -55,10 +60,12 @@ class ShareVC: UIViewController, GADFullScreenContentDelegate {
             TrigerInterstitial()
             CLICK_COUNT = 0
         }
+        }
         self.navigationController?.popViewController(animated: true)
     }
     
     @IBAction func btnShareAction(_ sender: UIButton) {
+        if IS_ADS_SHOW == true {
         loadRewardAd()
         loadInterstitial()
         CLICK_COUNT += 1
@@ -66,6 +73,7 @@ class ShareVC: UIViewController, GADFullScreenContentDelegate {
             print("Current Ads Count >>>>>>>>>>>>>>>>>>>> \(CLICK_COUNT)")
             TrigerInterstitial()
             CLICK_COUNT = 0
+        }
         }
         let imageToShare = [ getImage ]
         let activityViewController = UIActivityViewController(activityItems: imageToShare as [Any] , applicationActivities: nil)
@@ -75,6 +83,7 @@ class ShareVC: UIViewController, GADFullScreenContentDelegate {
     }
     
     @IBAction func btnSaveAction(_ sender: UIButton) {
+        if IS_ADS_SHOW == true {
         loadRewardAd()
         loadInterstitial()
         CLICK_COUNT += 1
@@ -82,11 +91,13 @@ class ShareVC: UIViewController, GADFullScreenContentDelegate {
             print("Current Ads Count >>>>>>>>>>>>>>>>>>>> \(CLICK_COUNT)")
             TrigerInterstitial()
             CLICK_COUNT = 0
+        }
         }
         UIImageWriteToSavedPhotosAlbum(getImage, self, #selector(image(_:didFinishSavingWithError:contextInfo:)), nil)
     }
     
     @IBAction func btnDeleteAction(_ sender: UIButton) {
+        if IS_ADS_SHOW == true {
         loadRewardAd()
         loadInterstitial()
         CLICK_COUNT += 1
@@ -95,10 +106,12 @@ class ShareVC: UIViewController, GADFullScreenContentDelegate {
             TrigerInterstitial()
             CLICK_COUNT = 0
         }
+        }
         showDeleteWarning(index)
     }
     
     @IBAction func btnHomeAction(_ sender: UIButton) {
+        if IS_ADS_SHOW == true {
         loadRewardAd()
         loadInterstitial()
         CLICK_COUNT += 1
@@ -107,6 +120,7 @@ class ShareVC: UIViewController, GADFullScreenContentDelegate {
             print("Current Ads Count >>>>>>>>>>>>>>>>>>>> \(CLICK_COUNT)")
             TrigerInterstitial()
             CLICK_COUNT = 0
+        }
         }
         if objDisplay == 1{
             self.navigationController?.popViewController(animated: true)

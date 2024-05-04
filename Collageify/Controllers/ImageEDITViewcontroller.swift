@@ -161,12 +161,12 @@ class ImageEDITViewcontroller: UIViewController,UICollectionViewDelegate,UIColle
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        loadInterstitial()
+        
         if IS_ADS_SHOW == true {
             if let adUnitID1 = UserDefaults.standard.string(forKey: "BANNER_ID") {
                 bannerView.adUnitID = adUnitID1
             }
-            
+            loadInterstitial()
             bannerView.rootViewController = self
             bannerView.load(GADRequest())
             bannerView.delegate = self
@@ -325,7 +325,9 @@ class ImageEDITViewcontroller: UIViewController,UICollectionViewDelegate,UIColle
         scroll.zoomMode = .fill
     }
     override func viewWillAppear(_ animated: Bool) {
+        if IS_ADS_SHOW == true {
         TrigerInterstitial()
+        }
         Analytics.logEvent("ImageEDITViewcontroller_enter", parameters: [
             "params": "purchase_screen_enter"
         ])

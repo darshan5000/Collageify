@@ -23,14 +23,18 @@ class MyPhotosVC: UIViewController,UICollectionViewDelegate,UICollectionViewData
         Analytics.logEvent("MyPhotosVC_enter", parameters: [
             "params": "purchase_screen_enter"
         ])
+        if IS_ADS_SHOW == true {
         loadRewardAd()
         loadInterstitial()
+        }
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        if IS_ADS_SHOW == true {
         loadRewardAd()
         loadInterstitial()
+        }
         lblAlert.isHidden = true
         AlbumsCV.delegate = self
         AlbumsCV.dataSource = self
@@ -57,8 +61,10 @@ class MyPhotosVC: UIViewController,UICollectionViewDelegate,UICollectionViewData
     }
     
     override func viewDidAppear(_ animated: Bool) {
+        if IS_ADS_SHOW == true {
         loadRewardAd()
         loadInterstitial()
+        }
         if arrOfAlbumList.count == 0{
             lblAlert.isHidden = false
         }else {
@@ -67,6 +73,7 @@ class MyPhotosVC: UIViewController,UICollectionViewDelegate,UICollectionViewData
     }
     //MARK:- Button Action Zone
     @IBAction func btnBackAction(_ sender: Any) {
+        if IS_ADS_SHOW == true {
         loadRewardAd()
         loadInterstitial()
         CLICK_COUNT += 1
@@ -75,6 +82,7 @@ class MyPhotosVC: UIViewController,UICollectionViewDelegate,UICollectionViewData
             TrigerInterstitial()
             CLICK_COUNT = 0
             print("Current Ads Count >>>>>>>>>>>>>>>>>>>> \(CLICK_COUNT)")
+        }
         }
         for controller in self.navigationController!.viewControllers as Array {
             if controller.isKind(of: HomeScreenVC.self) {

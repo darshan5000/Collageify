@@ -41,7 +41,9 @@ class VideoEditViewController: UIViewController, GADFullScreenContentDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        if IS_ADS_SHOW == true {
         loadInterstitial()
+        }
         self.viewVideoMain.addSubview(self.viewVideo)
         self.viewTrimMain.addSubview(self.viewTrim)
         self.viewVideoMain.addConstraints([
@@ -78,7 +80,9 @@ class VideoEditViewController: UIViewController, GADFullScreenContentDelegate {
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
+        if IS_ADS_SHOW == true {
         loadInterstitial()
+        }
         self.viewVideo.invalidate()
     }
     
@@ -115,13 +119,17 @@ class VideoEditViewController: UIViewController, GADFullScreenContentDelegate {
     }
     
     @IBAction func actionBack(_ sender: UIButton) {
+        if IS_ADS_SHOW == true {
         loadInterstitial()
+        }
         self.dismiss(animated: true)
     }
     
     @IBAction func actionDone(_ sender: Any) {
         guard let videoConverter = self.videoConverter else { return }
+        if IS_ADS_SHOW == true {
         loadInterstitial()
+        }
         var videoConverterCrop: ConverterCrop?
         if let dimFrame = self.viewVideo.dimFrame {
             videoConverterCrop = ConverterCrop(frame: dimFrame, contrastSize: self.viewVideo.videoRect.size)
@@ -155,6 +163,7 @@ class VideoEditViewController: UIViewController, GADFullScreenContentDelegate {
 extension VideoEditViewController {
     
     @IBAction func actionRotate(_ sender: UIButton) {
+        if IS_ADS_SHOW == true {
         loadInterstitial()
         CLICK_COUNT += 1
         print("Current Ads Count >>>>>>>>>>>>>>>>>>>> \(CLICK_COUNT)")
@@ -162,6 +171,7 @@ extension VideoEditViewController {
             TrigerInterstitial()
             CLICK_COUNT = 0
             print("Current Ads Count >>>>>>>>>>>>>>>>>>>> \(CLICK_COUNT)")
+        }
         }
         var transform = CGAffineTransform.identity
         self.rotate += 1
@@ -178,6 +188,7 @@ extension VideoEditViewController {
     }
     
     @IBAction func actionCrop(_ sender: UIButton) {
+        if IS_ADS_SHOW == true {
         loadInterstitial()
         CLICK_COUNT += 1
         print("Current Ads Count >>>>>>>>>>>>>>>>>>>> \(CLICK_COUNT)")
@@ -185,6 +196,7 @@ extension VideoEditViewController {
             TrigerInterstitial()
             CLICK_COUNT = 0
             print("Current Ads Count >>>>>>>>>>>>>>>>>>>> \(CLICK_COUNT)")
+        }
         }
         guard let asset = self.viewVideo.player?.currentItem?.asset,
             let currentTime = self.viewVideo.player?.currentTime() else { return }

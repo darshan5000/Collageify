@@ -32,7 +32,7 @@ var value1 = CGAffineTransform(scaleX: -1, y: 1)
 var value2 = CGAffineTransform(scaleX: 1, y: -1)
 var value3 = CGAffineTransform(scaleX: -1, y: -1)
 
-var IS_ADS_SHOW: Bool = true
+var IS_ADS_SHOW: Bool = false
 var REEL_COUNT: Int = 0
 var CLICK_COUNT: Int = 0
 

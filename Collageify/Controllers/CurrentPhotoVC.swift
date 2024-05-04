@@ -23,8 +23,10 @@ class CurrentPhotoVC: UIViewController,OpalImagePickerControllerDelegate,UIImage
     override func viewDidLoad() {
         super.viewDidLoad()
         imagePicker.delegate = self
+        if IS_ADS_SHOW == true {
         loadRewardAd()
         loadInterstitial()
+        }
 //        picker.imagePickerDelegate = self
 //        picker.delegate = self
         btnDismiss.backgroundColor = UIColor.clear
@@ -35,12 +37,16 @@ class CurrentPhotoVC: UIViewController,OpalImagePickerControllerDelegate,UIImage
         Analytics.logEvent("CurrentPhotoVC_enter", parameters: [
             "params": "purchase_screen_enter"
         ])
+        if IS_ADS_SHOW == true {
         loadRewardAd()
-        loadInterstitial()
+            loadInterstitial()
+            
+        }
     }
     
     //MARK:- Button Action Zone
     @IBAction func btnDismissAction(_ sender: Any) {
+        if IS_ADS_SHOW == true {
         loadRewardAd()
         loadInterstitial()
         CLICK_COUNT += 1
@@ -49,11 +55,13 @@ class CurrentPhotoVC: UIViewController,OpalImagePickerControllerDelegate,UIImage
             print("Current Ads Count >>>>>>>>>>>>>>>>>>>> \(CLICK_COUNT)")
             TrigerInterstitial()
             CLICK_COUNT = 0
+        }
         }
         self.dismiss(animated: true, completion: nil)
     }
     
     @IBAction func btnCameraAction(_ sender: UIButton) {
+        if IS_ADS_SHOW == true {
         loadRewardAd()
         loadInterstitial()
         CLICK_COUNT += 1
@@ -63,10 +71,12 @@ class CurrentPhotoVC: UIViewController,OpalImagePickerControllerDelegate,UIImage
             TrigerInterstitial()
             CLICK_COUNT = 0
         }
+        }
         openCamera()
     }
     
     @IBAction func btnGalleryAction(_ sender: UIButton) {
+        if IS_ADS_SHOW == true {
         loadRewardAd()
         loadInterstitial()
         CLICK_COUNT += 1
@@ -75,6 +85,7 @@ class CurrentPhotoVC: UIViewController,OpalImagePickerControllerDelegate,UIImage
             print("Current Ads Count >>>>>>>>>>>>>>>>>>>> \(CLICK_COUNT)")
             TrigerInterstitial()
             CLICK_COUNT = 0
+        }
         }
         openGallery()
     }

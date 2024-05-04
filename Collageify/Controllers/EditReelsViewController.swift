@@ -25,12 +25,13 @@ class EditReelsViewController: UIViewController, GADBannerViewDelegate,GADFullSc
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        loadInterstitial()
+        
         if IS_ADS_SHOW == true {
             if let adUnitID1 = UserDefaults.standard.string(forKey: "BANNER_ID") {
                 bannerView.adUnitID = adUnitID1
             }
-            
+            loadRewardAd()
+            loadInterstitial()
             bannerView.rootViewController = self
             bannerView.load(GADRequest())
             bannerView.delegate = self
@@ -38,16 +39,20 @@ class EditReelsViewController: UIViewController, GADBannerViewDelegate,GADFullSc
         collPreview.register(UINib(nibName: "EditPreviewCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "EditPreviewCollectionViewCell")
         collPreview.delegate = self
         collPreview.dataSource = self
-        loadRewardAd()
+        
     }
     
     override func viewWillAppear(_ animated: Bool) {
+        if IS_ADS_SHOW == true {
         loadRewardAd()
         loadInterstitial()
+        }
     }
     
     @IBAction func actionEdit(_ sender: UIButton) {
+        if IS_ADS_SHOW == true {
         showRewardAd()
+        }
         if arrayAsset[selectedIndex].isVideo {
             let obj : VideoEditViewController = self.storyboard?.instantiateViewController(withIdentifier: "VideoEditViewController") as! VideoEditViewController
             obj.videoAsset = arrayAsset[selectedIndex]
@@ -65,22 +70,26 @@ class EditReelsViewController: UIViewController, GADBannerViewDelegate,GADFullSc
     }
     
     @IBAction func actionBack(_ sender: UIButton) {
+        if IS_ADS_SHOW == true {
         CLICK_COUNT += 1
         if CLICK_COUNT == UserDefaults.standard.integer(forKey: "AD_COUNT") {
             print("Current Ads Count >>>>>>>>>>>>>>>>>>>> \(CLICK_COUNT)")
             TrigerInterstitial()
             CLICK_COUNT = 0
         }
+        }
         self.navigationController?.popViewController(animated: true)
     }
     
     @IBAction func actionNext(_ sender: Any) {
+        if IS_ADS_SHOW == true {
         CLICK_COUNT += 1
         print("Current Ads Count >>>>>>>>>>>>>>>>>>>> \(CLICK_COUNT)")
         if CLICK_COUNT == UserDefaults.standard.integer(forKey: "AD_COUNT") {
             print("Current Ads Count >>>>>>>>>>>>>>>>>>>> \(CLICK_COUNT)")
             TrigerInterstitial()
             CLICK_COUNT = 0
+        }
         }
         self.navigationController?.popViewController(animated: true)
         actionDone?(arrayAsset)

@@ -22,7 +22,6 @@ class ALLShapeVC: UIViewController, UICollectionViewDelegate, UICollectionViewDa
     override func viewDidLoad() {
         super.viewDidLoad()
         pageControll.numberOfPages = 13
-        loadRewardAd()
         ShapeCV.delegate = self
         ShapeCV.dataSource = self
         ShapeCV.register(UINib(nibName: "SwipMainCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "SwipMainCollectionViewCell")
@@ -31,7 +30,7 @@ class ALLShapeVC: UIViewController, UICollectionViewDelegate, UICollectionViewDa
             if let adUnitID1 = UserDefaults.standard.string(forKey: "BANNER_ID") {
                 bannerView.adUnitID = adUnitID1
             }
-            
+            loadRewardAd()
             bannerView.rootViewController = self
             bannerView.load(GADRequest())
             bannerView.delegate = self
@@ -43,12 +42,14 @@ class ALLShapeVC: UIViewController, UICollectionViewDelegate, UICollectionViewDa
         bannerView.isHidden = false
     }
     @IBAction func btnBackAction(_ sender: Any) {
+        if IS_ADS_SHOW == true {
         CLICK_COUNT += 1
         print("Current Ads Count >>>>>>>>>>>>>>>>>>>> \(CLICK_COUNT)")
         if CLICK_COUNT == UserDefaults.standard.integer(forKey: "AD_COUNT") {
             showRewardAd()
             CLICK_COUNT = 0
             print("Current Ads Count >>>>>>>>>>>>>>>>>>>> \(CLICK_COUNT)")
+        }
         }
         self.navigationController?.popViewController(animated: true)
     }

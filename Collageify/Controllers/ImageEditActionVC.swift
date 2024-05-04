@@ -140,8 +140,10 @@ class ImageEditActionVC: UIViewController,GADFullScreenContentDelegate, GADBanne
     var rect = CGRect()
     
     override func viewWillAppear(_ animated: Bool) {
-//        loadInterstitial()
-        TrigerInterstitial()
+        //        loadInterstitial()
+        if IS_ADS_SHOW == true {
+            TrigerInterstitial()
+        }
         Analytics.logEvent("ImageEditActionVC_enter", parameters: [
             "params": "purchase_screen_enter"
         ])
@@ -149,12 +151,12 @@ class ImageEditActionVC: UIViewController,GADFullScreenContentDelegate, GADBanne
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        loadInterstitial()
+        
         if IS_ADS_SHOW == true {
             if let adUnitID1 = UserDefaults.standard.string(forKey: "BANNER_ID") {
                 bannerView.adUnitID = adUnitID1
             }
-            
+            loadInterstitial()
             bannerView.rootViewController = self
             bannerView.load(GADRequest())
             bannerView.delegate = self
@@ -5582,7 +5584,7 @@ class ImageEditActionVC: UIViewController,GADFullScreenContentDelegate, GADBanne
         }
         
         let aPath = CGMutablePath()
-                
+        
         pathPArr.enumerated().forEach { i, pt in
             let nextIndex = (i + 1) % pathPArr.count
             if i == 0 {
@@ -5594,17 +5596,17 @@ class ImageEditActionVC: UIViewController,GADFullScreenContentDelegate, GADBanne
         }
         aPath.addArc(tangent1End: pathPArr[0], tangent2End: pathPArr[1], radius: cornerRadius)
         aPath.closeSubpath()
-
+        
         let strokePath = UIBezierPath(cgPath: aPath.copy(strokingWithWidth: padding, lineCap: .round, lineJoin: .round, miterLimit: .zero))
         let cPath = UIBezierPath(cgPath: aPath)
         cPath.append(UIBezierPath(cgPath: strokePath.cgPath))
         cPath.usesEvenOddFillRule = true
-
+        
         let v = ShapeView(frame: viewGridMain.bounds)
         v.backgroundColor = UIColor.systemGray6
         v.addMask(path: cPath.cgPath)
         viewGridMain.addSubview(v)
-
+        
         let img = ZoomImageView(frame: cPath.cgPath.boundingBox)
         let image = allImages[index]["image"] as? UIImage ?? UIImage()
         if image != UIImage() {
@@ -5617,7 +5619,7 @@ class ImageEditActionVC: UIViewController,GADFullScreenContentDelegate, GADBanne
         img.isUserInteractionEnabled = true
         img.clipsToBounds  = true
         v.addSubview(img)
-
+        
     }
     
     func createViewWithMaskCurve(list: [(dir: CurveDirection, shapes: [[CGFloat]])]) {
@@ -6086,11 +6088,13 @@ class ImageEditActionVC: UIViewController,GADFullScreenContentDelegate, GADBanne
     }
     
     @IBAction func btnDownAction(_ sender: Any) {
-        loadInterstitial()
-        CLICK_COUNT += 1
-        if CLICK_COUNT == UserDefaults.standard.integer(forKey: "AD_COUNT") {
-            CLICK_COUNT = 0
-            TrigerInterstitial()
+        if IS_ADS_SHOW == true {
+            loadInterstitial()
+            CLICK_COUNT += 1
+            if CLICK_COUNT == UserDefaults.standard.integer(forKey: "AD_COUNT") {
+                CLICK_COUNT = 0
+                TrigerInterstitial()
+            }
         }
         self.viewShapes.isHidden = true
         viewReplaceImg.isHidden = true
@@ -6099,11 +6103,13 @@ class ImageEditActionVC: UIViewController,GADFullScreenContentDelegate, GADBanne
     }
     
     @IBAction func btnKeyboardAction(_ sender: Any) {
-        loadInterstitial()
-        CLICK_COUNT += 1
-        if CLICK_COUNT == UserDefaults.standard.integer(forKey: "AD_COUNT") {
-            CLICK_COUNT = 0
-            TrigerInterstitial()
+        if IS_ADS_SHOW == true {
+            loadInterstitial()
+            CLICK_COUNT += 1
+            if CLICK_COUNT == UserDefaults.standard.integer(forKey: "AD_COUNT") {
+                CLICK_COUNT = 0
+                TrigerInterstitial()
+            }
         }
         let obj : CurrentTextVC = self.storyboard?.instantiateViewController(withIdentifier: "CurrentTextVC") as! CurrentTextVC
         obj.isFromEditImageStk = true
@@ -6112,11 +6118,13 @@ class ImageEditActionVC: UIViewController,GADFullScreenContentDelegate, GADBanne
         self.present(obj, animated: true, completion: nil)
     }
     @IBAction func btnFontStyleAction(_ sender: Any) {
-        loadInterstitial()
-        CLICK_COUNT += 1
-        if CLICK_COUNT == UserDefaults.standard.integer(forKey: "AD_COUNT") {
-            CLICK_COUNT = 0
-            TrigerInterstitial()
+        if IS_ADS_SHOW == true {
+            loadInterstitial()
+            CLICK_COUNT += 1
+            if CLICK_COUNT == UserDefaults.standard.integer(forKey: "AD_COUNT") {
+                CLICK_COUNT = 0
+                TrigerInterstitial()
+            }
         }
         self.objSelectTxtValue = 2
         viewAlign.isHidden = true
@@ -6125,22 +6133,26 @@ class ImageEditActionVC: UIViewController,GADFullScreenContentDelegate, GADBanne
         tblFontStyle.reloadData()
     }
     @IBAction func btnColorAction(_ sender: Any) {
-        loadInterstitial()
-        CLICK_COUNT += 1
-        if CLICK_COUNT == UserDefaults.standard.integer(forKey: "AD_COUNT") {
-            CLICK_COUNT = 0
-            TrigerInterstitial()
+        if IS_ADS_SHOW == true {
+            loadInterstitial()
+            CLICK_COUNT += 1
+            if CLICK_COUNT == UserDefaults.standard.integer(forKey: "AD_COUNT") {
+                CLICK_COUNT = 0
+                TrigerInterstitial()
+            }
         }
         viewColorPicker.isHidden = false
         viewAlign.isHidden = true
         setColor()
     }
     @IBAction func btnAlignAction(_ sender: Any) {
-        loadInterstitial()
-        CLICK_COUNT += 1
-        if CLICK_COUNT == UserDefaults.standard.integer(forKey: "AD_COUNT") {
-            CLICK_COUNT = 0
-            TrigerInterstitial()
+        if IS_ADS_SHOW == true {
+            loadInterstitial()
+            CLICK_COUNT += 1
+            if CLICK_COUNT == UserDefaults.standard.integer(forKey: "AD_COUNT") {
+                CLICK_COUNT = 0
+                TrigerInterstitial()
+            }
         }
         viewAlign.isHidden = false
         tblFontStyle.isHidden = true
@@ -6148,11 +6160,13 @@ class ImageEditActionVC: UIViewController,GADFullScreenContentDelegate, GADBanne
     }
     
     @IBAction func btnAddTextAction(_ sender: Any) {
-        loadInterstitial()
-        CLICK_COUNT += 1
-        if CLICK_COUNT == UserDefaults.standard.integer(forKey: "AD_COUNT") {
-            CLICK_COUNT = 0
-            TrigerInterstitial()
+        if IS_ADS_SHOW == true {
+            loadInterstitial()
+            CLICK_COUNT += 1
+            if CLICK_COUNT == UserDefaults.standard.integer(forKey: "AD_COUNT") {
+                CLICK_COUNT = 0
+                TrigerInterstitial()
+            }
         }
         let obj : CurrentTextVC = self.storyboard?.instantiateViewController(withIdentifier: "CurrentTextVC") as! CurrentTextVC
         obj.isFromEditImageStk = true
@@ -6162,11 +6176,13 @@ class ImageEditActionVC: UIViewController,GADFullScreenContentDelegate, GADBanne
     }
     
     @IBAction func btnDown1Action(_ sender: Any) {
-        loadInterstitial()
-        CLICK_COUNT += 1
-        if CLICK_COUNT == UserDefaults.standard.integer(forKey: "AD_COUNT") {
-            CLICK_COUNT = 0
-            TrigerInterstitial()
+        if IS_ADS_SHOW == true {
+            loadInterstitial()
+            CLICK_COUNT += 1
+            if CLICK_COUNT == UserDefaults.standard.integer(forKey: "AD_COUNT") {
+                CLICK_COUNT = 0
+                TrigerInterstitial()
+            }
         }
         selectedStickerView?.showEditing = false
         viewMain.currentlyEditingLabel.hideEditingHandlers()
@@ -6177,41 +6193,49 @@ class ImageEditActionVC: UIViewController,GADFullScreenContentDelegate, GADBanne
     }
     
     @IBAction func btnLeftAction(_ sender: Any) {
-        loadInterstitial()
-        CLICK_COUNT += 1
-        if CLICK_COUNT == UserDefaults.standard.integer(forKey: "AD_COUNT") {
-            CLICK_COUNT = 0
-            TrigerInterstitial()
+        if IS_ADS_SHOW == true {
+            loadInterstitial()
+            CLICK_COUNT += 1
+            if CLICK_COUNT == UserDefaults.standard.integer(forKey: "AD_COUNT") {
+                CLICK_COUNT = 0
+                TrigerInterstitial()
+            }
         }
         viewMain.currentlyEditingLabel.labelTextView?.textAlignment = .left
     }
     
     @IBAction func btnCenterAction(_ sender: Any) {
-        loadInterstitial()
-        CLICK_COUNT += 1
-        if CLICK_COUNT == UserDefaults.standard.integer(forKey: "AD_COUNT") {
-            CLICK_COUNT = 0
-            TrigerInterstitial()
+        if IS_ADS_SHOW == true {
+            loadInterstitial()
+            CLICK_COUNT += 1
+            if CLICK_COUNT == UserDefaults.standard.integer(forKey: "AD_COUNT") {
+                CLICK_COUNT = 0
+                TrigerInterstitial()
+            }
         }
         viewMain.currentlyEditingLabel.labelTextView?.textAlignment = .center
     }
     
     @IBAction func btnRightAction(_ sender: Any) {
-        loadInterstitial()
-        CLICK_COUNT += 1
-        if CLICK_COUNT == UserDefaults.standard.integer(forKey: "AD_COUNT") {
-            CLICK_COUNT = 0
-            TrigerInterstitial()
+        if IS_ADS_SHOW == true {
+            loadInterstitial()
+            CLICK_COUNT += 1
+            if CLICK_COUNT == UserDefaults.standard.integer(forKey: "AD_COUNT") {
+                CLICK_COUNT = 0
+                TrigerInterstitial()
+            }
         }
         viewMain.currentlyEditingLabel.labelTextView?.textAlignment = .right
     }
     
     @IBAction func sliderOpacityAction(_ sender: UISlider) {
-        loadInterstitial()
-        CLICK_COUNT += 1
-        if CLICK_COUNT == UserDefaults.standard.integer(forKey: "AD_COUNT") {
-            CLICK_COUNT = 0
-            TrigerInterstitial()
+        if IS_ADS_SHOW == true {
+            loadInterstitial()
+            CLICK_COUNT += 1
+            if CLICK_COUNT == UserDefaults.standard.integer(forKey: "AD_COUNT") {
+                CLICK_COUNT = 0
+                TrigerInterstitial()
+            }
         }
         let currentValue = CGFloat(sender.value)
         viewMain.currentlyEditingLabel.labelTextView?.alpha = currentValue
@@ -6219,11 +6243,13 @@ class ImageEditActionVC: UIViewController,GADFullScreenContentDelegate, GADBanne
     
     //MARK:- Button Action Zone
     @IBAction func btnFilterAction(_ sender: Any) {
-        loadInterstitial()
-        CLICK_COUNT += 1
-        if CLICK_COUNT == UserDefaults.standard.integer(forKey: "AD_COUNT") {
-            CLICK_COUNT = 0
-            TrigerInterstitial()
+        if IS_ADS_SHOW == true {
+            loadInterstitial()
+            CLICK_COUNT += 1
+            if CLICK_COUNT == UserDefaults.standard.integer(forKey: "AD_COUNT") {
+                CLICK_COUNT = 0
+                TrigerInterstitial()
+            }
         }
         self.lblTitle.text = "Filters"
         self.viewShapes.isHidden = false
@@ -6237,11 +6263,13 @@ class ImageEditActionVC: UIViewController,GADFullScreenContentDelegate, GADBanne
     }
     
     @IBAction func btnFlipVAction(_ sender: UIButton) {
-        loadInterstitial()
-        CLICK_COUNT += 1
-        if CLICK_COUNT == UserDefaults.standard.integer(forKey: "AD_COUNT") {
-            CLICK_COUNT = 0
-            TrigerInterstitial()
+        if IS_ADS_SHOW == true {
+            loadInterstitial()
+            CLICK_COUNT += 1
+            if CLICK_COUNT == UserDefaults.standard.integer(forKey: "AD_COUNT") {
+                CLICK_COUNT = 0
+                TrigerInterstitial()
+            }
         }
         if btnFlipV.isSelected == true {
         } else {
@@ -6259,11 +6287,13 @@ class ImageEditActionVC: UIViewController,GADFullScreenContentDelegate, GADBanne
     }
     
     @IBAction func btnFlipHAction(_ sender: Any) {
-        loadInterstitial()
-        CLICK_COUNT += 1
-        if CLICK_COUNT == UserDefaults.standard.integer(forKey: "AD_COUNT") {
-            CLICK_COUNT = 0
-            TrigerInterstitial()
+        if IS_ADS_SHOW == true {
+            loadInterstitial()
+            CLICK_COUNT += 1
+            if CLICK_COUNT == UserDefaults.standard.integer(forKey: "AD_COUNT") {
+                CLICK_COUNT = 0
+                TrigerInterstitial()
+            }
         }
         if btnFlipH.isSelected == true {
         } else {
@@ -6785,15 +6815,15 @@ extension ImageEditActionVC {
     func loadInterstitial() {
         let adRequest = GADRequest()
         if let adUnitID1 = UserDefaults.standard.string(forKey: "INTERSTITIAL_ID") {
-        GADInterstitialAd.load(withAdUnitID: adUnitID1, request: adRequest) { [weak self] ad, error in
-            guard let self = self else { return }
-            if let error = error {
-                print("Failed to load interstitial ad with error: \(error.localizedDescription)")
-                return
+            GADInterstitialAd.load(withAdUnitID: adUnitID1, request: adRequest) { [weak self] ad, error in
+                guard let self = self else { return }
+                if let error = error {
+                    print("Failed to load interstitial ad with error: \(error.localizedDescription)")
+                    return
+                }
+                self.interstitial = ad
+                self.interstitial?.fullScreenContentDelegate = self
             }
-            self.interstitial = ad
-            self.interstitial?.fullScreenContentDelegate = self
-        }
         }
     }
     

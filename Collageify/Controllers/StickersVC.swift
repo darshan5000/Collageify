@@ -19,7 +19,7 @@ class StickersVC: UIViewController,UICollectionViewDelegate,UICollectionViewData
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        loadRewardAd()
         SelectStickersCV.delegate = self
         SelectStickersCV.dataSource = self
         SelectStickersCV.register(UINib(nibName: "StickerCell", bundle: nil), forCellWithReuseIdentifier: "StickerCell")
@@ -36,16 +36,19 @@ class StickersVC: UIViewController,UICollectionViewDelegate,UICollectionViewData
         Analytics.logEvent("StickersVC_enter", parameters: [
             "params": "purchase_screen_enter"
         ])
+        loadRewardAd()
     }
     
     //MARK:- Action Button Zone
     @IBAction func btnBackAction(_ sender: Any) {
+        if IS_ADS_SHOW == true {
         CLICK_COUNT += 1
         print("Current Ads Count >>>>>>>>>>>>>>>>>>>> \(CLICK_COUNT)")
         if CLICK_COUNT == UserDefaults.standard.integer(forKey: "AD_COUNT") {
             print("Current Ads Count >>>>>>>>>>>>>>>>>>>> \(CLICK_COUNT)")
             showRewardAd()
             CLICK_COUNT = 0
+        }
         }
         self.navigationController?.popViewController(animated: true)
     }

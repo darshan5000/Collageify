@@ -42,13 +42,13 @@ class HomeScreenVC: UIViewController, GADFullScreenContentDelegate, GADBannerVie
         Analytics.logEvent("HomeScreenVC_enter", parameters: [
             "params": "purchase_screen_enter"
         ])
-        loadInterstitial()
-        loadRewardAd()
+        
         if IS_ADS_SHOW == true {
             if let adUnitID1 = UserDefaults.standard.string(forKey: "BANNER_ID") {
                 bannerView.adUnitID = adUnitID1
             }
-            
+            loadInterstitial()
+            loadRewardAd()
             bannerView.rootViewController = self
             bannerView.load(GADRequest())
             bannerView.delegate = self
@@ -57,8 +57,10 @@ class HomeScreenVC: UIViewController, GADFullScreenContentDelegate, GADBannerVie
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        if IS_ADS_SHOW == true {
         loadRewardAd()
         loadInterstitial()
+        }
         if let savedCount = retrieveCountFromKeychain() {
             REEL_COUNT = savedCount
         }
@@ -111,6 +113,7 @@ class HomeScreenVC: UIViewController, GADFullScreenContentDelegate, GADBannerVie
     
     //MARK:- Button Action Zone
     @IBAction func onTappedShareApp(_ sender: Any) {
+        if IS_ADS_SHOW == true {
         loadInterstitial()
         loadRewardAd()
         CLICK_COUNT += 1
@@ -118,7 +121,8 @@ class HomeScreenVC: UIViewController, GADFullScreenContentDelegate, GADBannerVie
             CLICK_COUNT = 0
             TrigerInterstitial()
         }
-        let textToShare = "Check out this awesome app!"
+        }
+        let textToShare = "https://apps.apple.com/in/app/collageify/id6482987481"
         
         let activityViewController = UIActivityViewController(activityItems: [textToShare], applicationActivities: nil)
         activityViewController.popoverPresentationController?.sourceView = self.view // necessary for iPad
@@ -126,9 +130,13 @@ class HomeScreenVC: UIViewController, GADFullScreenContentDelegate, GADBannerVie
         present(activityViewController, animated: true, completion: nil)
     }
     @objc func animationViewTapped() {
-        showAlertForGift()
-        loadInterstitial()
-        loadRewardAd()
+        if IS_ADS_SHOW == true {
+            loadInterstitial()
+            loadRewardAd()
+            showAlertForGift()
+        } else {
+            showCongratulationAlert()
+        }
     }
     @IBAction func onTappedPointsBtn(_ sender: Any) {
         
@@ -142,12 +150,14 @@ class HomeScreenVC: UIViewController, GADFullScreenContentDelegate, GADBannerVie
     }
     
     @IBAction func onTappedRateus(_ sender: Any) {
+        if IS_ADS_SHOW == true {
         loadInterstitial()
         loadRewardAd()
         CLICK_COUNT += 1
         if CLICK_COUNT == UserDefaults.standard.integer(forKey: "AD_COUNT") {
             CLICK_COUNT = 0
             TrigerInterstitial()
+        }
         }
         if #available(iOS 10.3, *) {
             SKStoreReviewController.requestReview()
@@ -172,6 +182,7 @@ class HomeScreenVC: UIViewController, GADFullScreenContentDelegate, GADBannerVie
     }
     
     @IBAction func btnGridAction(_ sender: Any) {
+        if IS_ADS_SHOW == true {
         loadInterstitial()
         loadRewardAd()
         CLICK_COUNT += 1
@@ -179,6 +190,7 @@ class HomeScreenVC: UIViewController, GADFullScreenContentDelegate, GADBannerVie
             CLICK_COUNT = 0
             TrigerInterstitial()
             print("Current Ads Count >>>>>>>>>>>>>>>>>>>> \(CLICK_COUNT)")
+        }
         }
         let obj : ALLShapeVC = self.storyboard?.instantiateViewController(withIdentifier: "LoadShapesVC") as! ALLShapeVC
         self.navigationController?.pushViewController(obj, animated: true)
@@ -191,6 +203,7 @@ class HomeScreenVC: UIViewController, GADFullScreenContentDelegate, GADBannerVie
     }
     
     @IBAction func btnEditAction(_ sender: Any) {
+        if IS_ADS_SHOW == true {
         loadInterstitial()
         loadRewardAd()
         CLICK_COUNT += 1
@@ -199,6 +212,7 @@ class HomeScreenVC: UIViewController, GADFullScreenContentDelegate, GADBannerVie
             TrigerInterstitial()
             CLICK_COUNT = 0
             print("Current Ads Count >>>>>>>>>>>>>>>>>>>> \(CLICK_COUNT)")
+        }
         }
         let obj = self.storyboard!.instantiateViewController(withIdentifier: "CurrentPhotoVC") as! CurrentPhotoVC
         obj.objSelectiontype = 2
@@ -210,6 +224,7 @@ class HomeScreenVC: UIViewController, GADFullScreenContentDelegate, GADBannerVie
     }
     
     @IBAction func btnMyAlbumsAction(_ sender: Any) {
+        if IS_ADS_SHOW == true {
         loadInterstitial()
         loadRewardAd()
         CLICK_COUNT += 1
@@ -218,12 +233,14 @@ class HomeScreenVC: UIViewController, GADFullScreenContentDelegate, GADBannerVie
             TrigerInterstitial()
             CLICK_COUNT = 0
             print("Current Ads Count >>>>>>>>>>>>>>>>>>>> \(CLICK_COUNT)")
+        }
         }
         let obj : MyPhotosVC = self.storyboard?.instantiateViewController(withIdentifier: "MyAlbumVC") as! MyPhotosVC
         self.navigationController?.pushViewController(obj, animated: true)
     }
     
     @IBAction func btnActionReel(_ sender: Any) {
+        if IS_ADS_SHOW == true {
         loadInterstitial()
         loadRewardAd()
         CLICK_COUNT += 1
@@ -233,7 +250,7 @@ class HomeScreenVC: UIViewController, GADFullScreenContentDelegate, GADBannerVie
             TrigerInterstitial()
             print("Current Ads Count >>>>>>>>>>>>>>>>>>>> \(CLICK_COUNT)")
         }
-        
+        }
         //        self.openSpotifyController()
         
         openImagePickerView()
@@ -585,4 +602,29 @@ extension HomeScreenVC {
             print("Interstitial ad is not ready yet.")
         }
     }
+    func loadOpenAppAD() {
+        let adUnitID = "ca-app-pub-3940256099942544/5575463023"
+        GADAppOpenAd.load(withAdUnitID: adUnitID, request: GADRequest(), orientation: UIInterfaceOrientation.portrait, completionHandler: { (ad, error) in
+            if let error = error {
+                print("Failed to load App Open Ad: \(error.localizedDescription)")
+                return
+            }
+            
+            self.appOpenAd = ad
+            self.appOpenAd?.fullScreenContentDelegate = self
+        })
+    }
+    func showAppOpenAdIfReady() {
+        if let appOpenAd = appOpenAd {
+            if let window = UIApplication.shared.windows.first,
+               let rootViewController = window.rootViewController {
+                appOpenAd.present(fromRootViewController: rootViewController)
+            } else {
+                print("Root view controller not found.")
+            }
+        } else {
+            print("App Open Ad is not ready yet.")
+        }
+    }
+
 }

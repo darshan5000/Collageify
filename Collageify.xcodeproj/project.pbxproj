@@ -51,6 +51,15 @@
 		047F55202BCD87F100325BFF /* VideoEditViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047F551E2BCD87F100325BFF /* VideoEditViewController.swift */; };
 		047F55212BCD87F100325BFF /* EditReelsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047F551F2BCD87F100325BFF /* EditReelsViewController.swift */; };
 		047F55E32BCD911C00325BFF /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7D26FC132BCBD97E00711970 /* GoogleService-Info.plist */; };
+		048F8D2B2BE692C60024ADCB /* giftBox.json in Resources */ = {isa = PBXBuildFile; fileRef = 048F8D2A2BE692C60024ADCB /* giftBox.json */; };
+		048F8D2D2BE696A60024ADCB /* AppTrackingTransparency.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 048F8D2C2BE696A50024ADCB /* AppTrackingTransparency.framework */; };
+		048F8D2F2BE696AB0024ADCB /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 048F8D2E2BE696AB0024ADCB /* AdSupport.framework */; };
+		048F8D312BE696E70024ADCB /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 048F8D302BE696E70024ADCB /* AVFoundation.framework */; };
+		048F8D332BE696F80024ADCB /* CoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 048F8D322BE696F80024ADCB /* CoreServices.framework */; };
+		048F8D352BE696FF0024ADCB /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 048F8D342BE696FF0024ADCB /* CoreGraphics.framework */; };
+		048F8D372BE697320024ADCB /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 048F8D362BE697310024ADCB /* Foundation.framework */; };
+		048F8D392BE697400024ADCB /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 048F8D382BE697400024ADCB /* SystemConfiguration.framework */; };
+		048F8D3B2BE697470024ADCB /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 048F8D3A2BE697470024ADCB /* Security.framework */; };
 		04962E032BE5E22200DA0542 /* VideoTrimViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04962E022BE5E22100DA0542 /* VideoTrimViewController.swift */; };
 		04962E082BE5E2E100DA0542 /* ArtistCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 04962E042BE5E2E100DA0542 /* ArtistCollectionViewCell.xib */; };
 		04962E092BE5E2E100DA0542 /* AlbumsCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 04962E052BE5E2E100DA0542 /* AlbumsCollectionViewCell.xib */; };
@@ -115,7 +124,6 @@
 		04E5623B2BCC332800B4AF0E /* MaterialActivityIndicatorAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04E562332BCC332800B4AF0E /* MaterialActivityIndicatorAnimator.swift */; };
 		04E5623C2BCC332800B4AF0E /* MaterialActivityIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04E562342BCC332800B4AF0E /* MaterialActivityIndicator.swift */; };
 		68F78C8D9C8D3A9041CA1021 /* Pods_Collageify.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B5B0D6BDDBC0055D9429E8B8 /* Pods_Collageify.framework */; };
-		7D2CB6C92BE60FEC0048C5A8 /* giftBox.json in Resources */ = {isa = PBXBuildFile; fileRef = 7D2CB6C82BE60FEC0048C5A8 /* giftBox.json */; };
 		7D41BC642BC114E700382D1A /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7D41BC622BC114E700382D1A /* Main.storyboard */; };
 		7D41BC662BC114E800382D1A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7D41BC652BC114E800382D1A /* Assets.xcassets */; };
 		7D41BC692BC114E800382D1A /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7D41BC672BC114E800382D1A /* LaunchScreen.storyboard */; };
@@ -246,6 +254,15 @@
 		047F551B2BCD867900325BFF /* EditPreviewCollectionViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EditPreviewCollectionViewCell.xib; sourceTree = "<group>"; };
 		047F551E2BCD87F100325BFF /* VideoEditViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VideoEditViewController.swift; sourceTree = "<group>"; };
 		047F551F2BCD87F100325BFF /* EditReelsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditReelsViewController.swift; sourceTree = "<group>"; };
+		048F8D2A2BE692C60024ADCB /* giftBox.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = giftBox.json; sourceTree = "<group>"; };
+		048F8D2C2BE696A50024ADCB /* AppTrackingTransparency.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppTrackingTransparency.framework; path = System/Library/Frameworks/AppTrackingTransparency.framework; sourceTree = SDKROOT; };
+		048F8D2E2BE696AB0024ADCB /* AdSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdSupport.framework; path = System/Library/Frameworks/AdSupport.framework; sourceTree = SDKROOT; };
+		048F8D302BE696E70024ADCB /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
+		048F8D322BE696F80024ADCB /* CoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreServices.framework; path = System/Library/Frameworks/CoreServices.framework; sourceTree = SDKROOT; };
+		048F8D342BE696FF0024ADCB /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		048F8D362BE697310024ADCB /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		048F8D382BE697400024ADCB /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
+		048F8D3A2BE697470024ADCB /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		04962E022BE5E22100DA0542 /* VideoTrimViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VideoTrimViewController.swift; sourceTree = "<group>"; };
 		04962E042BE5E2E100DA0542 /* ArtistCollectionViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ArtistCollectionViewCell.xib; sourceTree = "<group>"; };
 		04962E052BE5E2E100DA0542 /* AlbumsCollectionViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AlbumsCollectionViewCell.xib; sourceTree = "<group>"; };
@@ -311,7 +328,6 @@
 		04E562342BCC332800B4AF0E /* MaterialActivityIndicator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MaterialActivityIndicator.swift; sourceTree = "<group>"; };
 		4896EB7C94440D5AD410A78F /* Pods-Collageify.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Collageify.release.xcconfig"; path = "Target Support Files/Pods-Collageify/Pods-Collageify.release.xcconfig"; sourceTree = "<group>"; };
 		7D26FC132BCBD97E00711970 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
-		7D2CB6C82BE60FEC0048C5A8 /* giftBox.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = giftBox.json; path = ../../../../../Downloads/giftBox.json; sourceTree = "<group>"; };
 		7D41BC592BC114E700382D1A /* Collageify.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Collageify.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7D41BC632BC114E700382D1A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		7D41BC652BC114E800382D1A /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -413,7 +429,15 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				048F8D352BE696FF0024ADCB /* CoreGraphics.framework in Frameworks */,
+				048F8D312BE696E70024ADCB /* AVFoundation.framework in Frameworks */,
 				68F78C8D9C8D3A9041CA1021 /* Pods_Collageify.framework in Frameworks */,
+				048F8D2D2BE696A60024ADCB /* AppTrackingTransparency.framework in Frameworks */,
+				048F8D332BE696F80024ADCB /* CoreServices.framework in Frameworks */,
+				048F8D372BE697320024ADCB /* Foundation.framework in Frameworks */,
+				048F8D392BE697400024ADCB /* SystemConfiguration.framework in Frameworks */,
+				048F8D3B2BE697470024ADCB /* Security.framework in Frameworks */,
+				048F8D2F2BE696AB0024ADCB /* AdSupport.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -423,7 +447,7 @@
 		042723AC2BD2FF3700BF9594 /* Global */ = {
 			isa = PBXGroup;
 			children = (
-				7D2CB6C82BE60FEC0048C5A8 /* giftBox.json */,
+				048F8D2A2BE692C60024ADCB /* giftBox.json */,
 				042723AD2BD2FF3700BF9594 /* Global.swift */,
 				042723AE2BD2FF3700BF9594 /* PentagonView.swift */,
 				042723AF2BD2FF3700BF9594 /* FramesJson.swift */,
@@ -694,6 +718,14 @@
 		3FBECED893D4A359E382B5BF /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				048F8D3A2BE697470024ADCB /* Security.framework */,
+				048F8D382BE697400024ADCB /* SystemConfiguration.framework */,
+				048F8D362BE697310024ADCB /* Foundation.framework */,
+				048F8D342BE696FF0024ADCB /* CoreGraphics.framework */,
+				048F8D322BE696F80024ADCB /* CoreServices.framework */,
+				048F8D302BE696E70024ADCB /* AVFoundation.framework */,
+				048F8D2E2BE696AB0024ADCB /* AdSupport.framework */,
+				048F8D2C2BE696A50024ADCB /* AppTrackingTransparency.framework */,
 				B5B0D6BDDBC0055D9429E8B8 /* Pods_Collageify.framework */,
 			);
 			name = Frameworks;
@@ -1034,6 +1066,7 @@
 				7D41BE932BC11CBF00382D1A /* Adine Kirnberg.ttf in Resources */,
 				7D41BEAF2BC11CBF00382D1A /* Advertising Script Bold Trial.ttf in Resources */,
 				7D41BEA62BC11CBF00382D1A /* Dohearts.otf in Resources */,
+				048F8D2B2BE692C60024ADCB /* giftBox.json in Resources */,
 				042724462BD2FF3800BF9594 /* black.mov in Resources */,
 				7D41BE972BC11CBF00382D1A /* Allura-Regular.ttf in Resources */,
 				042724072BD2FF3700BF9594 /* silence.mp3 in Resources */,
@@ -1041,7 +1074,6 @@
 				7D41BEA52BC11CBF00382D1A /* Mf Gradient Goddess.ttf in Resources */,
 				7D41BEA82BC11CBF00382D1A /* Variane Script.ttf in Resources */,
 				7D41BEBD2BC11CBF00382D1A /* FramesCell.xib in Resources */,
-				7D2CB6C92BE60FEC0048C5A8 /* giftBox.json in Resources */,
 				7D41BE962BC11CBF00382D1A /* AguafinaScript-Regular.ttf in Resources */,
 				7D41BEA22BC11CBF00382D1A /* LittleLordFontleroyNF.ttf in Resources */,
 				7D41BE9A2BC11CBF00382D1A /* AlexBrush-Regular.ttf in Resources */,

@@ -27,7 +27,9 @@ class InAppPurchaseVC: UIViewController, GADFullScreenContentDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        if IS_ADS_SHOW == true {
         loadRewardAd()
+        }
         NotificationCenter.default.addObserver(self, selector: #selector(adWasClosed), name: Notification.Name("AdClosedNotification"), object: nil)
         monthPrice.text! = "$3.99/"
         yearPrice.text! = "$39.99/"
@@ -49,7 +51,9 @@ class InAppPurchaseVC: UIViewController, GADFullScreenContentDelegate {
         Analytics.logEvent("purchase_screen_enter", parameters: [
             "params": "purchase_screen_enter"
         ])
+        if IS_ADS_SHOW == true {
         loadRewardAd()
+        }
     }
     
     private func setupTapGestureRecognizers() {
@@ -124,7 +128,9 @@ class InAppPurchaseVC: UIViewController, GADFullScreenContentDelegate {
         Analytics.logEvent("freeTrial_btn_click", parameters: [
             "params": "onTappedFreeTrialBtn"
         ])
+        SVProgressHUD.show()
         inAppPurchase.purchase(registeredPurchase, atomically: true) { isPurchased in
+            SVProgressHUD.dismiss()
             isSubScription = isPurchased
             userDefault.set(isSubScription, forKey: "isSubScription")
             if isSubScription == true {

@@ -44,12 +44,14 @@ class CurrentTextVC: UIViewController,UITextFieldDelegate, GADFullScreenContentD
 
     //MARK:- Button Action Method
     @IBAction func btnCancelAction(_ sender: Any) {
+        if IS_ADS_SHOW == true {
         CLICK_COUNT += 1
         print("Current Ads Count >>>>>>>>>>>>>>>>>>>> \(CLICK_COUNT)")
         if CLICK_COUNT == UserDefaults.standard.integer(forKey: "AD_COUNT") {
             print("Current Ads Count >>>>>>>>>>>>>>>>>>>> \(CLICK_COUNT)")
             TrigerInterstitial()
             CLICK_COUNT = 0
+        }
         }
         self.dismiss(animated: true, completion: nil)
     }
