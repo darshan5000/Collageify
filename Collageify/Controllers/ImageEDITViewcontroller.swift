@@ -163,13 +163,16 @@ class ImageEDITViewcontroller: UIViewController,UICollectionViewDelegate,UIColle
         super.viewDidLoad()
         
         if IS_ADS_SHOW == true {
-            if let adUnitID1 = UserDefaults.standard.string(forKey: "BANNER_ID") {
-                bannerView.adUnitID = adUnitID1
-            }
             loadInterstitial()
-            bannerView.rootViewController = self
-            bannerView.load(GADRequest())
-            bannerView.delegate = self
+            if let adUnitID = UserDefaults.standard.string(forKey: "BANNER_ID") {
+                bannerView.adUnitID = adUnitID
+                bannerView.rootViewController = self
+                bannerView.load(GADRequest())
+                bannerView.delegate = self
+                bannerView.isHidden = false
+            } else {
+                print("No ad unit ID found in UserDefaults")
+            }
         }
         
         imagePicker.delegate = self

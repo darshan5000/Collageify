@@ -14,6 +14,7 @@ class ALLShapeVC: UIViewController, UICollectionViewDelegate, UICollectionViewDa
     var pickImg = UIImage()
     private var rewardAd: GADRewardedAd?
     var frameDict: [String : Int]?
+    private var interstitial: GADInterstitialAd?
     
     override func viewWillAppear(_ animated: Bool) {
         loadRewardAd()
@@ -27,13 +28,17 @@ class ALLShapeVC: UIViewController, UICollectionViewDelegate, UICollectionViewDa
         ShapeCV.register(UINib(nibName: "SwipMainCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "SwipMainCollectionViewCell")
         ShapeCV.reloadData()
         if IS_ADS_SHOW == true {
-            if let adUnitID1 = UserDefaults.standard.string(forKey: "BANNER_ID") {
-                bannerView.adUnitID = adUnitID1
-            }
+            loadInterstitial()
             loadRewardAd()
-            bannerView.rootViewController = self
-            bannerView.load(GADRequest())
-            bannerView.delegate = self
+            if let adUnitID = UserDefaults.standard.string(forKey: "BANNER_ID") {
+                bannerView.adUnitID = adUnitID
+                bannerView.rootViewController = self
+                bannerView.load(GADRequest())
+                bannerView.delegate = self
+                bannerView.isHidden = false
+            } else {
+                print("No ad unit ID found in UserDefaults")
+            }
         }
     }
     
@@ -46,7 +51,7 @@ class ALLShapeVC: UIViewController, UICollectionViewDelegate, UICollectionViewDa
         CLICK_COUNT += 1
         print("Current Ads Count >>>>>>>>>>>>>>>>>>>> \(CLICK_COUNT)")
         if CLICK_COUNT == UserDefaults.standard.integer(forKey: "AD_COUNT") {
-            showRewardAd()
+            self.TrigerInterstitial()
             CLICK_COUNT = 0
             print("Current Ads Count >>>>>>>>>>>>>>>>>>>> \(CLICK_COUNT)")
         }
@@ -177,9 +182,33 @@ extension ALLShapeVC {
     }
     func ad(_ ad: GADFullScreenPresentingAd, didFailToPresentFullScreenContentWithError error: Error) {
         loadRewardAd()
+        loadInterstitial()
     }
     
     func adDidPresentFullScreenContent(_ ad: GADFullScreenPresentingAd) {
         loadRewardAd()
+        loadInterstitial()
+    }
+    func loadInterstitial() {
+        let adRequest = GADRequest()
+        if let adUnitID1 = UserDefaults.standard.string(forKey: "INTERSTITIAL_ID") {
+        GADInterstitialAd.load(withAdUnitID: adUnitID1, request: adRequest) { [weak self] ad, error in
+            guard let self = self else { return }
+            if let error = error {
+                print("Failed to load interstitial ad with error: \(error.localizedDescription)")
+                return
+            }
+            self.interstitial = ad
+            self.interstitial?.fullScreenContentDelegate = self
+        }
+        }
+    }
+    
+    func TrigerInterstitial() {
+        if let interstitial = interstitial {
+            interstitial.present(fromRootViewController: self)
+        } else {
+            print("Interstitial ad is not ready yet.")
+        }
     }
 }

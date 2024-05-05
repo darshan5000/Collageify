@@ -51,9 +51,6 @@ class InAppPurchaseVC: UIViewController, GADFullScreenContentDelegate {
         Analytics.logEvent("purchase_screen_enter", parameters: [
             "params": "purchase_screen_enter"
         ])
-        if IS_ADS_SHOW == true {
-        loadRewardAd()
-        }
     }
     
     private func setupTapGestureRecognizers() {
@@ -251,6 +248,7 @@ extension InAppPurchaseVC {
         }
     }
     func adDidDismissFullScreenContent(_ ad: GADFullScreenPresentingAd) {
+        loadRewardAd()
         self.dismiss(animated: true)
     }
 }

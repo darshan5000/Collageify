@@ -32,14 +32,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GADFullScreenContentDeleg
         fetchAndStoreRemoteConfig()
         setupIAP()
         if IS_ADS_SHOW == true {
-        onlyLoadAppOpenAd()
+            loadAppOpenAdIfNeeded()
         }
         return true
     }
     
     func applicationWillEnterForeground(_ application: UIApplication) {
         if IS_ADS_SHOW == true {
-        loadAppOpenAd()
+            loadAppOpenAdIfNeeded()
+            print("APP COMES FROM BG >>>>>>>>>>>>>>>>>>>>")
         }
     }
     
