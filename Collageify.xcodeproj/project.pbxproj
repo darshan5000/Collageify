@@ -205,6 +205,7 @@
 		7D41BEFF2BC1200400382D1A /* FamButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D41BEF92BC1200400382D1A /* FamButton.m */; };
 		7D41BF002BC1200400382D1A /* PressButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D41BEFB2BC1200400382D1A /* PressButton.m */; };
 		7D41BF012BC1200400382D1A /* SelectionButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D41BEFD2BC1200400382D1A /* SelectionButton.m */; };
+		7D54B9082BF8790A006EFC66 /* CornerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D54B9072BF8790A006EFC66 /* CornerView.swift */; };
 		7DB9CD392BCBA3B30072BE43 /* InAppPurchaseVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DB9CD382BCBA3B30072BE43 /* InAppPurchaseVC.swift */; };
 		7DDDDA612BC44FE500EB49BA /* ImageEditActionVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DDDDA602BC44FE500EB49BA /* ImageEditActionVC.swift */; };
 		7DF46B162BDAAA2200F3361F /* CoinsCollecVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DF46B152BDAAA2200F3361F /* CoinsCollecVC.swift */; };
@@ -416,6 +417,7 @@
 		7D41BEFB2BC1200400382D1A /* PressButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PressButton.m; sourceTree = "<group>"; };
 		7D41BEFC2BC1200400382D1A /* SelectionButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SelectionButton.h; sourceTree = "<group>"; };
 		7D41BEFD2BC1200400382D1A /* SelectionButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SelectionButton.m; sourceTree = "<group>"; };
+		7D54B9072BF8790A006EFC66 /* CornerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CornerView.swift; sourceTree = "<group>"; };
 		7DB9CD382BCBA3B30072BE43 /* InAppPurchaseVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InAppPurchaseVC.swift; sourceTree = "<group>"; };
 		7DDDDA602BC44FE500EB49BA /* ImageEditActionVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageEditActionVC.swift; sourceTree = "<group>"; };
 		7DE5EC4B2BD6C770009ABF0B /* Collageify.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Collageify.entitlements; sourceTree = "<group>"; };
@@ -447,6 +449,7 @@
 		042723AC2BD2FF3700BF9594 /* Global */ = {
 			isa = PBXGroup;
 			children = (
+				7D54B9072BF8790A006EFC66 /* CornerView.swift */,
 				048F8D2A2BE692C60024ADCB /* giftBox.json */,
 				042723AD2BD2FF3700BF9594 /* Global.swift */,
 				042723AE2BD2FF3700BF9594 /* PentagonView.swift */,
@@ -1253,6 +1256,7 @@
 				7D41BEF02BC11D2000382D1A /* MyPhotosVC.swift in Sources */,
 				7D41BEEB2BC11D2000382D1A /* ALLShapeVC.swift in Sources */,
 				7DB9CD392BCBA3B30072BE43 /* InAppPurchaseVC.swift in Sources */,
+				7D54B9082BF8790A006EFC66 /* CornerView.swift in Sources */,
 				04962E4C2BE5E88A00DA0542 /* Toolbar.swift in Sources */,
 				042724422BD2FF3800BF9594 /* HelperExtensions.swift in Sources */,
 				7DDDDA612BC44FE500EB49BA /* ImageEditActionVC.swift in Sources */,

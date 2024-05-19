@@ -402,7 +402,9 @@ class HomeScreenVC: UIViewController, GADFullScreenContentDelegate, GADBannerVie
                             }
                             let preview = UIAlertAction(title: "Preview", style: UIAlertAction.Style.default, handler: { action in
                                 self.saveReel(url, true)
-                                self.showRewardAd()
+                                if IS_ADS_SHOW == true {
+                                    self.showRewardAd()
+                                }
                             })
                             alert.addAction(save)
                             alert.addAction(preview)

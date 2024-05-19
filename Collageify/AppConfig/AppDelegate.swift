@@ -82,38 +82,45 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GADFullScreenContentDeleg
     func fetchAndStoreRemoteConfig() {
         let remoteConfig = RemoteConfig.remoteConfig()
         
-        let fetchDuration: TimeInterval = 3600
-        remoteConfig.fetch(withExpirationDuration: fetchDuration) { (status, error) -> Void in
+        remoteConfig.fetch { (status, error) -> Void in
             if status == .success {
                 remoteConfig.activate()
+                let userDefaults = UserDefaults.standard
+                userDefaults.removeObject(forKey: "BANNER_ID")
+                userDefaults.removeObject(forKey: "REWARD_ID")
+                userDefaults.removeObject(forKey: "OPENAD_ID")
+                userDefaults.removeObject(forKey: "AD_COUNT")
+                userDefaults.removeObject(forKey: "INTERSTITIAL_ID")
+                
                 if let adUnitID1 = remoteConfig["bannerAdID"].stringValue,
                    let adUnitID2 = remoteConfig["rewardAdID"].stringValue,
                    let adUnitID3 = remoteConfig["openAppAdID"].stringValue,
                    let adUnitID4 = remoteConfig["interstitialAdID"].stringValue,
                    let adsCount = remoteConfig["adsCount"].stringValue {
-                    UserDefaults.standard.set(adUnitID1, forKey: "BANNER_ID")
-                    UserDefaults.standard.set(adUnitID2, forKey: "REWARD_ID")
-                    UserDefaults.standard.set(adUnitID3, forKey: "OPENAD_ID")
-                    UserDefaults.standard.set(adsCount, forKey: "AD_COUNT")
-                    UserDefaults.standard.set(adUnitID4, forKey: "INTERSTITIAL_ID")
+                    
+                    userDefaults.set(adUnitID1, forKey: "BANNER_ID")
+                    userDefaults.set(adUnitID2, forKey: "REWARD_ID")
+                    userDefaults.set(adUnitID3, forKey: "OPENAD_ID")
+                    userDefaults.set(adsCount, forKey: "AD_COUNT")
+                    userDefaults.set(adUnitID4, forKey: "INTERSTITIAL_ID")
+                    
                     print("Ads Count From Firebase:-----\(adsCount)")
                     print("BANNER_ID >>>>>>>>>>>>>> \(adUnitID1)")
                     print("REWARD_ID >>>>>>>>>>>>>> \(adUnitID2)")
                     print("OPENAD_ID >>>>>>>>>>>>>> \(adUnitID3)")
                     print("INTERSTITIAL_ID >>>>>>>>>>>>>> \(adUnitID4)")
                 }
+                
                 let adsEnabled = remoteConfig["isAdsShow"].boolValue
                 print("adsEnabled: \(adsEnabled)")
-                if adsEnabled == true {
-                    IS_ADS_SHOW = true
-                } else {
-                    IS_ADS_SHOW = false
-                }
+                IS_ADS_SHOW = adsEnabled // Directly assign the value without needing an if-else block
             } else {
                 print("Error fetching remote config: \(error?.localizedDescription ?? "")")
             }
         }
     }
+
+
     
     func loadAppOpenAdIfNeeded() {
         if !isAdAlreadyShownInSession() {
